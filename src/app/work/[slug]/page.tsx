@@ -1,14 +1,15 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ArrowUpRight } from "lucide-react";
-import Navbar from "@/components/Navbar";
+import ThemeSection from "@/components/ThemeSection";
+import Eyebrow from "@/components/Eyebrow";
 import Reveal from "@/components/Reveal";
-import Footer from "@/components/Footer";
-import { work } from "@/lib/content";
+import Placeholder from "@/components/Placeholder";
+import Bracket from "@/components/Bracket";
+import { getLiveCaseBySlug, getLiveCases } from "../../../../content/work";
 
 export function generateStaticParams() {
-  return work.map((project) => ({ slug: project.slug }));
+  return getLiveCases().map((c) => ({ slug: c.slug }));
 }
 
 export async function generateMetadata({
@@ -17,88 +18,111 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const project = work.find((item) => item.slug === slug);
-
-  if (!project) {
-    return { title: "Work — The Republic Studios" };
-  }
-
+  const item = getLiveCaseBySlug(slug);
+  if (!item) return { title: "Work" };
   return {
-    title: `${project.client} — The Republic Studios`,
-    description: project.summary,
+    title: `${item.client} — ${item.title}`,
+    description: item.brief,
   };
 }
 
-export default async function WorkCaseStudyPage({
+export default async function CaseStudyPage({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const project = work.find((item) => item.slug === slug);
+  const item = getLiveCaseBySlug(slug);
+  if (!item) notFound();
 
-  if (!project) {
-    notFound();
-  }
+  const liveCases = getLiveCases();
+  const currentIndex = liveCases.findIndex((c) => c.slug === item.slug);
+  const next = liveCases[(currentIndex + 1) % liveCases.length];
 
   return (
     <>
-      <Navbar />
-      <main className="flex-1 pt-40">
-        <section className="mx-auto max-w-4xl px-6 pb-28 sm:px-10 sm:pb-36">
+      <ThemeSection theme="ink" className="px-6 pt-32 pb-16 sm:px-10">
+        <div className="mx-auto max-w-6xl">
           <Reveal>
-            <Link
-              href="/work"
-              className="mb-10 inline-flex items-center gap-2 text-sm text-foreground/60 hover:text-accent"
-            >
-              <ArrowLeft size={16} />
-              All work
-            </Link>
-
-            <div
-              className="mb-10 h-56 w-full rounded-2xl border border-line sm:h-72"
-              style={{ backgroundColor: project.color }}
-            />
-
-            <span className="mb-4 block text-sm uppercase tracking-[0.25em] text-muted">
-              {project.campaignType}
-            </span>
-            <h1 className="font-display text-4xl font-semibold leading-tight sm:text-6xl">
-              {project.client}
-            </h1>
-
-            <p className="mt-8 max-w-2xl text-lg text-foreground/70">{project.summary}</p>
-
-            <div className="mt-12 border-t border-line pt-8">
-              <p className="mb-4 text-xs uppercase tracking-widest text-muted">
-                Strategies applied
-              </p>
-              <div className="flex flex-wrap gap-3">
-                {project.strategies.map((strategy) => (
-                  <span
-                    key={strategy}
-                    className="rounded-full border border-line px-4 py-1.5 text-sm text-foreground/70"
-                  >
-                    {strategy}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            <Link
-              href="/contact"
-              className="group mt-16 inline-flex items-center gap-2 rounded-full bg-foreground px-7 py-3.5 text-sm font-medium text-background transition-colors hover:bg-accent hover:text-white"
-            >
-              Start a project
-              <ArrowUpRight
-                size={16}
-                className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-              />
-            </Link>
+            <p className="mono-label text-smoke">{item.client}</p>
           </Reveal>
-        </section>
-      </main>
-      <Footer />
+          <Reveal delay={0.05}>
+            <h1 className="display-type mt-3 text-[clamp(2.5rem,7vw,6rem)]">
+              {item.title}
+            </h1>
+          </Reveal>
+          <Reveal delay={0.1}>
+            <p className="mono-label mt-4 text-smoke">
+              {item.services.join(" · ")} — {item.year}
+            </p>
+          </Reveal>
+          <Reveal delay={0.15}>
+            <Placeholder
+              label={`${item.client} — hero media pending`}
+              tone="ink"
+              ratio="aspect-[16/9]"
+              className="mt-10"
+            />
+          </Reveal>
+        </div>
+      </ThemeSection>
+
+      <ThemeSection theme="paper" className="px-6 py-20 sm:px-10">
+        <div className="mx-auto grid max-w-6xl gap-16 sm:grid-cols-2">
+          <Reveal>
+            <Eyebrow>THE BRIEF</Eyebrow>
+            <p className="measure mt-4 text-lg">{item.brief}</p>
+          </Reveal>
+          <Reveal delay={0.05}>
+            <Eyebrow>THE IDEA</Eyebrow>
+            <p className="measure mt-4 text-lg">{item.idea}</p>
+            <Placeholder
+              label={`${item.client} — supporting media pending`}
+              tone="republic"
+              ratio="aspect-[4/3]"
+              className="mt-6"
+            />
+          </Reveal>
+        </div>
+      </ThemeSection>
+
+      <ThemeSection theme="ink" className="px-6 py-20 sm:px-10">
+        <div className="mx-auto max-w-6xl">
+          <Reveal>
+            <Eyebrow>THE RESULT</Eyebrow>
+          </Reveal>
+          {item.results.length > 0 ? (
+            <div className="mt-10 grid gap-10 sm:grid-cols-3">
+              {item.results.map((r) => (
+                <div key={r.label}>
+                  <p className="display-type text-5xl text-republic">{r.value}</p>
+                  <p className="mono-label mt-2 text-smoke">{r.label}</p>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <Reveal delay={0.05}>
+              <div className="mt-10 rounded-[var(--radius-card)] border border-paper/20 px-8 py-14">
+                <p className="display-type text-2xl">
+                  <Bracket>RESULTS UNDER NDA</Bracket>
+                </p>
+                <p className="measure mt-4 text-paper/70">
+                  Ask us in the room.
+                </p>
+              </div>
+            </Reveal>
+          )}
+        </div>
+      </ThemeSection>
+
+      <ThemeSection theme="paper" className="px-6 py-16 sm:px-10">
+        <div className="mx-auto flex max-w-6xl items-center justify-between">
+          <span className="mono-label text-smoke">Next case</span>
+          <Link href={`/work/${next.slug}`} className="display-type text-2xl hover:text-republic sm:text-3xl">
+            {next.client} — {next.title} →
+          </Link>
+        </div>
+      </ThemeSection>
     </>
   );
 }

@@ -1,33 +1,23 @@
-"use client";
+import clsx from "clsx";
 
-import { motion } from "framer-motion";
-
-const items = [
-  "Brand Strategy",
-  "Digital Product",
-  "Growth Marketing",
-  "Motion & Film",
-  "Identity Systems",
-  "Web Development",
-];
-
-export default function Marquee() {
-  const loop = [...items, ...items];
-
+/** Constant-speed ticker, pauses on hover, opacity-only under
+ * reduced-motion (handled globally via CSS). */
+export default function Marquee({
+  text,
+  className,
+}: {
+  text: string;
+  className?: string;
+}) {
   return (
-    <div className="overflow-hidden border-y border-line bg-background py-6">
-      <motion.div
-        className="flex w-max gap-10"
-        animate={{ x: ["0%", "-50%"] }}
-        transition={{ duration: 28, ease: "linear", repeat: Infinity }}
-      >
-        {loop.map((item, i) => (
-          <div key={i} className="flex items-center gap-10 whitespace-nowrap">
-            <span className="font-display text-2xl text-foreground/25 sm:text-4xl">{item}</span>
-            <span className="text-2xl text-accent sm:text-4xl">✦</span>
-          </div>
+    <div className={clsx("overflow-hidden whitespace-nowrap", className)}>
+      <div className="marquee-track inline-flex w-max">
+        {[0, 1].map((i) => (
+          <span key={i} className="display-type flex shrink-0 items-center px-4 text-3xl sm:text-5xl">
+            {text}
+          </span>
         ))}
-      </motion.div>
+      </div>
     </div>
   );
 }

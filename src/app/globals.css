@@ -1,53 +1,119 @@
 @import "tailwindcss";
 
-:root {
-  --background: #0a0a0a;
-  --foreground: #f4f2ee;
-  --accent: #ff4d2e;
-  --muted: #8a8a86;
-  --line: rgba(244, 242, 238, 0.12);
+@theme {
+  --color-republic: #1f1fff;
+  --color-republic-press: #1414cc;
+  --color-ink: #0a0a0a;
+  --color-paper: #ffffff;
+  --color-smoke: #8a8a93;
+
+  --font-display: var(--font-space-mono), ui-monospace, monospace;
+  --font-mono: var(--font-space-mono), ui-monospace, monospace;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  --radius-card: 28px;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-accent: var(--accent);
-  --color-muted: var(--muted);
-  --color-line: var(--line);
-  --font-sans: var(--font-sans);
-  --font-display: var(--font-display);
-}
-
-* {
-  scrollbar-width: thin;
-  scrollbar-color: var(--line) transparent;
+html {
+  scroll-behavior: auto;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
 }
 
-.font-display {
-  font-family: var(--font-display), var(--font-sans), sans-serif;
+/* Theme sections: full-bleed backgrounds set via data-theme, transitioned
+   with a background-colour cross-fade as the page alternates themes. */
+[data-theme="ink"] {
+  background-color: var(--color-ink);
+  color: var(--color-paper);
+}
+[data-theme="republic"] {
+  background-color: var(--color-republic);
+  color: var(--color-paper);
+}
+[data-theme="paper"] {
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+}
+[data-theme] {
+  transition: background-color 400ms ease;
 }
 
-.text-outline {
-  -webkit-text-stroke: 1px var(--foreground);
-  color: transparent;
+::selection {
+  background: var(--color-republic);
+  color: var(--color-paper);
 }
 
-@media (max-width: 640px) {
-  .text-outline {
-    -webkit-text-stroke: 0.6px var(--foreground);
+/* Visible focus states — 2px paper outline, offset, per accessibility spec. */
+:focus-visible {
+  outline: 2px solid var(--color-republic);
+  outline-offset: 2px;
+}
+[data-theme="ink"] :focus-visible,
+[data-theme="republic"] :focus-visible {
+  outline-color: var(--color-paper);
+}
+
+.mono-label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.display-type {
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  line-height: 0.95;
+}
+
+.measure {
+  max-width: 68ch;
+}
+
+/* Marquee ticker */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
   }
 }
+.marquee-track {
+  animation: marquee 32s linear infinite;
+}
+.marquee-track:hover {
+  animation-play-state: paused;
+}
 
-@media (pointer: fine) {
-  .cursor-none-desktop,
-  .cursor-none-desktop a,
-  .cursor-none-desktop button {
-    cursor: none;
+/* Bracket fill: caption content fades/slides in on hover */
+.bracket-fill {
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 250ms ease, transform 250ms ease;
+}
+*:hover > .bracket-fill,
+.group:hover .bracket-fill {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .marquee-track {
+    animation: none !important;
   }
 }

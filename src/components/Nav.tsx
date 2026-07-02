@@ -1,0 +1,90 @@
+"use client";
+
+import { useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { AnimatePresence, motion } from "motion/react";
+import clsx from "clsx";
+import { nav } from "../../content/site";
+
+export default function Nav() {
+  const [open, setOpen] = useState(false);
+  const pathname = usePathname();
+
+  return (
+    <header className="fixed inset-x-0 top-0 z-50">
+      <div className="flex items-center justify-between px-6 py-5 sm:px-10">
+        <Link
+          href="/"
+          className="display-type text-lg mix-blend-difference text-paper"
+          onClick={() => setOpen(false)}
+        >
+          The Republic
+        </Link>
+
+        <nav className="hidden items-center gap-8 sm:flex">
+          {nav.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={clsx(
+                "mono-label mix-blend-difference text-paper transition-opacity hover:opacity-70",
+                pathname === item.href && "opacity-60"
+              )}
+            >
+              {item.label}
+            </Link>
+          ))}
+          <Link
+            href="/contact"
+            className="mono-label rounded-full bg-republic px-4 py-2 text-paper transition-colors hover:bg-republic-press"
+          >
+            Start a project
+          </Link>
+        </nav>
+
+        <button
+          type="button"
+          onClick={() => setOpen((v) => !v)}
+          aria-expanded={open}
+          aria-controls="mobile-nav"
+          aria-label={open ? "Close menu" : "Open menu"}
+          className="mono-label mix-blend-difference text-paper sm:hidden"
+        >
+          {open ? "Close" : "Menu"}
+        </button>
+      </div>
+
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            id="mobile-nav"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            className="fixed inset-0 z-40 flex flex-col justify-center gap-8 bg-ink px-8 sm:hidden"
+          >
+            {nav.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                onClick={() => setOpen(false)}
+                className="display-type text-4xl text-paper"
+              >
+                {item.label}
+              </Link>
+            ))}
+            <Link
+              href="/contact"
+              onClick={() => setOpen(false)}
+              className="mono-label mt-4 inline-block w-fit rounded-full bg-republic px-5 py-3 text-paper"
+            >
+              Start a project
+            </Link>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </header>
+  );
+}

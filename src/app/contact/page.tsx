@@ -1,22 +1,40 @@
 import type { Metadata } from "next";
-import Navbar from "@/components/Navbar";
-import Contact from "@/components/Contact";
-import Footer from "@/components/Footer";
+import ThemeSection from "@/components/ThemeSection";
+import Reveal from "@/components/Reveal";
+import ContactForm from "@/components/ContactForm";
+import { contact } from "../../../content/site";
 
 export const metadata: Metadata = {
-  title: "Contact — The Republic Studios",
-  description:
-    "Get in touch with The Republic Studios, a design and marketing agency based in Lagos, Nigeria.",
+  title: "Contact",
+  description: "Start a project with The Republic.",
 };
 
 export default function ContactPage() {
   return (
-    <>
-      <Navbar />
-      <main className="flex-1 pt-24">
-        <Contact />
-      </main>
-      <Footer />
-    </>
+    <ThemeSection theme="ink" className="min-h-dvh px-6 pt-32 pb-24 sm:px-10">
+      <div className="mx-auto max-w-4xl">
+        <Reveal>
+          <h1 className="display-type text-[clamp(2.5rem,7vw,6rem)]">START A PROJECT</h1>
+        </Reveal>
+
+        <Reveal delay={0.05}>
+          <div className="mono-label mt-8 flex flex-col gap-2 text-paper/85">
+            <a href={`mailto:${contact.email}`} className="hover:text-republic">
+              {contact.email}
+            </a>
+            <a href={`tel:${contact.phoneHref}`} className="hover:text-republic">
+              {contact.phone}
+            </a>
+            <span>{contact.address.full}</span>
+          </div>
+        </Reveal>
+
+        <Reveal delay={0.1}>
+          <div className="mt-14">
+            <ContactForm />
+          </div>
+        </Reveal>
+      </div>
+    </ThemeSection>
   );
 }

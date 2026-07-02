@@ -1,22 +1,46 @@
 import type { Metadata } from "next";
-import { Inter, Bricolage_Grotesque } from "next/font/google";
-import CustomCursor from "@/components/CustomCursor";
+import { Space_Mono, Inter } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
+import Nav from "@/components/Nav";
+import Footer from "@/components/Footer";
+import SmoothScroll from "@/components/SmoothScroll";
+import Preloader from "@/components/Preloader";
+import { site, contact } from "../../content/site";
 import "./globals.css";
 
-const sans = Inter({
-  variable: "--font-sans",
+const spaceMono = Space_Mono({
+  variable: "--font-space-mono",
   subsets: ["latin"],
+  weight: ["400", "700"],
+  display: "swap",
 });
 
-const display = Bricolage_Grotesque({
-  variable: "--font-display",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "The Republic Studios — Design & Marketing Agency",
-  description:
-    "The Republic is a global agency based in Lagos, Nigeria, working in brand building, campaign execution, and driving growth through influencer marketing, user-generated content, and performance marketing.",
+  metadataBase: new URL(site.url),
+  title: {
+    default: `${site.name} — Creative & Digital Agency, Lagos`,
+    template: "%s — The Republic",
+  },
+  description: site.description,
+  openGraph: {
+    title: site.name,
+    description: site.description,
+    url: site.url,
+    siteName: site.name,
+    locale: "en_GB",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: site.name,
+    description: site.description,
+  },
 };
 
 export default function RootLayout({
@@ -24,11 +48,36 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: site.name,
+    url: site.url,
+    logo: `${site.url}/opengraph-image`,
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: contact.address.line1,
+      addressLocality: contact.address.city,
+      addressCountry: contact.address.country,
+    },
+    email: contact.email,
+    telephone: contact.phone,
+    sameAs: [],
+  };
+
   return (
-    <html lang="en" className={`${sans.variable} ${display.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col bg-background text-foreground cursor-none-desktop">
-        <CustomCursor />
-        {children}
+    <html lang="en-GB" className={`${spaceMono.variable} ${inter.variable}`}>
+      <body className="flex min-h-dvh flex-col antialiased">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+        <SmoothScroll />
+        <Preloader />
+        <Nav />
+        <main className="flex-1">{children}</main>
+        <Footer />
+        <Analytics />
       </body>
     </html>
   );
