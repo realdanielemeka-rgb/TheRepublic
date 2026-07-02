@@ -1,6 +1,7 @@
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import Marquee from "@/components/Marquee";
+import ProjectStrip from "@/components/ProjectStrip";
 import Services from "@/components/Services";
 import Work from "@/components/Work";
 import Studio from "@/components/Studio";
@@ -14,6 +15,7 @@ export default function Home() {
       <Navbar />
       <main className="flex-1">
         <Hero />
+        <ProjectStrip />
         <Marquee />
         <Services />
         <Work />

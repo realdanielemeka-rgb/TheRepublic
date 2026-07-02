@@ -13,6 +13,9 @@ export default function Hero() {
     <section id="top" className="relative flex min-h-screen flex-col justify-end overflow-hidden pt-32">
       <div className="pointer-events-none absolute inset-0 -z-10">
         <div className="absolute left-1/2 top-1/3 h-[36rem] w-[36rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent/20 blur-[140px]" />
+        <span className="text-outline font-display absolute -top-6 right-0 select-none text-[26vw] font-semibold leading-none opacity-[0.06] sm:text-[20vw]">
+          RE
+        </span>
       </div>
 
       <div className="mx-auto w-full max-w-7xl px-6 sm:px-10">

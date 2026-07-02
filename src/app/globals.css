@@ -47,3 +47,11 @@ body {
     -webkit-text-stroke: 0.6px var(--foreground);
   }
 }
+
+@media (pointer: fine) {
+  .cursor-none-desktop,
+  .cursor-none-desktop a,
+  .cursor-none-desktop button {
+    cursor: none;
+  }
+}
