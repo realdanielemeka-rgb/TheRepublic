@@ -16,7 +16,7 @@ const display = Bricolage_Grotesque({
 export const metadata: Metadata = {
   title: "The Republic Studios — Design & Marketing Agency",
   description:
-    "The Republic Studios is a design and marketing studio in Lagos, Nigeria building brand strategy, digital products, growth marketing and motion for ambitious companies.",
+    "The Republic is a global agency based in Lagos, Nigeria, working in brand building, campaign execution, and driving growth through influencer marketing, user-generated content, and performance marketing.",
 };
 
 export default function RootLayout({

@@ -6,14 +6,14 @@ import Reveal from "./Reveal";
 
 export default function Services() {
   return (
-    <section id="services" className="mx-auto max-w-7xl px-6 py-28 sm:px-10 sm:py-36">
+    <section className="mx-auto max-w-7xl px-6 py-28 sm:px-10 sm:py-36">
       <Reveal>
         <div className="mb-16 flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
           <h2 className="font-display max-w-xl text-4xl font-semibold leading-tight sm:text-5xl">
             What we do
           </h2>
           <p className="max-w-sm text-foreground/60">
-            Four disciplines, one team — so strategy, design and execution never lose the thread.
+            The strategies we use to build brand visibility and drive growth for our clients.
           </p>
         </div>
       </Reveal>

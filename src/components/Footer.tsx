@@ -1,4 +1,5 @@
-import { business, nav } from "@/lib/content";
+import Link from "next/link";
+import { business, nav, legalNav } from "@/lib/content";
 
 export default function Footer() {
   const year = 2026;
@@ -8,10 +9,10 @@ export default function Footer() {
       <div className="mx-auto max-w-7xl px-6 py-16 sm:px-10">
         <div className="flex flex-col justify-between gap-12 md:flex-row">
           <div>
-            <p className="font-display text-2xl font-semibold tracking-tight">
+            <Link href="/" className="font-display text-2xl font-semibold tracking-tight">
               {business.shortName}
               <span className="text-accent">.</span>
-            </p>
+            </Link>
             <p className="mt-4 max-w-xs text-sm text-foreground/50">{business.tagline}</p>
           </div>
 
@@ -21,9 +22,9 @@ export default function Footer() {
               <ul className="space-y-2 text-sm text-foreground/70">
                 {nav.map((item) => (
                   <li key={item.href}>
-                    <a href={item.href} className="hover:text-accent">
+                    <Link href={item.href} className="hover:text-accent">
                       {item.label}
-                    </a>
+                    </Link>
                   </li>
                 ))}
               </ul>
@@ -37,21 +38,20 @@ export default function Footer() {
                     {business.email}
                   </a>
                 </li>
-                <li>
-                  <a href={business.social.instagram} className="hover:text-accent">
-                    Instagram
-                  </a>
-                </li>
-                <li>
-                  <a href={business.social.twitter} className="hover:text-accent">
-                    Twitter / X
-                  </a>
-                </li>
-                <li>
-                  <a href={business.social.linkedin} className="hover:text-accent">
-                    LinkedIn
-                  </a>
-                </li>
+                <li className="text-foreground/50">{business.address}</li>
+              </ul>
+            </div>
+
+            <div>
+              <p className="mb-4 text-xs uppercase tracking-widest text-muted">Legal</p>
+              <ul className="space-y-2 text-sm text-foreground/70">
+                {legalNav.map((item) => (
+                  <li key={item.href}>
+                    <Link href={item.href} className="hover:text-accent">
+                      {item.label}
+                    </Link>
+                  </li>
+                ))}
               </ul>
             </div>
           </div>
