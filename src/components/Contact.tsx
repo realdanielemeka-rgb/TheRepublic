@@ -47,15 +47,35 @@ export default function Contact() {
                 animate={{ opacity: 1, y: 0 }}
                 className="flex h-full min-h-[320px] flex-col items-center justify-center rounded-2xl border border-line text-center"
               >
-                <p className="font-display text-2xl">Thank you.</p>
-                <p className="mt-2 text-foreground/60">
-                  We&apos;ll be in touch within one business day.
+                <p className="font-display text-2xl">Almost there.</p>
+                <p className="mt-2 max-w-sm text-foreground/60">
+                  We&apos;ve opened your email client with your details pre-filled — hit send and
+                  we&apos;ll be in touch within one business day.
                 </p>
               </motion.div>
             ) : (
               <form
                 onSubmit={(e) => {
                   e.preventDefault();
+                  const data = new FormData(e.currentTarget);
+                  const name = String(data.get("name") ?? "");
+                  const email = String(data.get("email") ?? "");
+                  const company = String(data.get("company") ?? "");
+                  const message = String(data.get("message") ?? "");
+
+                  const subject = `New project inquiry from ${name}`;
+                  const body = [
+                    `Name: ${name}`,
+                    `Email: ${email}`,
+                    `Company: ${company}`,
+                    "",
+                    message,
+                  ].join("\n");
+
+                  window.location.href = `mailto:${business.email}?subject=${encodeURIComponent(
+                    subject
+                  )}&body=${encodeURIComponent(body)}`;
+
                   setSubmitted(true);
                 }}
                 className="space-y-8"
