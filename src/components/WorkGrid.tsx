@@ -61,7 +61,15 @@ export function GridRow({
       className={className}
       style={{
         display: "grid",
-        gridTemplateColumns: "repeat(var(--grid-cols), 1fr)",
+        // minmax(0, 1fr) rather than a bare 1fr: an `fr` track's implicit
+        // minimum is `auto` (its content's min-width), so a row that packs
+        // several cells against the large `--grid-gutter` at a narrow
+        // viewport would otherwise refuse to shrink below the widest cell's
+        // content and blow the grid past its container (real horizontal
+        // overflow, caught by this phase's audit on /work and /journal).
+        // minmax(0, …) lets tracks shrink to fit; content clamps via
+        // line-clamp inside each cell.
+        gridTemplateColumns: "repeat(var(--grid-cols), minmax(0, 1fr))",
         gap: gap ?? "var(--grid-gutter)",
       }}
     >
@@ -95,7 +103,7 @@ export function GridCell({
     <motion.div
       variants={itemVariants(isReduced)}
       transition={{ duration: isReduced ? 0.15 : 0.6, ease: [0.16, 1, 0.3, 1] }}
-      style={{ gridColumn: `span ${Math.max(1, Math.round(span))}` }}
+      style={{ gridColumn: `span ${Math.max(1, Math.round(span))}`, minWidth: 0 }}
       className={className}
     >
       {children}

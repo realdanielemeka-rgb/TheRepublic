@@ -2153,3 +2153,35 @@ ability to resolve:
 13. **Confirmed social URLs** — see #2; listed separately here since it's
     also referenced by the Organisation JSON-LD's `sameAs`, not just the
     footer.
+
+### v3 Phase C — follow-up: grid horizontal-overflow fix (post-audit)
+
+A post-commit Playwright audit (full `document.scrollWidth` check at
+360/768/1024/1440/1920 across every page) surfaced real horizontal
+overflow on `/work` (360/768/1024) and `/journal` (360) — not present on
+Home, which uses wider per-row cells. Two independent, complementary
+causes, both now fixed:
+
+1. **CSS grid blowout.** `<GridRow>` used `repeat(var(--grid-cols), 1fr)`.
+   An `fr` track's implicit minimum is `auto` (its content's min-width),
+   so an archive/journal row packing three cells against the large
+   `--grid-gutter` at a narrow viewport refused to shrink below the widest
+   cell's intrinsic content and pushed the grid past its container. Fixed
+   canonically: `repeat(var(--grid-cols), minmax(0, 1fr))` on the track
+   plus `min-width: 0` on each `<GridCell>`, so tracks can shrink and
+   content clamps (line-clamp) inside the cell instead of forcing width.
+   `<Bracket>` was also made shrink/wrap-safe (`max-w-full flex-wrap`,
+   `min-w-0 shrink basis-0 grow break-words`) so a bracketed label inside
+   a very narrow cell wraps rather than setting a large min-width. Home is
+   unaffected (its cells were always wide enough) — this is a pure
+   robustness fix on the shared primitives.
+2. **Nav width at tablet.** Adding the fifth nav item (Journal) widened
+   the desktop nav row past the 768px tablet width. Moved the desktop-nav
+   breakpoint from `sm:` to `lg:` (nav row shows at ≥1024px; the mobile
+   overlay menu covers 768–1023px), which the five-item nav needs. The
+   `<AppearanceToggle>` remains reachable in both the desktop nav and the
+   mobile overlay, so nothing is lost below `lg`.
+
+Re-verified in Playwright: zero horizontal overflow on Home/Work/Journal/
+Studio/Services/Contact at all five breakpoints, and the nav correctly
+shows the mobile menu at 768 and the desktop nav at 1024.

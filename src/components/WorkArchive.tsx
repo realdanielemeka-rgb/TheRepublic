@@ -147,7 +147,7 @@ export default function WorkArchive({
       {filtered.length > 0 ? (
         <div className="mt-14 flex flex-col gap-16">
           {rows.map((row, ri) => (
-            <GridRow key={ri} fractions={row.map(() => 1)}>
+            <GridRow key={ri} fractions={row.map(() => 1 / row.length)}>
               {row.map(({ item, archiveIndex }, i) => (
                 <div key={item.slug}>
                   <GridSlotContent
@@ -174,7 +174,7 @@ export default function WorkArchive({
       ) : (
         <div className="mt-14 flex flex-col gap-16">
           {placeholderRows.map((row, ri) => (
-            <GridRow key={ri} fractions={row.map(() => 1)}>
+            <GridRow key={ri} fractions={row.map(() => 1 / row.length)}>
               {row.map((archiveIndex) => (
                 <GridSlotContent
                   key={archiveIndex}

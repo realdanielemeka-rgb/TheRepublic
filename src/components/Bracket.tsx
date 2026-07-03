@@ -16,10 +16,10 @@ export default function Bracket({
   as?: "span" | "div" | "p";
 }) {
   return (
-    <Tag className={clsx("inline-flex items-baseline gap-1.5", className)}>
-      <span aria-hidden="true">[</span>
-      <span>{children}</span>
-      <span aria-hidden="true">]</span>
+    <Tag className={clsx("inline-flex max-w-full flex-wrap items-baseline gap-1.5", className)}>
+      <span aria-hidden="true" className="shrink-0">[</span>
+      <span className="min-w-0 shrink basis-0 grow break-words">{children}</span>
+      <span aria-hidden="true" className="shrink-0">]</span>
     </Tag>
   );
 }

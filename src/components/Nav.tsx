@@ -25,7 +25,7 @@ export default function Nav() {
           The Republic
         </Link>
 
-        <nav className="hidden items-center gap-2 sm:flex">
+        <nav className="hidden items-center gap-2 lg:flex">
           {nav.map((item) => (
             <Link
               key={item.href}
@@ -59,7 +59,7 @@ export default function Nav() {
           aria-expanded={open}
           aria-controls="mobile-nav"
           aria-label={open ? "Close menu" : "Open menu"}
-          className="mono-label mix-blend-difference text-paper sm:hidden"
+          className="mono-label mix-blend-difference text-paper lg:hidden"
         >
           {open ? "Close" : "Menu"}
         </button>
@@ -73,7 +73,7 @@ export default function Nav() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
-            className="fixed inset-0 z-40 flex flex-col justify-center gap-6 bg-ink px-8 sm:hidden"
+            className="fixed inset-0 z-40 flex flex-col justify-center gap-6 bg-ink px-8 lg:hidden"
           >
             {nav.map((item) => (
               <Link
