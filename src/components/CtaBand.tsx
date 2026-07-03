@@ -28,9 +28,9 @@ export default function CtaBand() {
         <Reveal delay={0.2}>
           <Link
             href="/contact"
-            className="group relative mt-10 inline-block overflow-hidden rounded-full bg-ink"
+            className="group relative mt-10 inline-block rounded-full bg-ink"
           >
-            <MixBlendHover className="mono-label px-8 py-4">Start a project →</MixBlendHover>
+            <MixBlendHover className="mono-label px-8 py-4" blockClassName="rounded-full">Start a project →</MixBlendHover>
           </Link>
         </Reveal>
       </div>

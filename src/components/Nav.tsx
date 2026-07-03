@@ -31,20 +31,20 @@ export default function Nav() {
               key={item.href}
               href={item.href}
               className={clsx(
-                "group relative overflow-hidden rounded-sm",
+                "group relative rounded-sm",
                 pathname === item.href && "opacity-60"
               )}
             >
-              <MixBlendHover className="mono-label px-2 py-1">
+              <MixBlendHover className="mono-label px-2 py-1" blockClassName="rounded-sm">
                 <CharHoverLink text={item.label} />
               </MixBlendHover>
             </Link>
           ))}
           <Link
             href="/contact"
-            className="group relative ml-2 overflow-hidden rounded-full border border-paper/40 transition-colors hover:border-paper"
+            className="group relative ml-2 rounded-full border border-paper/40 transition-colors hover:border-paper"
           >
-            <MixBlendHover className="mono-label px-4 py-2">
+            <MixBlendHover className="mono-label px-4 py-2" blockClassName="rounded-full">
               <CharHoverLink text="Start a project" />
             </MixBlendHover>
           </Link>
@@ -80,17 +80,17 @@ export default function Nav() {
                 key={item.href}
                 href={item.href}
                 onClick={() => setOpen(false)}
-                className="group relative w-fit overflow-hidden rounded-sm"
+                className="group relative w-fit rounded-sm"
               >
-                <MixBlendHover className="display-type px-2 py-1 text-4xl">{item.label}</MixBlendHover>
+                <MixBlendHover className="display-type px-2 py-1 text-4xl" blockClassName="rounded-sm">{item.label}</MixBlendHover>
               </Link>
             ))}
             <Link
               href="/contact"
               onClick={() => setOpen(false)}
-              className="group relative mt-4 w-fit overflow-hidden rounded-full border border-paper/40"
+              className="group relative mt-4 w-fit rounded-full border border-paper/40"
             >
-              <MixBlendHover className="mono-label px-5 py-3">Start a project</MixBlendHover>
+              <MixBlendHover className="mono-label px-5 py-3" blockClassName="rounded-full">Start a project</MixBlendHover>
             </Link>
             <AppearanceToggle className="mt-2 w-fit" />
           </motion.div>

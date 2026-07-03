@@ -42,6 +42,22 @@ import clsx from "clsx";
  * Reserve this for exactly Nav links + the Start-a-project button + one
  * primary CTA per page (CtaBand) per §4.6.7 — everywhere else keeps
  * standard hover states so this stays a signature, not a default.
+ *
+ * v3 Phase C fix — do NOT add `overflow-hidden` to the caller's wrapping
+ * link/button (an earlier version of this doc comment recommended it, and
+ * every call site had it). Confirmed via Playwright in this Chromium build:
+ * an ancestor with `overflow: hidden` isolates the label's `mix-blend-
+ * difference` compositing from the page content behind it, so the label
+ * silently stops auto-contrasting and falls back to flat `text-paper`
+ * (white) — invisible against a light/paper backdrop, i.e. every nav link
+ * in the §4.7.3 light appearance mode. Confirmed by removing the class live
+ * in a running page and watching the label become legible again. Fix: the
+ * sweep block no longer needs ancestor clipping — it's already sized
+ * `inset-0` to match this component's own box, so it doesn't visually
+ * overflow its caller's bounds even unclipped; pass `blockClassName`
+ * (`"rounded-sm"`/`"rounded-full"` to match the caller's own corner
+ * radius) instead of relying on `overflow-hidden` for the pill shape. See
+ * DECISIONS.md's v3 Phase C section.
  */
 export default function MixBlendHover({
   children,
