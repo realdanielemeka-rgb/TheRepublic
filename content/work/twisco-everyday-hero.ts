@@ -12,7 +12,58 @@ export const twiscoEverydayHero: CaseStudy = {
   idea:
     "Everyday Hero reframed the brand around the people who quietly keep households running, turning small, real acts of care into the campaign's central characters instead of the product itself.",
   results: [],
-  media: [{ alt: "Twisco — Everyday Hero campaign still" }],
+  media: [
+    {
+      kind: "hero",
+      type: "video",
+      src: "placeholder:household",
+      poster: "placeholder:household",
+      alt: "Twisco hero film — a household's everyday routine opening the Everyday Hero campaign",
+    },
+    {
+      kind: "wide",
+      type: "image",
+      src: "placeholder:household",
+      alt: "Twisco — Everyday Hero household still, wide shot of the campaign's central character at home",
+    },
+    {
+      kind: "gallery-pair",
+      type: "image",
+      src: "placeholder:household",
+      alt: "Twisco — Everyday Hero character portrait, campaign lead one",
+    },
+    {
+      kind: "gallery-pair",
+      type: "image",
+      src: "placeholder:household",
+      alt: "Twisco — Everyday Hero character portrait, campaign lead two",
+      reverse: true,
+    },
+    {
+      kind: "carousel",
+      type: "image",
+      src: "placeholder:household",
+      alt: "Twisco — Everyday Hero carousel slide, campaign key visual 1 of 3",
+    },
+    {
+      kind: "carousel",
+      type: "image",
+      src: "placeholder:household",
+      alt: "Twisco — Everyday Hero carousel slide, campaign key visual 2 of 3",
+    },
+    {
+      kind: "carousel",
+      type: "image",
+      src: "placeholder:household",
+      alt: "Twisco — Everyday Hero carousel slide, campaign key visual 3 of 3",
+    },
+    {
+      kind: "ticker-chip",
+      type: "image",
+      src: "placeholder:household",
+      alt: "Twisco — Everyday Hero ticker chip, product-in-use snapshot",
+    },
+  ],
   featured: false,
   status: "pending-approval",
 };

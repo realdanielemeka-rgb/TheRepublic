@@ -38,6 +38,20 @@ body {
   background-color: var(--color-paper);
   color: var(--color-ink);
 }
+/* Fourth theme, case-study heroes only (§4.6.6): a per-case hex — written
+   to content/accents.generated.json by `npm run palette` — blended 18%
+   into the ink base via color-mix, never replacing it outright. The
+   source hex is already AA-contrast-clamped against paper text by
+   scripts/extract-accent.mjs, so this is a pure render step. Falls back
+   to Republic Blue if a section forgets to set --case-accent. */
+[data-theme="accent"] {
+  background-color: color-mix(
+    in oklch,
+    var(--case-accent, var(--color-republic)) 18%,
+    var(--color-ink)
+  );
+  color: var(--color-paper);
+}
 [data-theme] {
   transition: background-color 400ms ease;
 }
@@ -53,7 +67,8 @@ body {
   outline-offset: 2px;
 }
 [data-theme="ink"] :focus-visible,
-[data-theme="republic"] :focus-visible {
+[data-theme="republic"] :focus-visible,
+[data-theme="accent"] :focus-visible {
   outline-color: var(--color-paper);
 }
 

@@ -12,7 +12,58 @@ export const cowbellMumtales: CaseStudy = {
   idea:
     "Mumtales handed the platform to mothers themselves — a recurring content series built from real parenting stories, positioning Cowbell as part of the household conversation rather than an interruption to it.",
   results: [],
-  media: [{ alt: "Cowbell — Mumtales campaign still" }],
+  media: [
+    {
+      kind: "hero",
+      type: "video",
+      src: "placeholder:family",
+      poster: "placeholder:family",
+      alt: "Cowbell hero film — a mother telling her Mumtales story to open the campaign",
+    },
+    {
+      kind: "wide",
+      type: "image",
+      src: "placeholder:family",
+      alt: "Cowbell — Mumtales content wall, contributor stories from the recurring series",
+    },
+    {
+      kind: "gallery-pair",
+      type: "image",
+      src: "placeholder:family",
+      alt: "Cowbell — Mumtales contributor portrait, series storyteller one",
+    },
+    {
+      kind: "gallery-pair",
+      type: "image",
+      src: "placeholder:family",
+      alt: "Cowbell — Mumtales contributor portrait, series storyteller two",
+      reverse: true,
+    },
+    {
+      kind: "carousel",
+      type: "image",
+      src: "placeholder:family",
+      alt: "Cowbell — Mumtales carousel slide, campaign key visual 1 of 3",
+    },
+    {
+      kind: "carousel",
+      type: "image",
+      src: "placeholder:family",
+      alt: "Cowbell — Mumtales carousel slide, campaign key visual 2 of 3",
+    },
+    {
+      kind: "carousel",
+      type: "image",
+      src: "placeholder:family",
+      alt: "Cowbell — Mumtales carousel slide, campaign key visual 3 of 3",
+    },
+    {
+      kind: "ticker-chip",
+      type: "image",
+      src: "placeholder:family",
+      alt: "Cowbell — Mumtales ticker chip, series episode marker",
+    },
+  ],
   featured: false,
   status: "pending-approval",
 };

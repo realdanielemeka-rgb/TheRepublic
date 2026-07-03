@@ -12,7 +12,58 @@ export const heirsInsuranceLaunch: CaseStudy = {
   idea:
     "The launch campaign introduced Heirs Insurance as a challenger built for a new generation of policyholders — an integrated push across brand, digital and live experience designed to make the category's newest name its most talked-about.",
   results: [],
-  media: [{ alt: "Heirs Insurance — Launch campaign still" }],
+  media: [
+    {
+      kind: "hero",
+      type: "video",
+      src: "placeholder:launch",
+      poster: "placeholder:launch",
+      alt: "Heirs Insurance hero film — market-entrance launch film, brand reveal moment",
+    },
+    {
+      kind: "wide",
+      type: "image",
+      src: "placeholder:launch",
+      alt: "Heirs Insurance — Launch activation still, wide shot of the live launch experience",
+    },
+    {
+      kind: "gallery-pair",
+      type: "image",
+      src: "placeholder:launch",
+      alt: "Heirs Insurance — Launch digital still, challenger-brand creative execution",
+    },
+    {
+      kind: "gallery-pair",
+      type: "image",
+      src: "placeholder:launch",
+      alt: "Heirs Insurance — Launch experiential still, live activation moment",
+      reverse: true,
+    },
+    {
+      kind: "carousel",
+      type: "image",
+      src: "placeholder:launch",
+      alt: "Heirs Insurance — Launch carousel slide, campaign key visual 1 of 3",
+    },
+    {
+      kind: "carousel",
+      type: "image",
+      src: "placeholder:launch",
+      alt: "Heirs Insurance — Launch carousel slide, campaign key visual 2 of 3",
+    },
+    {
+      kind: "carousel",
+      type: "image",
+      src: "placeholder:launch",
+      alt: "Heirs Insurance — Launch carousel slide, campaign key visual 3 of 3",
+    },
+    {
+      kind: "ticker-chip",
+      type: "image",
+      src: "placeholder:launch",
+      alt: "Heirs Insurance — Launch ticker chip, brand mark reveal",
+    },
+  ],
   featured: false,
   status: "pending-approval",
 };

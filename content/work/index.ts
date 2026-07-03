@@ -1,4 +1,4 @@
-import type { CaseStudy } from "./types";
+import type { CaseStudy, Media } from "./types";
 import { chivitaStyleNSips } from "./chivita-style-n-sips";
 import { pzlYouMatter } from "./pzl-you-matter";
 import { zenithHomecoming } from "./zenith-homecoming";
@@ -23,6 +23,22 @@ const allCases: CaseStudy[] = [
   sanlamAllianzLiveWithConfidence,
   heirsInsuranceLaunch,
 ];
+
+// Build-time guard for the §7 Media schema's implicit rule ("poster
+// required if type === 'video'"). Runs once at module load — since every
+// page that touches case content imports this module, a missing poster
+// fails `next build`/`next dev` immediately rather than shipping a broken
+// video slot silently.
+function assertValidMedia(slug: string, media: Media[]) {
+  for (const item of media) {
+    if (item.type === "video" && !item.poster) {
+      throw new Error(
+        `content/work: case "${slug}" has a video media item (kind="${item.kind}") with no poster. Video media requires poster per the §7 schema.`
+      );
+    }
+  }
+}
+allCases.forEach((c) => assertValidMedia(c.slug, c.media));
 
 /** Cases cleared for public display, newest first. Pending-approval cases
  * never render on public routes — this is a hard rule, not a default. */

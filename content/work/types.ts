@@ -1,3 +1,20 @@
+export type MediaKind = "hero" | "wide" | "gallery-pair" | "carousel" | "ticker-chip";
+
+export type Media = {
+  kind: MediaKind;
+  type: "image" | "video";
+  // Real asset path once delivered. Until then this is a placeholder
+  // identifier in the form "placeholder:<category>" that <ScenePlaceholder>
+  // / <CaseMedia> (src/components/ScenePlaceholder.tsx) knows how to turn
+  // into a procedural scene — see categoryFromSrc in src/lib/scene/generator.ts.
+  // Swapping in a real file later is a content-only change: no component
+  // code needs to move.
+  src: string;
+  poster?: string; // required if type === "video" — enforced by assertValidMedia() in ./index.ts
+  alt: string;
+  reverse?: boolean; // for gallery-pair alternation
+};
+
 export type CaseStudy = {
   slug: string;
   client: string;
@@ -7,7 +24,8 @@ export type CaseStudy = {
   brief: string;
   idea: string;
   results: { value: string; label: string }[]; // empty allowed
-  media: { src?: string; alt: string }[]; // src pending real asset delivery
+  quote?: { text: string; name: string; role: string }; // never fabricated — omit if unconfirmed
+  media: Media[];
   featured: boolean;
   status: "live" | "pending-approval"; // pending never renders publicly
 };
