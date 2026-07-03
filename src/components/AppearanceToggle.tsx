@@ -29,7 +29,7 @@ export default function AppearanceToggle({ className }: { className?: string }) 
       data-testid="appearance-toggle"
       data-appearance-value={appearance}
       className={clsx(
-        "mono-label mix-blend-difference inline-flex items-center gap-1.5 rounded-full border border-paper/40 px-3 py-1.5 text-paper transition-colors hover:border-paper",
+        "mono-label inline-flex items-center gap-1.5 rounded-full border border-current/40 px-3 py-1.5 text-current transition-colors hover:border-current",
         className
       )}
     >

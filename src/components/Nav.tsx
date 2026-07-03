@@ -19,7 +19,7 @@ export default function Nav() {
       <div className="flex items-center justify-between px-6 py-5 sm:px-10">
         <Link
           href="/"
-          className="display-type text-lg mix-blend-difference text-paper"
+          className="display-type text-lg"
           onClick={() => setOpen(false)}
         >
           The Republic
@@ -59,7 +59,7 @@ export default function Nav() {
           aria-expanded={open}
           aria-controls="mobile-nav"
           aria-label={open ? "Close menu" : "Open menu"}
-          className="mono-label mix-blend-difference text-paper lg:hidden"
+          className="mono-label lg:hidden"
         >
           {open ? "Close" : "Menu"}
         </button>
@@ -73,7 +73,7 @@ export default function Nav() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
-            className="fixed inset-0 z-40 flex flex-col justify-center gap-6 bg-ink px-8 lg:hidden"
+            className="fixed inset-0 z-40 flex flex-col justify-center gap-6 bg-ink px-8 text-paper lg:hidden"
           >
             {nav.map((item) => (
               <Link

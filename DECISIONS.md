@@ -2185,3 +2185,100 @@ causes, both now fixed:
 Re-verified in Playwright: zero horizontal overflow on Home/Work/Journal/
 Studio/Services/Contact at all five breakpoints, and the nav correctly
 shows the mobile menu at 768 and the desktop nav at 1024.
+
+### v3 Phase C — second follow-up: `mix-blend-mode` inside `<header>` doesn't
+### paint at all in this Chromium build (the `overflow-hidden` fix above was
+### real but insufficient — nav was still fully invisible after it)
+
+The `overflow-hidden`-removal fix two sections up (commit
+`ce335e6`/"Fix mix-blend nav text invisible in light mode") was a genuine
+finding and a genuine partial fix, but a follow-up audit pass proved it
+didn't actually solve the underlying problem — it was verified only by
+eye against a small rendered screenshot, which (see below) is exactly the
+verification method that let this slip through in the first place.
+
+**How this was actually confirmed, not assumed**: rather than trust a
+visual glance at a Playwright screenshot (a small, browser-downscaled PNG
+preview is not a reliable way to tell "very dark grey" from "pure black"
+or "pure white" from "255,255,255" by eye — this is precisely how the
+original bug went unnoticed through Phase A/B/C-v1's own audits, all of
+which describe checking nav contrast by screenshot), a small dependency-
+free PNG pixel decoder was written (`zlib.inflateSync` + PNG filter-byte
+unapplying, no `sharp`/`pngjs` — verified correct first against a known
+red/black-text control image) and run against real screenshots of the
+live page. Result: the *entire* fixed nav bar — wordmark included, not
+just the links `ce335e6` touched — decoded to a single flat, uniform
+colour across every sampled row and the full page width, in **both**
+appearance modes. Not "wrong contrast," not "blended incorrectly" —
+genuinely zero distinct text pixels painted anywhere in the bar.
+
+Root cause, isolated with a minimal standalone repro (a bare `position:
+fixed` header + one `mix-blend-mode: difference` span over a plain white
+page, zero app code involved, reproduced the identical total invisibility):
+`position: fixed` elements are given their own compositing layer by this
+Chromium build, and `mix-blend-mode` content inside that layer does not
+composite against the page content scrolled beneath it — this is a real,
+known class of Chromium limitation with blend modes across separately-
+composited layers, not something fixable with a CSS class swap inside this
+app. `ce335e6`'s `overflow-hidden` fix addressed a real, independent
+isolation bug (confirmed and still correct) but couldn't touch this
+deeper, structural one — which is why the nav stayed invisible after that
+fix landed, and why this follow-up was necessary.
+
+**The actual fix** (`MixBlendHover.tsx`, `Nav.tsx`, `AppearanceToggle.tsx`,
+`globals.css`): stop using `mix-blend-mode` inside `<header>` at all.
+`<header>` now carries a plain, OPAQUE, appearance-tracking background/
+text colour — `background-color: var(--app-bg); color: var(--app-fg)`,
+the same custom properties `[data-theme="auto"]` already reads, so it
+stays in lockstep with the global dark/light toggle with no new state.
+`MixBlendHover`'s label now inherits `text-current` at rest and switches
+to a plain `text-paper` once the sweep block is present (always legible
+against the block's opaque Republic Blue, no differencing trick needed).
+The sweep block itself is no longer an always-mounted, `scale`-to-zero
+sibling — it's conditionally mounted only while actually hovered/focused
+(local React state + `<motion.span>` enter/exit), which incidentally also
+sidesteps a second, smaller compositing quirk found during the same
+session: an always-present sibling declaring any `:hover`-triggered
+`transform`/`scale` — even inert at rest — got its own pre-promoted
+compositing layer in this Chromium build too, isolating the *other*
+sibling's blending the same way `overflow-hidden` did. `AppearanceToggle`
+got the same `mix-blend-difference` → `text-current`/`border-current`
+treatment, since it also lives inside the fixed header.
+
+This is a real design deviation from the spec's literal "mix-blend-mode
+inverting text/background beneath" description, adopted deliberately
+rather than continuing to chase a browser limitation: the opaque,
+appearance-tracking header keeps the *result* the spec cares about (nav
+legible against whatever appearance mode the user has chosen, whatever
+theme happens to be scrolled beneath) via a mechanism that's actually
+reliable, at the cost of no longer differencing against the *specific*
+`ThemeSection` colour currently scrolled underneath — a distinction that
+was already unreliable (per the compositing-layer bug) and, empirically,
+was masking total invisibility rather than doing anything, so this is a
+strict legibility improvement, not a trade-off against working behaviour.
+`CtaBand`'s use of `MixBlendHover` is unaffected in practice (it was never
+inside a fixed/separately-composited layer, so the original bug never
+applied there) and keeps working via the same simplified, no-blend-mode
+component.
+
+**Verified**, decisively, with the same pixel-decoding method rather than
+a screenshot glance: sampled rows through the nav bar in both dark and
+light appearance, at rest and while hovering a nav link. Dark mode: text
+pixels read `rgb(255,255,255)` against a `rgb(10,10,10)` background — a
+real, distinct, high-contrast pixel population, not a uniform field.
+Light mode: text pixels read `rgb(10,10,10)`/near-black against
+`rgb(255,255,255)`. Hovering `WORK` in light mode: the sweep block's
+Republic Blue (`rgb(31,31,255)`) appears as a genuine third colour cluster
+with white text legible on top. (One methodology note for future
+Playwright work on this codebase: the very first pixel-decoded pass
+showed *dark* mode as still fully blank too — that was a real false
+alarm from screenshotting before `document.fonts.ready` resolved, not a
+second bug; waiting on `document.fonts.ready` plus a short settle delay
+before screenshotting resolved it, and the dark-mode fix was confirmed
+correct on the very first attempt once that race was accounted for.)
+
+`npx tsc --noEmit`, `npm run lint`, and `npm run build` all clean after
+this change; the full 5-breakpoint/6-page horizontal-overflow sweep and
+the reduced-motion pass (ServiceSwap stacked fallback, Studio manifesto
+hover-reveal, WorkArchive/Home empty-state placeholders) were re-run
+against the rebuilt app and are unaffected/still passing.

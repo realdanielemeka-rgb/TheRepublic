@@ -104,6 +104,23 @@ body {
   outline-color: var(--color-paper);
 }
 
+/* v3 Phase C — header background/text: a plain, appearance-tracking,
+   fully OPAQUE surface (var(--app-bg)/var(--app-fg), the same custom
+   properties [data-theme="auto"] reads) rather than a transparent header
+   relying on mix-blend-difference text to auto-contrast against whatever
+   scrolls beneath it. See MixBlendHover.tsx's doc comment for the full
+   reasoning: mix-blend-mode content inside a position:fixed element was
+   confirmed, via actual decoded screenshot pixels (not a visual glance),
+   to not paint at all in this Chromium build — the entire nav bar was
+   genuinely invisible, in both appearance modes, before this fix. An
+   opaque, appearance-tracking header sidesteps the whole compositing-layer
+   class of bug rather than working around one instance of it. */
+header {
+  background-color: var(--app-bg);
+  color: var(--app-fg);
+  transition: background-color 200ms ease, color 200ms ease;
+}
+
 /* Nav is a fixed-position bar sitting outside every ThemeSection (it scrolls
    over ink/republic/paper content alike), so the theme-scoped overrides
    above never match it — confirmed while auditing focus states: its links'
