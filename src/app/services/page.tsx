@@ -1,8 +1,12 @@
+import Link from "next/link";
 import type { Metadata } from "next";
 import ThemeSection from "@/components/ThemeSection";
 import Reveal from "@/components/Reveal";
 import Eyebrow from "@/components/Eyebrow";
+import ServiceSwap, { type ServiceSwapItem } from "@/components/ServiceSwap";
+import { SERVICE_IMAGE_CATEGORY } from "@/lib/serviceCategories";
 import { services, aiNativeCallout } from "../../../content/services";
+import { getLiveCaseBySlug } from "../../../content/work";
 
 export const metadata: Metadata = {
   title: "Services",
@@ -10,34 +14,37 @@ export const metadata: Metadata = {
 };
 
 export default function ServicesPage() {
+  const serviceItems: ServiceSwapItem[] = services.map((service) => ({
+    index: service.index,
+    title: service.title,
+    oneLiner: service.oneLiner,
+    tags: service.tags,
+    image: {
+      category: SERVICE_IMAGE_CATEGORY[service.index] ?? "generic",
+      label: `${service.title} — representative placeholder`,
+      seed: `services-${service.index}`,
+    },
+  }));
+
+  // Case link stays hidden unless caseSlug is set AND actually resolves to
+  // a live case — belt-and-braces even though content/services.ts's
+  // caseSlug is null today: never trust a stored slug alone to gate a
+  // public link to case content.
+  const linkedCase = aiNativeCallout.caseSlug ? getLiveCaseBySlug(aiNativeCallout.caseSlug) : undefined;
+
   return (
     <>
       <ThemeSection theme="ink" className="px-6 pt-32 pb-20 sm:px-10">
         <div className="mx-auto max-w-6xl">
           <Reveal>
-            <h1 className="display-type text-[clamp(3rem,7vw,7rem)]">WHAT WE DO.</h1>
+            <h1 className="display-type text-[clamp(3rem,7vw,7rem)]">WHAT WE DO</h1>
           </Reveal>
 
-          <div className="mt-16 divide-y divide-paper/15 border-y border-paper/15">
-            {services.map((service) => (
-              <Reveal key={service.index}>
-                <div className="grid gap-4 py-10 sm:grid-cols-[auto_1fr]">
-                  <span className="mono-label text-smoke">{service.index}</span>
-                  <div>
-                    <p className="display-type text-3xl sm:text-4xl">{service.title}</p>
-                    <p className="measure mt-3 text-lg text-paper/80">{service.oneLiner}</p>
-                    <div className="mt-4 flex flex-wrap gap-3">
-                      {service.tags.map((tag) => (
-                        <span key={tag} className="mono-label rounded-full border border-paper/30 px-3 py-1">
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </Reveal>
-            ))}
-          </div>
+          <Reveal delay={0.1}>
+            <div className="mt-16">
+              <ServiceSwap services={serviceItems} />
+            </div>
+          </Reveal>
         </div>
       </ThemeSection>
 
@@ -54,6 +61,13 @@ export default function ServicesPage() {
           <Reveal delay={0.1}>
             <p className="measure mt-6 text-lg opacity-90">{aiNativeCallout.body}</p>
           </Reveal>
+          {linkedCase && (
+            <Reveal delay={0.15}>
+              <Link href={`/work/${linkedCase.slug}`} className="mono-label mt-8 inline-block hover:opacity-80">
+                See the case →
+              </Link>
+            </Reveal>
+          )}
         </div>
       </ThemeSection>
     </>

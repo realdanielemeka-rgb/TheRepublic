@@ -15,6 +15,11 @@ export interface ServiceSwapItem {
    * stays decoupled from content/work's schema. Phase C supplies the real
    * category/label per service when wiring this on Home/Services. */
   image: { category: SceneCategory; label: string; seed?: string };
+  /** Optional 3-4 mono deliverable tags (content/services.ts's `tags`) —
+   * Phase C addition: the Services page (unlike Home's leaner strip) needs
+   * to surface these alongside each service. Optional/additive so Home's
+   * existing call site (which doesn't pass tags) is unaffected. */
+  tags?: string[];
 }
 
 export interface ServiceSwapProps {
@@ -64,6 +69,15 @@ export default function ServiceSwap({ services, className }: ServiceSwapProps) {
               <p className="mono-label text-smoke">{service.index}</p>
               <p className="display-type mt-2 text-2xl sm:text-3xl">{service.title}</p>
               {service.oneLiner && <p className="measure mt-2 text-sm text-current/70">{service.oneLiner}</p>}
+              {service.tags && service.tags.length > 0 && (
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {service.tags.map((tag) => (
+                    <span key={tag} className="mono-label rounded-full border border-current/30 px-3 py-1">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              )}
             </div>
             <ScenePlaceholder
               category={service.image.category}
@@ -125,6 +139,15 @@ export default function ServiceSwap({ services, className }: ServiceSwapProps) {
               <span className="display-type text-2xl sm:text-3xl">{service.title}</span>
               {service.oneLiner && (
                 <span className="measure text-sm text-current/70 sm:ml-auto sm:text-right">{service.oneLiner}</span>
+              )}
+              {service.tags && service.tags.length > 0 && (
+                <span className="flex flex-wrap gap-2 sm:basis-full">
+                  {service.tags.map((tag) => (
+                    <span key={tag} className="mono-label rounded-full border border-current/30 px-3 py-1">
+                      {tag}
+                    </span>
+                  ))}
+                </span>
               )}
             </button>
           </li>

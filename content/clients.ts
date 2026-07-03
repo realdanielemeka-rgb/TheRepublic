@@ -27,5 +27,5 @@ export type HeritageCard = {
 export const heritageWork: HeritageCard[] = [
   { client: "Budweiser", project: "Be a King" },
   { client: "Guinness", project: "Africa Special" },
-  { client: "NamPost", project: "360 Rebrand" },
+  { client: "NamPost", project: "360 rebrand" },
 ];

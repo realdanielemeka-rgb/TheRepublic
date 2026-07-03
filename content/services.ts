@@ -45,7 +45,12 @@ export const services: Service[] = [
 ];
 
 export const aiNativeCallout = {
-  eyebrow: "[ AI-NATIVE PRODUCTION ]",
+  // No literal brackets here — every other eyebrow string in this codebase
+  // is stored plain and gets its brackets from <Eyebrow>/<Bracket> at
+  // render time; this one previously had brackets baked into the string
+  // AND rendered through <Eyebrow>, producing a visible "[ [ ... ] ]"
+  // double-bracket. Fixed as part of the Phase C audit — see DECISIONS.md.
+  eyebrow: "AI-NATIVE PRODUCTION",
   title: "Branded Entertainment at Series Scale",
   body: "We ship AI-native formats — episodic branded drama, generative content systems — for blue-chip brands, at broadcast pace.",
   // Case link stays hidden until client approval flips a case to status: 'live'.

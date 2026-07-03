@@ -5,7 +5,7 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import SmoothScroll from "@/components/SmoothScroll";
 import Preloader from "@/components/Preloader";
-import { site, contact } from "../../content/site";
+import { site, contact, socials } from "../../content/site";
 import { getFeaturedMedia } from "../../content/work";
 import "./globals.css";
 
@@ -57,13 +57,17 @@ export default function RootLayout({
     logo: `${site.url}/opengraph-image`,
     address: {
       "@type": "PostalAddress",
-      streetAddress: contact.address.line1,
+      streetAddress: `${contact.address.line1}, ${contact.address.area}`,
       addressLocality: contact.address.city,
       addressCountry: contact.address.country,
     },
     email: contact.email,
     telephone: contact.phone,
-    sameAs: [],
+    // Derived from content/site.ts's socials list rather than hardcoded —
+    // stays empty today (no confirmed handles) and picks up real URLs
+    // automatically the moment one is added, with no risk of this literal
+    // staying stale/empty after socials.ts is updated.
+    sameAs: socials.map((s) => s.href),
   };
 
   return (

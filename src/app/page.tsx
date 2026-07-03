@@ -5,18 +5,39 @@ import Eyebrow from "@/components/Eyebrow";
 import BracketFill from "@/components/BracketFill";
 import Reveal from "@/components/Reveal";
 import Marquee from "@/components/Marquee";
-import CaseCard from "@/components/CaseCard";
 import CtaBand from "@/components/CtaBand";
-import Bracket from "@/components/Bracket";
+import WorkStrip from "@/components/WorkStrip";
+import CasesEmptyState from "@/components/CasesEmptyState";
+import ServiceSwap, { type ServiceSwapItem } from "@/components/ServiceSwap";
+import ScenePlaceholder from "@/components/ScenePlaceholder";
+import { HoverRevealText, type HoverRevealImage } from "@/components/HoverReveal";
+import { SERVICE_IMAGE_CATEGORY } from "@/lib/serviceCategories";
 import { services } from "../../content/services";
 import { clients } from "../../content/clients";
-import { laws } from "../../content/laws";
 import { getFeaturedCases, getFeaturedMedia } from "../../content/work";
 
 export const metadata: Metadata = {
-  title: "Home",
   description:
     "The Republic builds brand nations — work engineered for participation, from Lagos to the world.",
+};
+
+// §02 — THE METHOD manifesto's three hover-reveal trigger terms. Category
+// choices reuse Phase B's own /dev/hover-reveal QA example (which already
+// anticipated this exact "provoke / participation / citizens" set almost
+// verbatim) — see DECISIONS.md.
+const MANIFESTO_TERMS: Record<string, HoverRevealImage> = {
+  provoke: {
+    category: "launch",
+    label: "Manifesto hover-reveal — a provoke-the-reaction campaign moment",
+  },
+  participation: {
+    category: "civic-journey",
+    label: "Manifesto hover-reveal — a participation touchpoint, audience remixing the work",
+  },
+  citizens: {
+    category: "culture",
+    label: "Manifesto hover-reveal — a crowd of citizens, Lagos street energy",
+  },
 };
 
 export default function HomePage() {
@@ -24,11 +45,42 @@ export default function HomePage() {
   const currentClients = clients.filter((c) => c.tier === "current");
   const heritageClients = clients.filter((c) => c.tier === "heritage");
 
+  const serviceItems: ServiceSwapItem[] = services.map((service) => ({
+    index: service.index,
+    title: service.title,
+    oneLiner: service.oneLiner,
+    image: {
+      category: SERVICE_IMAGE_CATEGORY[service.index] ?? "generic",
+      label: `${service.title} — representative placeholder`,
+      seed: `home-service-${service.index}`,
+    },
+  }));
+
   return (
     <>
       {/* 01 — Hero */}
-      <ThemeSection theme="ink" className="flex min-h-dvh flex-col justify-center px-6 pt-28 pb-16 sm:px-10">
-        <div className="mx-auto w-full max-w-6xl">
+      <ThemeSection
+        theme="ink"
+        className="relative flex min-h-dvh flex-col justify-center overflow-hidden px-6 pt-28 pb-16 sm:px-10"
+      >
+        {/* Optional muted B&W background loop — quiet, type-first, kept
+            desaturated (never `active`) and low-opacity so it never
+            competes with the hero copy or the work strip below.
+            Decorative only: aria-hidden so screen readers reach the H1
+            immediately rather than hearing a placeholder disclaimer first
+            (contrast with Marquee's chips, which are real content and stay
+            accessible — see DECISIONS.md). */}
+        <div className="pointer-events-none absolute inset-0" aria-hidden="true">
+          <ScenePlaceholder
+            category="culture"
+            label="Home hero loop — citizens in motion, Lagos street energy, muted black and white"
+            seed="home-hero-bg"
+            isVideo
+            className="h-full w-full opacity-[0.22]"
+          />
+        </div>
+
+        <div className="relative z-10 mx-auto w-full max-w-6xl">
           <Reveal>
             <Eyebrow>A CREATIVE &amp; DIGITAL AGENCY — LAGOS</Eyebrow>
           </Reveal>
@@ -71,45 +123,20 @@ export default function HomePage() {
         </div>
       </ThemeSection>
 
-      {/* 02 — Ticker */}
-      <ThemeSection theme="republic" className="py-8">
-        <Marquee
-          text="FROM LAGOS TO THE WORLD — CLARITY BEFORE VOLUME — SYSTEMS OVER STUNTS — OUTCOMES OVER OUTPUTS — "
-          chips={getFeaturedMedia("ticker-chip")}
-        />
-      </ThemeSection>
-
-      {/* 03 — Selected work */}
+      {/* 02 — The work strip */}
       <ThemeSection theme="ink" className="px-6 py-24 sm:px-10 sm:py-32">
         <div className="mx-auto max-w-6xl">
           <Reveal>
-            <Eyebrow>01 — THE PROOF</Eyebrow>
-          </Reveal>
-          <Reveal delay={0.05}>
-            <h2 className="display-type mt-4 text-[clamp(2rem,5vw,4rem)]">
-              WORK THAT RECRUITS
-            </h2>
+            <Eyebrow>01 — THE WORK</Eyebrow>
           </Reveal>
 
           {featured.length > 0 ? (
-            <div className="mt-14 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
-              {featured.map((item) => (
-                <Reveal key={item.slug}>
-                  <CaseCard item={item} />
-                </Reveal>
-              ))}
+            <div className="mt-14">
+              <WorkStrip cases={featured} />
             </div>
           ) : (
             <Reveal delay={0.1}>
-              <div className="mt-14 rounded-[var(--radius-card)] border border-paper/20 px-8 py-16 text-center">
-                <p className="display-type text-2xl">
-                  <Bracket>CASES IN REVIEW</Bracket>
-                </p>
-                <p className="measure mx-auto mt-4 text-paper/70">
-                  Every case on this site clears client approval before it
-                  goes public. Nothing here is invented — check back soon.
-                </p>
-              </div>
+              <CasesEmptyState className="mt-14" />
             </Reveal>
           )}
 
@@ -121,46 +148,29 @@ export default function HomePage() {
         </div>
       </ThemeSection>
 
-      {/* 04 — The Method teaser */}
+      {/* 03 — Ticker */}
+      <ThemeSection theme="republic" className="py-8">
+        <Marquee
+          text="FROM LAGOS TO THE WORLD — CLARITY BEFORE VOLUME — SYSTEMS OVER STUNTS — OUTCOMES OVER OUTPUTS — "
+          chips={getFeaturedMedia("ticker-chip")}
+        />
+      </ThemeSection>
+
+      {/* 04 — Manifesto */}
       <ThemeSection theme="paper" className="px-6 py-24 sm:px-10 sm:py-32">
         <div className="mx-auto max-w-6xl">
           <Reveal>
             <Eyebrow>02 — THE METHOD</Eyebrow>
           </Reveal>
           <Reveal delay={0.05}>
-            <h2 className="display-type mt-4 text-[clamp(2rem,5vw,4rem)]">
-              THE REACTION STANDARD
-            </h2>
+            <HoverRevealText
+              text="Most brands make viewers. We believe the work should provoke, not observe — and that participation belongs inside the format, not appended as a caption. We build for citizens: people who show up, add to the thing, and come back."
+              terms={MANIFESTO_TERMS}
+              className="mt-8"
+              paragraphClassName="measure text-2xl leading-snug sm:text-3xl"
+            />
           </Reveal>
-          <Reveal delay={0.1}>
-            <p className="measure mt-6 text-lg">
-              Our proprietary operating system for brand growth. Six laws,
-              one test: did the work provoke a reaction, or did it just
-              occupy space?
-            </p>
-          </Reveal>
-
-          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {laws.map((law) => (
-              <Reveal key={law.index}>
-                <div className="rounded-[var(--radius-card)] border border-ink/15 p-6">
-                  <p className="mono-label text-smoke">{law.index}</p>
-                  {law.status === "live" ? (
-                    <>
-                      <p className="display-type mt-3 text-xl">{law.title}</p>
-                      <p className="measure mt-2 text-sm text-smoke">{law.body}</p>
-                    </>
-                  ) : (
-                    <p className="display-type mt-3 text-xl text-smoke">
-                      <Bracket>LAW PENDING</Bracket>
-                    </p>
-                  )}
-                </div>
-              </Reveal>
-            ))}
-          </div>
-
-          <Reveal delay={0.1}>
+          <Reveal delay={0.15}>
             <Link href="/studio#method" className="mono-label mt-12 inline-block hover:text-republic">
               Read the laws →
             </Link>
@@ -168,25 +178,15 @@ export default function HomePage() {
         </div>
       </ThemeSection>
 
-      {/* 05 — Services strip */}
+      {/* 05 — Services */}
       <ThemeSection theme="ink" className="px-6 py-24 sm:px-10 sm:py-32">
         <div className="mx-auto max-w-6xl">
-          <ol className="divide-y divide-paper/15 border-y border-paper/15">
-            {services.map((service) => (
-              <li key={service.index}>
-                <Link
-                  href="/services"
-                  className="group flex flex-col gap-2 py-8 transition-colors hover:text-republic sm:flex-row sm:items-baseline sm:gap-8"
-                >
-                  <span className="mono-label text-smoke">{service.index}</span>
-                  <span className="display-type text-2xl sm:text-3xl">{service.title}</span>
-                  <span className="measure text-sm text-paper/70 sm:ml-auto sm:text-right">
-                    {service.oneLiner}
-                  </span>
-                </Link>
-              </li>
-            ))}
-          </ol>
+          <Reveal>
+            <Eyebrow>SERVICES</Eyebrow>
+          </Reveal>
+          <div className="mt-10">
+            <ServiceSwap services={serviceItems} />
+          </div>
         </div>
       </ThemeSection>
 

@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import clsx from "clsx";
 import Reveal from "./Reveal";
 import CaseCard from "./CaseCard";
-import Bracket from "./Bracket";
+import CasesEmptyState from "./CasesEmptyState";
 import type { CaseStudy } from "../../content/work";
 
 export default function WorkIndexClient({
@@ -57,15 +57,7 @@ export default function WorkIndexClient({
           ))}
         </div>
       ) : (
-        <div className="mt-14 rounded-[var(--radius-card)] border border-paper/20 px-8 py-16 text-center">
-          <p className="display-type text-2xl">
-            <Bracket>CASES IN REVIEW</Bracket>
-          </p>
-          <p className="measure mx-auto mt-4 text-paper/70">
-            Every case on this site clears client approval before it goes
-            public. Check back soon.
-          </p>
-        </div>
+        <CasesEmptyState className="mt-14" />
       )}
     </>
   );
