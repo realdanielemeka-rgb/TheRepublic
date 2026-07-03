@@ -11,7 +11,7 @@ import Bracket from "@/components/Bracket";
 import { services } from "../../content/services";
 import { clients } from "../../content/clients";
 import { laws } from "../../content/laws";
-import { getFeaturedCases } from "../../content/work";
+import { getFeaturedCases, getFeaturedMedia } from "../../content/work";
 
 export const metadata: Metadata = {
   title: "Home",
@@ -73,7 +73,10 @@ export default function HomePage() {
 
       {/* 02 — Ticker */}
       <ThemeSection theme="republic" className="py-8">
-        <Marquee text="FROM LAGOS TO THE WORLD — CLARITY BEFORE VOLUME — SYSTEMS OVER STUNTS — OUTCOMES OVER OUTPUTS — " />
+        <Marquee
+          text="FROM LAGOS TO THE WORLD — CLARITY BEFORE VOLUME — SYSTEMS OVER STUNTS — OUTCOMES OVER OUTPUTS — "
+          chips={getFeaturedMedia("ticker-chip")}
+        />
       </ThemeSection>
 
       {/* 03 — Selected work */}

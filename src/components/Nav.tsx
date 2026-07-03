@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
 import clsx from "clsx";
+import MixBlendHover from "./MixBlendHover";
 import { nav } from "../../content/site";
 
 export default function Nav() {
@@ -22,24 +23,24 @@ export default function Nav() {
           The Republic
         </Link>
 
-        <nav className="hidden items-center gap-8 sm:flex">
+        <nav className="hidden items-center gap-2 sm:flex">
           {nav.map((item) => (
             <Link
               key={item.href}
               href={item.href}
               className={clsx(
-                "mono-label mix-blend-difference text-paper transition-opacity hover:opacity-70",
+                "group relative overflow-hidden rounded-sm",
                 pathname === item.href && "opacity-60"
               )}
             >
-              {item.label}
+              <MixBlendHover className="mono-label px-2 py-1">{item.label}</MixBlendHover>
             </Link>
           ))}
           <Link
             href="/contact"
-            className="mono-label rounded-full bg-republic px-4 py-2 text-paper transition-colors hover:bg-republic-press"
+            className="group relative ml-2 overflow-hidden rounded-full border border-paper/40 transition-colors hover:border-paper"
           >
-            Start a project
+            <MixBlendHover className="mono-label px-4 py-2">Start a project</MixBlendHover>
           </Link>
         </nav>
 
@@ -63,24 +64,24 @@ export default function Nav() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
-            className="fixed inset-0 z-40 flex flex-col justify-center gap-8 bg-ink px-8 sm:hidden"
+            className="fixed inset-0 z-40 flex flex-col justify-center gap-6 bg-ink px-8 sm:hidden"
           >
             {nav.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
                 onClick={() => setOpen(false)}
-                className="display-type text-4xl text-paper"
+                className="group relative w-fit overflow-hidden rounded-sm"
               >
-                {item.label}
+                <MixBlendHover className="display-type px-2 py-1 text-4xl">{item.label}</MixBlendHover>
               </Link>
             ))}
             <Link
               href="/contact"
               onClick={() => setOpen(false)}
-              className="mono-label mt-4 inline-block w-fit rounded-full bg-republic px-5 py-3 text-paper"
+              className="group relative mt-4 w-fit overflow-hidden rounded-full border border-paper/40"
             >
-              Start a project
+              <MixBlendHover className="mono-label px-5 py-3">Start a project</MixBlendHover>
             </Link>
           </motion.div>
         )}

@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import SmoothScroll from "@/components/SmoothScroll";
 import Preloader from "@/components/Preloader";
 import { site, contact } from "../../content/site";
+import { getFeaturedMedia } from "../../content/work";
 import "./globals.css";
 
 const spaceMono = Space_Mono({
@@ -73,7 +74,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
         <SmoothScroll />
-        <Preloader />
+        <Preloader frames={getFeaturedMedia()} />
         <Nav />
         <main className="flex-1">{children}</main>
         <Footer />

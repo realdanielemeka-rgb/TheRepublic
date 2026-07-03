@@ -107,14 +107,21 @@ body {
   animation-play-state: paused;
 }
 
-/* Bracket fill: caption content fades/slides in on hover */
+/* Bracket fill: caption content fades/slides in on hover — and, per Phase B,
+   on keyboard focus too. The hover-only rule below was a pre-existing a11y
+   gap (CaseCard's colour reveal already covers :focus-within via
+   ScenePlaceholder's own classes; this caption fill hadn't caught up),
+   fixed here rather than left for a future pass since Phase B is the phase
+   actually wiring this caption to real per-case content (a result stat). */
 .bracket-fill {
   opacity: 0;
   transform: translateY(4px);
   transition: opacity 250ms ease, transform 250ms ease;
 }
 *:hover > .bracket-fill,
-.group:hover .bracket-fill {
+*:focus-within > .bracket-fill,
+.group:hover .bracket-fill,
+.group:focus-within .bracket-fill {
   opacity: 1;
   transform: translateY(0);
 }

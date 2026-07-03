@@ -333,6 +333,434 @@ SSR/hydration mismatch, so that's what shipped instead.)
 - `/dev/placeholders` and `/dev/scroll-test` are there for visual QA
   against both systems — delete either if it stops earning its keep.
 
+## Phase B — global components + four signature interactions (this section)
+
+Scope: §11 build order steps 5 (global components) and 7 (the four
+signature scroll/hover interactions), built as standalone, reusable,
+Playwright-verified components. Phase C wires real content into
+`<WorkStrip>`/`<HoverReveal>`/`<ServiceSwap>` on real pages; everything in
+this section is the component layer underneath that.
+
+### Safe media sourcing for global chrome (Preloader, Marquee)
+
+Phase A's hard rule — "pending never renders publicly," enforced by
+`content/work/index.ts` only exporting live-filtered accessors — was
+written with page-scoped content in mind (a case-study page, a work-index
+card). Preloader and Marquee are different: both are mounted globally
+(Preloader in the root layout; Marquee already on Home) and would, if
+naively wired to any of the eight seed cases' real media, ship
+pending-case `alt` text (client name + specific campaign narrative, e.g.
+"Chivita hero film — creator styling an outfit around a bottle of
+Chivita, Style N Sips title card") into every page's initial HTML from day
+one — not a hypothetical, since all eight seeds are still
+`pending-approval` today. That's a materially different exposure than a
+scroll-past visual: it's confidential campaign narrative in the literal
+page source on every route, permanently, regardless of approval status.
+(Client *names* themselves aren't the sensitive part — they're already
+public in `content/clients.ts`'s "Trusted by" strip; it's the specific
+unapproved campaign idea/title text that shouldn't ship early.)
+
+Fix: `content/work/index.ts` gained `getFeaturedMedia(kind?)`, built on the
+existing `getFeaturedCases()` (so it inherits the live-filter guarantee
+automatically — not a new access path around the rule) and returns `[]`
+today, same as `getFeaturedCases()` itself. `Preloader`/`Marquee` both
+accept this as an optional prop and pad out to a full frame/chip count with
+**content-agnostic fallback categories** (module-level constants, not
+imported from `content/work`) whenever fewer real items are supplied than
+needed — the same "swap-in path is zero code changes" pattern Phase A used
+for placeholder media generally. Once any case goes live, its real,
+now-safe-to-show media flows through automatically with no code change on
+either component.
+
+One more layer specific to Preloader: even the *live-sourced* portion never
+shows the real per-case `alt` text as the frame's caption — every flash
+frame uses one fixed, neutral label ("Republic — loading") regardless of
+source. Two independent reasons make this correct even once real cases are
+live, not just a confidentiality workaround: a ~50ms flash is not a
+caption-reading moment (a real descriptive string flickering past
+unreadably 12 times is noise, not information), and it keeps every frame
+visually consistent regardless of how many real vs. fallback frames happen
+to be available. Marquee's real chips, by contrast, *do* show their real
+`alt` caption (via `<CaseMedia>` directly) — safe once sourced only from
+`getFeaturedMedia()`, and legible at a ticker-chip's slower, always-visible
+pace, unlike the preloader's flash.
+
+### §4.6.7 — mix-blend-difference hover (`MixBlendHover.tsx`)
+
+The spec describes a Republic Blue block scaling `scaleY(0)→scaleY(1)`
+with `mix-blend-mode: difference`, "inverting text/background beneath."
+The literal reading — put the blend mode *on the block* — doesn't produce
+that: a blend-mode block with nothing yet painted behind it (before the
+label, in an isolated or non-isolated stack) just renders as a flat blue
+rectangle, with the normally-coloured label sitting unaffected on top. The
+"inverting" look requires the **label** to carry `mix-blend-mode:
+difference`, with the block as a plain, unblended, solid-colour fill
+painted *before* it — so the label differences against whatever's directly
+beneath it at each moment: the page background at rest (grayscale-0 →
+"none" effectively, text renders in its own colour), or the Republic Blue
+block once it scales up over that same area.
+
+This turned out to compose for free with Nav's *existing* v1 mechanism:
+nav text already had `mix-blend-difference text-paper` so the fixed bar
+auto-contrasts against whatever `ThemeSection` colour is scrolled beneath
+it (no opaque nav background needed). That's the same "text differences
+against whatever's behind it" primitive, just with nothing else controlling
+what's behind it. `MixBlendHover` slots a Republic Blue block into that gap
+specifically for the hovered/focused word — no `isolation: isolate`
+needed (isolating would make the block blend against a transparent local
+canvas instead of the label, breaking the effect), no conflict with the
+pre-existing legibility behaviour (block `scale-y-0` at rest is invisible,
+so idle-state auto-contrast is untouched).
+
+Applied to: the four Nav links, Nav's Start-a-project button (desktop +
+mobile overlay), and CtaBand's "Start a project →" button — chosen as the
+"one primary CTA per page" slot because CtaBand is the page-closing
+conversion moment on every page that includes it, a natural single
+"primary" per render. Nowhere else — standard hover states (opacity,
+`hover:bg-republic-press`, etc.) stay standard, per the "don't spread this
+everywhere" instruction.
+
+No `prefersReducedMotion()` gate on this component specifically: it's a
+plain CSS `transform` transition, already collapsed to ~0ms by the
+sitewide `@media (prefers-reduced-motion: reduce)` rule already in
+`globals.css` (Phase A). The hover *state change* still applies under
+reduced motion (block still appears, text still inverts), just without the
+animated interpolation — correct treatment for a hover microinteraction,
+and per DECISIONS.md's own tooling boundary, `@/lib/reducedMotion` is
+reserved for Lenis/GSAP/ScrollTrigger work, which this isn't. Verified in
+Playwright by reading the block's computed `transition-duration` under
+`page.emulateMedia({reducedMotion:'reduce'})` (≈1e-6s) and confirming the
+scale state still flips on hover.
+
+**Tailwind v4 gotcha hit while verifying this**: `scale-y-0` /
+`group-hover:scale-y-100` compile to the CSS **`scale`** property (a
+`translate`/`scale`/`rotate` split, not the legacy `transform: scale()`
+function) — `getComputedStyle(el).transform` reads back `"none"`
+regardless of state; the live value is on `getComputedStyle(el).scale`
+(`"1 0"` at rest → `"1"` on hover). GSAP's own `gsap.set(el, {scale})`,
+used later in WorkStrip, does the *opposite*: it still composes into the
+legacy `transform: matrix(...)` property, not the new one. Two different
+systems, two different CSS properties, same-looking API — worth knowing
+before debugging either by reading computed styles.
+
+### §4.6.1 — Preloader rebuild (`Preloader.tsx`)
+
+Full rebuild per spec: 12-frame bracket flash-reveal (`FRAME_INTERVAL_MS ×
+FRAME_COUNT` = 600ms) → wordmark hold (250ms) → brackets slide apart + fade
+exit (300ms) = 1150ms, under the ≤1.2s ceiling (asserted at module load —
+`TOTAL_MS > 1200` throws — so a future tuning change that blows the budget
+fails the build instead of silently shipping). Frames render via
+`<ScenePlaceholder>` pre-mounted and stacked (opacity-toggled, no
+transition on the toggle itself — a hard cut is the correct read for
+"flash-reveal") rather than mounted/unmounted per frame, avoiding repeated
+SVG-filter compute mid-sequence.
+
+Reduced motion: skips straight to the wordmark phase (the "flashing" phase
+is never scheduled at all under reduced motion, not sped up), holds
+briefly, then a **plain opacity fade only** — no bracket-slide translate,
+since that's exactly the kind of transform-based motion reduced-motion
+users asked to avoid (mirrors `Reveal.tsx` substituting an opacity-only
+fade for its own `y` translate). ≤400ms fade budget, ~600ms total —
+verified in Playwright by asserting the `"flashing"` phase is never
+observed and the sequence completes well under the full-sequence budget.
+
+Uses `motion/react`'s `useReducedMotion()` (one-shot, resolved
+synchronously via `useState(prefersReducedMotion.current)` — confirmed by
+reading the installed package source, not assumed — so no transient-null
+double-effect risk), matching the existing convention that Motion
+component-level transitions use that hook while GSAP/ScrollTrigger work
+uses `@/lib/reducedMotion`.
+
+**Strict Mode safety**: this repo's Next 16 App Router defaults
+`reactStrictMode: true` (confirmed against the installed docs, not
+assumed), so `next dev` double-invokes effects (mount → cleanup → mount).
+The session-gate write (`sessionStorage.setItem`) is deferred inside a
+`setTimeout(..., 0)` rather than called synchronously in the effect body,
+so the throwaway first Strict Mode pass gets cancelled by its own cleanup
+before it can mark the session "seen" — otherwise the *real* second mount
+would silently find the session already marked and never show the
+preloader at all in local dev. (v1's Preloader had the same
+synchronous-`sessionStorage.setItem` shape and was very likely affected by
+this in `next dev`, though harmless in production, where Strict Mode's
+double-invoke doesn't happen; not treated as a bug to fix in the old file
+since this phase supersedes it entirely.)
+
+### CaseCard — CaseMedia swap, shared `resultLine()`, a11y fix
+
+Swapped the static v1 `<Placeholder>` for `<CaseMedia media={item.media[0]}
+seedPrefix={item.slug} />` — `media[0]` is consistently the hero
+video+poster entry across all eight seeds, i.e. the "muted looping
+preview" slot once real video lands. The bracket-fill result-stat reveal
+was already correctly built in v1 (empty-looking brackets at rest via
+`.bracket-fill{opacity:0}`, filling on `.group:hover`) — no structural
+change needed there, just reuse.
+
+Extracted the fallback-stat logic (`results[0]?.value && …label ? … :
+"Results under NDA — ask us"`) out of CaseCard into `resultLine()` in
+`content/work/index.ts`, since WorkStrip's caption bar needs the exact same
+logic and duplicating it would let the two drift.
+
+Found and fixed a real, pre-existing accessibility gap while wiring this:
+`.bracket-fill`'s reveal rule in `globals.css` only had `:hover` variants
+(`*:hover > .bracket-fill`, `.group:hover .bracket-fill`) — no
+`:focus-within` — so a keyboard-only user tabbing to a CaseCard got the
+media's colour reveal (which already had `focus-within` coverage via
+ScenePlaceholder) but never saw the result-stat caption. Added
+`*:focus-within > .bracket-fill` / `.group:focus-within .bracket-fill`
+alongside the existing hover rules. Verified in Playwright: focusing a
+CaseCard via `.focus()` (no mouse) now reveals the caption exactly like
+hovering does.
+
+### §4.6.2 — WorkStrip (`WorkStrip.tsx`)
+
+**API**: `<WorkStrip cases={CaseStudy[]} className? />`. Renders nothing
+for an empty array — Phase C keeps the empty-state decision (the
+"CASES IN REVIEW" bracket fallback) at the call site, same as the existing
+pattern around `getFeaturedCases()` elsewhere, rather than WorkStrip
+inventing its own.
+
+**Structural, not just visual, mobile/desktop split**: `<ResponsiveStrip>`
+picks between `<PinnedStrip>` (GSAP `pin:true, scrub:true`) and
+`<MobileCarousel>` (Embla) using a real `matchMedia` check
+(`useMediaQuery("(min-width: 768px)")`, a new small hook in
+`src/lib/useMediaQuery.ts`, same `useSyncExternalStore` pattern as
+`usePrefersReducedMotion`) — only one of the two ever *mounts*. This is
+deliberately stronger than a `hidden md:block` CSS class: it structurally
+guarantees zero ScrollTrigger pin exists in the DOM below 768px, which is
+what "verify it actually degrades correctly on a 360px viewport, not just
+via a media query you assume works" (§4.5) is really asking for — I
+verified this by asserting the pinned strip's `data-testid` has *zero*
+matches in the DOM at 360px, not just that it's visually hidden.
+`useMediaQuery`'s SSR/first-paint default is `false` (assume the narrower
+variant) — a deliberate progressive-enhancement choice: better to
+under-promise (plain carousel) for one frame than SSR a 250vh GSAP-pinned
+layout before the client confirms the real viewport.
+
+**Pin pattern**: follows the `/dev/scroll-test` reference exactly — `h-screen`
+trigger (not a manually-tall wrapper), `end: "+=150%"` (giving ~250vh
+total scrub range via GSAP's own pin-spacer, matching the spec's "~250vh
+pinned container" as the *effective* scroll-through distance without
+hand-rolling the spacer), `pin: true`, `scrub: true`, torn down via
+`ctx.revert()`. One addition beyond the reference pattern:
+`invalidateOnRefresh: true` plus a **function-based** tween target (`x: ()
+=> -Math.max(track.scrollWidth - window.innerWidth, 0)` instead of a
+pre-computed literal) — without this, a window resize mid-session (GSAP's
+own `ScrollTrigger.refresh()` on resize) would re-measure the pin's
+start/end but keep scrubbing toward a stale horizontal distance. Small
+addition, meaningfully more robust, same underlying GSAP mechanism.
+
+**Scale/dim math**: driven entirely inside the `ScrollTrigger`'s own
+`onUpdate` — for each item, `distance` from viewport centre → `closeness =
+gsap.utils.clamp(0,1, 1 - distance/(innerWidth*0.6))` → `gsap.utils.
+interpolate(0.85, 1.1, closeness)` for scale, `interpolate(0.55, 1,
+closeness)` for opacity — applied via `gsap.set()` directly on each item's
+DOM node (imperative, no React re-render per tick: this is the part that
+genuinely runs every scrub frame, so it has to bypass React state).
+Verified empirically: readings at one scroll sample showed a clean
+`[0.85, 0.85, 0.888, 0.998, 1.093, 0.983, 0.873, 0.85]` bell curve across 8
+items — smooth, centred, no discontinuities.
+
+The *discrete* "which item is active" signal (drives each item's
+`<CaseMedia active>` colour state and the caption bar's cross-fade) is
+kept separate and cheap: a plain `useState` updated only when the nearest
+index actually changes (guarded by a closure variable, not a dependency),
+so React only re-renders ~6-8 times across the whole scrub, not every
+frame. Caption bar cross-fades via a stacked-absolute + conditional-opacity
+pattern (plain CSS transition, not GSAP — it only changes a handful of
+times, no need for the imperative path).
+
+**Reduced motion**: static CSS grid, no pin, no Embla — and, per the same
+"reduced motion removes the interaction *requirement*, not just animation"
+principle applied consistently across all three interactive components
+this phase (see ServiceSwap below), every tile's `<CaseMedia active>` is
+forced true rather than left hover-gated, so the fallback needs zero
+interaction to see anything.
+
+**Re-verified Lenis+ScrollTrigger jitter-free with a real pinned section on
+top of it** (not just Phase A's throwaway box): 13 fine-grained scroll
+samples through the WorkStrip's full pin range at `/dev/work-strip` read
+the section's `boundingClientRect().top` at every step — **0px deviation
+at every single sample** (vs. Phase A's own throwaway test, which held
+"within" a small tolerance). Also re-ran Phase A's original
+`/dev/scroll-test` sweep as a regression check: progress still strictly
+monotonic 0→0.91 across 13 samples, no jitter — confirms nothing about the
+base `SmoothScroll.tsx` wiring was disturbed (it wasn't touched).
+
+### §4.6.3 — HoverReveal (`HoverReveal.tsx`)
+
+**API**: default export `<HoverReveal word={string} image={{category,
+label, seed?}} anchor?="above"|"below"|"auto" />` — the atomic, single-word
+hover-popover unit, matching the task's literal `<HoverReveal word image>`
+signature. Named export `<HoverRevealText text={string} terms={Record<
+string, HoverRevealImage>} paragraphClassName? />` — the "rich-text-ish"
+orchestrator: tokenises `text` on whole-word/phrase matches against
+`terms`' keys (case-insensitive, regex-escaped, `\b`-bounded) and wraps
+each match in `<HoverReveal>`, leaving everything else as plain text.
+`image` is a lightweight `{category, label, seed?}` shape (ScenePlaceholder's
+own prop needs) rather than a full case `Media` object — manifesto copy
+isn't case content, so this stays decoupled from `content/work/types`.
+
+Real `<button>` as the trigger (not a styled `<span>`): gets hover, tap
+(a tap both focuses *and* clicks), and keyboard (`Tab` + native `:focus`)
+reveal semantics from one set of CSS rules with no separate touch-state to
+manage. Deliberately `:focus` rather than `:focus-visible` for the reveal
+— `:focus-visible`'s "was this keyboard navigation" heuristic isn't
+guaranteed to fire for a tap in every browser, and reliable mobile tap
+support was an explicit requirement.
+
+**`anchor="auto"`**: measures `getBoundingClientRect().top` against a fixed
+`POPOVER_HEIGHT_ESTIMATE_PX` (220) on hover/focus start (one-time per
+hover, not continuous — cheap). Verified both branches in Playwright: a
+word with room above opens above; the same component scrolled so its word
+sits ~150-190px from the viewport top (comfortably below the 76px fixed
+Nav, so the cursor is actually over the word and not the Nav sitting on
+top of it — an early version of this test scrolled the word *under* the
+Nav and got a false "not hovering" reading) flips to open below.
+
+**Reduced motion — two different granularities, deliberately**:
+`HoverRevealText`'s reduced branch collects every referenced image into
+one row *below the whole paragraph*, each labelled with its trigger word —
+reads far better for a multi-term paragraph than several images breaking
+up the sentence inline. The standalone `<HoverReveal>` component,
+independently reduced-motion-aware (checked with its own
+`usePrefersReducedMotion()` call, not just delegated to by the
+orchestrator, so it's correct even used on its own), instead renders its
+one image immediately inline after its one word — no paragraph-level
+"collect them all" concept applies at that scope. Both fallbacks force
+`active` on their placeholder media (full colour, no hover-gating) — see
+the cross-component reduced-motion principle noted under ServiceSwap.
+
+### §4.6.4 — ServiceSwap (`ServiceSwap.tsx`)
+
+**API**: `<ServiceSwap services={{index, title, oneLiner?, image:
+{category, label, seed?}}[]} className? />`. Sticky media frame (`sm:
+sticky sm:top-28`) on one side, `<ol>` of plain `<button type="button">`
+service names on the other — not `<Link>`, since this component's job is
+the hover/tap↔media relationship, not routing; Phase C wraps/extends for
+navigation if a service name should also link somewhere. `onMouseEnter` +
+`onFocus` + `onClick` all set the same `activeIndex`, covering desktop
+hover, keyboard tab, and mobile tap with one state variable. Cross-fade is
+a stacked-absolute + `opacity-0/100` + `duration-200` (200ms, inside the
+150-200ms band) — verified via computed `transitionDuration === "0.2s"`
+and confirming exactly one frame is opaque at a time (a clean swap, not an
+additive stack).
+
+**Reduced motion — the "your call, document which you chose" decision**:
+chose **stack each service with its image inline instead of sticky**, not
+"instant cut, no dimming, still sticky." Reasoning: the instant-cut variant
+still requires a hover/tap to ever see five of the six images — it removes
+the *animation* but not the *interaction dependency*. Stacking removes
+both, which is the stronger and more consistent reduced-motion guarantee,
+and mirrors the same choice made for HoverReveal's fallback (collect
+everything, require zero interaction). Verified: `.sticky`-equivalent
+`data-testid` has zero matches in this branch, no element carries the
+`opacity-40` dimming class (dimming is an interactive-only concept, not
+carried into the static layout), and every one of the six images is
+present with `opacity: 1` unconditionally.
+
+**Cross-component reduced-motion principle** (applies to WorkStrip's
+static grid, both HoverReveal fallbacks, and ServiceSwap's stacked
+layout): each forces its placeholder media's `active`/colour state on,
+rather than leaving it hover-gated. The grayscale→colour transition itself
+is a plain CSS `filter` transition already collapsed to ~0ms sitewide
+under reduced motion, so leaving it hover-gated wouldn't violate the
+letter of "no animation" — but these four fallbacks are specifically about
+removing the *interaction requirement* to see content, and a placeholder
+that stays perpetually desaturated for a user who never happens to hover
+it (a real scenario for keyboard/switch users navigating a *statically
+laid-out* fallback with no obvious single "focus everything" gesture) cuts
+against that goal. Applied consistently rather than decided per-component.
+
+### `usePrefersReducedMotion()` used beyond GSAP/Lenis
+
+Phase A's rule of thumb was framed as a binary: Motion-component
+transitions → `motion/react`'s hook; GSAP/Lenis/ScrollTrigger →
+`@/lib/reducedMotion`. HoverReveal and ServiceSwap are neither — plain
+CSS/React-conditional components with no animation library involved at
+all, but still needing a *reactive* signal to pick between two
+structurally different render trees (not just gate an animation's
+duration). `@/lib/reducedMotion`'s hook (SSR-safe, `useSyncExternalStore`-
+based, genuinely reactive to a mid-session OS change) is the better
+technical fit than reaching for `motion/react` just for its reduced-motion
+hook when nothing else in the component uses Motion. Refined rule going
+forward: **`<motion.*>` component transitions → `motion/react`'s hook;
+any other reactive/structural reduced-motion branch (GSAP or not) →
+`@/lib/reducedMotion`'s hook.** Flagging this explicitly since it extends
+rather than strictly follows Phase A's stated boundary — worth a second
+look from Daniel/Phase C if the narrower reading was intentional.
+
+### Known, pre-existing, not-fixed-this-phase: trig-precision hydration mismatch in `generator.ts`
+
+While Playwright-testing `/dev/work-strip` (which renders far more
+`<ScenePlaceholder>` instances per page than any existing route), React
+logged a hydration mismatch for one specific instance (Sanlam Allianz's
+hero media, `category="insurance"`): an SVG line's `y2` differed between
+server and client HTML by `2×10⁻¹⁴` — the 14th decimal place, sub-pixel
+by many orders of magnitude, not visible, not crashing (React just keeps
+the client value going forward, exactly its documented recovery
+behaviour). Root cause, confirmed by inspection: `radiatingLines(...,
+"fan")` (category `insurance`) and `burstRays` (category `launch`) — the
+only two motif generators using `Math.cos`/`Math.sin` — feed a
+deterministically-seeded angle through a transcendental function, and
+`Math.sin`/`Math.cos` are *not* required by the ECMAScript spec to be
+bit-identical across JS engines/builds (unlike `+ - * /`, which are
+exact); Node's V8 and the specific Chromium build Playwright launches can
+disagree in the very last bit for some inputs. This is a latent
+characteristic of `src/lib/scene/generator.ts` as Phase A wrote it (that
+file's own `createRng`/`mulberry32` seeding is itself perfectly
+deterministic — the divergence is entirely downstream, in `Math.cos`/
+`Math.sin` specifically), not something introduced this phase — confirmed
+by testing that it does **not** reproduce on the current production
+`/` (0 hydration errors) or on Phase A's own pre-existing
+`/dev/placeholders` (also 0) with today's actual content; it only shows up
+via specific seeds that happen to land near a precision boundary, which my
+new routes' much higher render volume (all 8 cases × 8 media items, plus
+WorkStrip/Marquee/Preloader's own instances) had enough surface area to
+hit. `generator.ts` is explicitly out of this phase's scope ("verified
+working, don't rebuild these") and the practical impact today is a
+dev-console-only warning, not a user-visible or build-breaking defect, so
+it wasn't fixed here. Flagged for a future pass: rounding computed
+coordinates (e.g. `Math.cos(angle) * len`) to a fixed decimal precision
+before they reach JSX would eliminate the class of bug entirely, since any
+last-bit engine disagreement would round away identically on both sides.
+
+### Dev QA routes added this phase
+
+`/dev/work-strip`, `/dev/hover-reveal`, `/dev/service-swap` — one per
+signature interaction that has no real page to mount on yet, same
+production-404 gate as Phase A's `/dev/placeholders`/`/dev/scroll-test`
+(`src/app/dev/layout.tsx`, unchanged) — confirmed all three 404 in a real
+`next build && next start`. `/dev/work-strip` also carries a small
+"CaseCard QA" section, since CaseCard isn't reachable from any live route
+today either (zero cases are `status: 'live'`, so Home/`/work` both render
+their empty state instead of any `<CaseCard>`) — same precedent as
+`/dev/placeholders` importing individual case files directly for QA
+purposes, safe because none of these routes ship to production.
+**Recommendation for Phase C**: keep all five `/dev/*` routes as living
+regression/QA harnesses through the pages build-out (cheap to keep, same
+reasoning Phase A gave for its own two) — delete individually once a route
+stops earning its keep (e.g. once WorkStrip is live on Home with real
+data, `/dev/work-strip`'s pinned-strip section is redundant, though the
+CaseCard QA sub-section may still be useful until at least one case goes
+live).
+
+### Other judgement calls this phase
+
+- **`resultLine()`** moved to `content/work/index.ts` (shared by CaseCard
+  and WorkStrip) rather than duplicated — copy unchanged from v1
+  ("Results under NDA — ask us"), not updated to match this task's
+  shorthand mention of "Results under NDA" verbatim, since that mention
+  was describing the existing fallback *concept* DECISIONS.md already
+  documents, not new copy.
+- **Marquee's chip-splitting delimiter** loosened from an exact `" — "`
+  match to `text.split("—").map(s=>s.trim()).filter(Boolean)` — more
+  robust to incidental whitespace differences in a `text` prop, same
+  practical result against every existing caller's copy.
+- **GSAP `scale`/`opacity` reads in tests must use `getComputedStyle(el).
+  transform`, not `.scale`** (see the Tailwind-vs-GSAP note under
+  §4.6.7 above) — noted here too since it affects anyone writing further
+  Playwright coverage against WorkStrip specifically.
+
 ## Judgement calls (v1)
 
 - **Zero live cases, empty-state handling.** All eight seed case studies
