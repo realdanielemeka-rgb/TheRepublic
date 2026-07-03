@@ -76,6 +76,7 @@ export default function HomePage() {
             label="Home hero loop — citizens in motion, Lagos street energy, muted black and white"
             seed="home-hero-bg"
             isVideo
+            showOverlay={false}
             className="h-full w-full opacity-[0.22]"
           />
         </div>

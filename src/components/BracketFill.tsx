@@ -1,11 +1,17 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion, useReducedMotion } from "motion/react";
+import { motion } from "motion/react";
 import Bracket from "./Bracket";
+import { usePrefersReducedMotion } from "@/lib/reducedMotion";
 
 /** Hero headline device: WE MAKE [ ] renders empty for a beat, then types
- * the given word into the bracket. Runs once on mount. */
+ * the given word into the bracket. Runs once on mount.
+ *
+ * Uses `usePrefersReducedMotion` (see Reveal.tsx for the full rationale)
+ * rather than `motion/react`'s `useReducedMotion`, which reads
+ * `matchMedia` synchronously on the client's first render and mismatches
+ * SSR whenever reduced-motion is already on — a real hydration bug. */
 export default function BracketFill({
   word,
   className,
@@ -13,7 +19,7 @@ export default function BracketFill({
   word: string;
   className?: string;
 }) {
-  const reduced = useReducedMotion();
+  const reduced = usePrefersReducedMotion();
   const [filled, setFilled] = useState(false);
 
   useEffect(() => {

@@ -131,7 +131,15 @@ export default function ServiceSwap({ services, className }: ServiceSwapProps) {
               onFocus={() => setActiveIndex(i)}
               onClick={() => setActiveIndex(i)}
               className={clsx(
-                "flex w-full flex-col gap-2 py-8 text-left transition-opacity duration-200 sm:flex-row sm:items-baseline sm:gap-8",
+                // flex-wrap (not just sm:flex-row) is load-bearing: the
+                // oneLiner/tags spans below rely on wrapping onto their own
+                // line when a row's content doesn't fit — without it, this
+                // row silently overflows its container with no scrollbar,
+                // clipping the tag pills entirely at 768-1024px viewports
+                // where the sm:grid-cols-2 layout leaves this column narrow
+                // (found via UI/UX audit, confirmed via computed
+                // scrollWidth > clientWidth on that column).
+                "flex w-full flex-col flex-wrap gap-2 py-8 text-left transition-opacity duration-200 sm:flex-row sm:items-baseline sm:gap-x-8 sm:gap-y-2",
                 i === activeIndex ? "opacity-100" : "opacity-40 hover:opacity-70"
               )}
             >

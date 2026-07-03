@@ -1,10 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion, useReducedMotion } from "motion/react";
+import { motion } from "motion/react";
 import ScenePlaceholder from "./ScenePlaceholder";
 import { categoryFromSrc, type SceneCategory } from "@/lib/scene/generator";
 import type { Media } from "../../content/work/types";
+import { usePrefersReducedMotion } from "@/lib/reducedMotion";
 
 const SESSION_KEY = "republic-preloader-seen";
 
@@ -90,14 +91,18 @@ export interface PreloaderProps {
  * only the opacity step, mirroring how Reveal.tsx substitutes an
  * opacity-only fade for its own y-translate under reduced motion).
  *
- * Uses motion/react's useReducedMotion (a one-shot, render-time snapshot —
- * see DECISIONS.md on why that's fine here and distinct from
- * @/lib/reducedMotion's GSAP-oriented hook), matching Reveal.tsx/
- * BracketFill.tsx's existing convention: this is a Motion-driven, one-shot
- * mount animation, not a Lenis/GSAP/ScrollTrigger concern.
+ * Uses `usePrefersReducedMotion` from `@/lib/reducedMotion` (built on
+ * `useSyncExternalStore`, hydration-safe) rather than `motion/react`'s own
+ * `useReducedMotion`, which reads `matchMedia` synchronously on the
+ * client's first render and mismatches SSR whenever reduced-motion is
+ * already on — see Reveal.tsx for the full rationale. This component's
+ * `visible` state starts `false` on both server and client regardless, so
+ * it wasn't the source of the reported hydration error itself, but it's
+ * switched for consistency now that every reduced-motion read in this
+ * codebase goes through the one hydration-safe hook.
  */
 export default function Preloader({ frames: mediaFrames = [] }: PreloaderProps) {
-  const reduced = useReducedMotion();
+  const reduced = usePrefersReducedMotion();
   const [visible, setVisible] = useState(false);
   const [phase, setPhase] = useState<Phase>("flashing");
   const [frameIndex, setFrameIndex] = useState(0);

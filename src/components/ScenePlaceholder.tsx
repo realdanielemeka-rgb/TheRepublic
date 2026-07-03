@@ -42,6 +42,18 @@ export interface ScenePlaceholderProps {
   /** Overrides the seed derived from category+label. Only needed if two
    * instances would otherwise share both. */
   seed?: string;
+  /** Suppresses the visible "PLACEHOLDER — REPLACE WITH ..." caption bar
+   * and the "VIDEO PENDING" badge, keeping only the scene graphic itself.
+   * Only for instances that are already `aria-hidden` decoration (e.g. a
+   * quiet, low-opacity hero background loop) — those captions exist to
+   * flag real content slots that need a real asset, and have nothing to
+   * say about a purely atmospheric layer nobody is meant to read. Found
+   * via a UI/UX audit: without this, a full-bleed hero background's badge
+   * collides with the sticky nav at the top of the page (§4.6.1/§6.1's
+   * hero background is full-height, right under the nav). Do NOT set this
+   * on any instance that isn't itself aria-hidden — the caption is the
+   * only thing telling a real content slot apart from a finished one. */
+  showOverlay?: boolean;
   className?: string;
 }
 
@@ -52,6 +64,7 @@ export default function ScenePlaceholder({
   isVideo = false,
   active = false,
   seed,
+  showOverlay = true,
   className,
 }: ScenePlaceholderProps) {
   const effectiveSeed = seed ?? label;
@@ -108,15 +121,17 @@ export default function ScenePlaceholder({
         <rect x={0} y={0} width={VIEW_W} height={VIEW_H} filter={`url(#${grainId})`} opacity={0.08} />
       </svg>
 
-      {isVideo && (
+      {showOverlay && isVideo && (
         <span className="mono-label absolute right-3 top-3 rounded-full bg-ink/70 px-3 py-1 text-paper">
           Video pending
         </span>
       )}
 
-      <span className="mono-label absolute inset-x-0 bottom-0 bg-ink/70 px-3 py-2 text-paper">
-        {fullLabel}
-      </span>
+      {showOverlay && (
+        <span className="mono-label absolute inset-x-0 bottom-0 bg-ink/70 px-3 py-2 text-paper">
+          {fullLabel}
+        </span>
+      )}
     </div>
   );
 }
