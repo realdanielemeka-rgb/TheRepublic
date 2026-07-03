@@ -6,6 +6,8 @@ import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
 import clsx from "clsx";
 import MixBlendHover from "./MixBlendHover";
+import CharHoverLink from "./CharHoverLink";
+import AppearanceToggle from "./AppearanceToggle";
 import { nav } from "../../content/site";
 
 export default function Nav() {
@@ -33,15 +35,22 @@ export default function Nav() {
                 pathname === item.href && "opacity-60"
               )}
             >
-              <MixBlendHover className="mono-label px-2 py-1">{item.label}</MixBlendHover>
+              <MixBlendHover className="mono-label px-2 py-1">
+                <CharHoverLink text={item.label} />
+              </MixBlendHover>
             </Link>
           ))}
           <Link
             href="/contact"
             className="group relative ml-2 overflow-hidden rounded-full border border-paper/40 transition-colors hover:border-paper"
           >
-            <MixBlendHover className="mono-label px-4 py-2">Start a project</MixBlendHover>
+            <MixBlendHover className="mono-label px-4 py-2">
+              <CharHoverLink text="Start a project" />
+            </MixBlendHover>
           </Link>
+
+          {/* §4.7.3 — global dark/light appearance toggle, nav secondary group. */}
+          <AppearanceToggle className="ml-2" />
         </nav>
 
         <button
@@ -83,6 +92,7 @@ export default function Nav() {
             >
               <MixBlendHover className="mono-label px-5 py-3">Start a project</MixBlendHover>
             </Link>
+            <AppearanceToggle className="mt-2 w-fit" />
           </motion.div>
         )}
       </AnimatePresence>

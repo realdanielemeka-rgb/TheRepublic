@@ -35,8 +35,9 @@ import clsx from "clsx";
  * (block still appears, text still inverts) — only the animated
  * interpolation is removed, which is the correct reduced-motion treatment
  * for a hover microinteraction. Per DECISIONS.md's tooling rule, `@/lib/
- * reducedMotion`'s `prefersReducedMotion()` is reserved for Lenis/GSAP/
- * ScrollTrigger work — this isn't that, so it isn't used here.
+ * reducedMotion`'s `prefersReducedMotion()` is for Lenis/imperative
+ * reduced-motion gating — this is a plain CSS transition, so it isn't
+ * used here.
  *
  * Reserve this for exactly Nav links + the Start-a-project button + one
  * primary CTA per page (CtaBand) per §4.6.7 — everywhere else keeps

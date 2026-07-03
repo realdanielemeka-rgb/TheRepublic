@@ -15,9 +15,11 @@ import type { Media, MediaKind } from "../../content/work/types";
  * ("Placeholder media strategy"). Renders a deterministic, seed-driven
  * flat-geometric SVG scene suggestive of `category`, desaturated at rest
  * and revealing its (palette-only) colour on hover, focus, or when the
- * `active` prop is set from outside — e.g. by a Phase B GSAP
- * ScrollTrigger callback toggling it as a pinned section scrolls into
- * its active window. Server-Component safe: no hooks, no client-only
+ * `active` prop is set from outside — e.g. by a hover/focus/selected-
+ * index state on a parent interactive component (WorkStrip's active
+ * tile, ServiceSwap's active service, etc.; v3 has no GSAP/ScrollTrigger
+ * scroll-driven toggling, see DECISIONS.md's v3 Phase A section).
+ * Server-Component safe: no hooks, no client-only
  * state, fully determined by props (SSR/CSR markup always match).
  *
  * Every instance renders a persistent, visible mono caption identifying
@@ -33,11 +35,11 @@ export interface ScenePlaceholderProps {
   /** Tailwind aspect-ratio class, e.g. "aspect-[16/9]". */
   aspect?: string;
   isVideo?: boolean;
-  /** External colour-state override (e.g. GSAP ScrollTrigger onEnter/
-   * onLeave). OR'd with native :hover/:focus-within and an ancestor
-   * .group's :hover/:focus-within, so this drops into a <Link
-   * className="group"> card exactly like the existing bracket-fill
-   * pattern, or under direct hover, or under scroll-driven control. */
+  /** External colour-state override (e.g. a parent's active-index state).
+   * OR'd with native :hover/:focus-within and an ancestor .group's
+   * :hover/:focus-within, so this drops into a <Link className="group">
+   * card exactly like the existing bracket-fill pattern, or under direct
+   * hover, or under an external active/selected state. */
   active?: boolean;
   /** Overrides the seed derived from category+label. Only needed if two
    * instances would otherwise share both. */

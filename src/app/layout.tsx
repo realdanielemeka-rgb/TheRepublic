@@ -5,6 +5,9 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import SmoothScroll from "@/components/SmoothScroll";
 import Preloader from "@/components/Preloader";
+import GridEngineClient from "@/components/GridEngineClient";
+import { GRID_ENGINE_BOOT_SCRIPT } from "@/lib/grid-engine";
+import { APPEARANCE_BOOT_SCRIPT } from "@/lib/appearance";
 import { site, contact, socials } from "../../content/site";
 import { getFeaturedMedia } from "../../content/work";
 import "./globals.css";
@@ -71,13 +74,38 @@ export default function RootLayout({
   };
 
   return (
-    <html lang="en-GB" className={`${spaceMono.variable} ${inter.variable}`}>
+    <html
+      lang="en-GB"
+      className={`${spaceMono.variable} ${inter.variable}`}
+      // Both boot scripts below mutate attributes/inline styles on this
+      // element (data-appearance, --grid-* custom properties) before
+      // React hydrates — suppressHydrationWarning tells React that's
+      // expected and not a mismatch to reconcile away. Per Next's own
+      // documented pattern for this exact "prevent flash before
+      // hydration" technique (node_modules/next/dist/docs/01-app/
+      // 02-guides/preventing-flash-before-hydration.md).
+      suppressHydrationWarning
+    >
+      <head>
+        {/* §4.7.3 — sets data-appearance before first paint, no flash of
+            the wrong appearance. Must run before the grid-engine script
+            below reads window.innerWidth (order doesn't actually matter
+            between the two — neither depends on the other — but keeping
+            appearance first mirrors the spec's own listed order). */}
+        <script dangerouslySetInnerHTML={{ __html: APPEARANCE_BOOT_SCRIPT }} />
+        {/* §4.5 — sets --grid-* custom properties before first paint,
+            using the fallback char-width ratio; GridEngineClient replaces
+            these with the real font-measured values a moment after
+            mount. */}
+        <script dangerouslySetInnerHTML={{ __html: GRID_ENGINE_BOOT_SCRIPT }} />
+      </head>
       <body className="flex min-h-dvh flex-col antialiased">
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
         <SmoothScroll />
+        <GridEngineClient />
         <Preloader frames={getFeaturedMedia()} />
         <Nav />
         <main className="flex-1">{children}</main>

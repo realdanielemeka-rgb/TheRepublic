@@ -5,27 +5,22 @@ import { useSyncExternalStore } from "react";
 const QUERY = "(prefers-reduced-motion: reduce)";
 
 /**
- * Imperative, one-shot check — safe to call inside a plain useEffect body
- * or any GSAP/ScrollTrigger setup function (not just component render).
+ * Imperative, one-shot check — safe to call inside a plain useEffect body.
  * SSR-safe (returns false when there's no window).
  *
- * This is the canonical gate for anything Lenis/GSAP/ScrollTrigger-driven
- * in this codebase — see SmoothScroll.tsx for the reference pattern every
- * pinned section must follow:
- *
- *   useEffect(() => {
- *     if (prefersReducedMotion()) return; // no pin, no scrub, full stop
- *     const ctx = gsap.context(() => {
- *       ScrollTrigger.create({ trigger: ref.current, pin: true, scrub: true, ... });
- *     }, ref);
- *     return () => ctx.revert();
- *   }, []);
- *
- * Note this is deliberately separate from `useReducedMotion` exported by
- * `motion/react` (already used in Reveal/Preloader/BracketFill for
- * Motion's own component-level transitions) — keep using that one for
- * Motion variants. Use this module for anything scroll/GSAP-related, so
- * the two don't get imported interchangeably by mistake.
+ * v3 note: this module predates the removal of GSAP/ScrollTrigger from
+ * this codebase (§10 — no pinning/scroll-jacking/scroll-scrubbing
+ * anywhere, any breakpoint; see DECISIONS.md's v3 Phase A section and
+ * SmoothScroll.tsx, which no longer touches GSAP at all). It's kept
+ * because `prefersReducedMotion()`/`usePrefersReducedMotion()` are still
+ * the right, SSR-safe primitives for gating *any* non-Motion-component
+ * reduced-motion branch — Lenis's own setup (SmoothScroll.tsx),
+ * CharHoverLink's per-character stagger, and the historical GSAP pattern
+ * alike. The "keep using motion/react's useReducedMotion for Motion
+ * variants, this module for anything else reactive/imperative" split (see
+ * DECISIONS.md's Phase B "refined rule") still holds; only the GSAP-
+ * specific example that used to live in this comment is gone, since there's
+ * nothing left in the codebase that pattern applies to.
  */
 export function prefersReducedMotion(): boolean {
   if (typeof window === "undefined" || typeof window.matchMedia !== "function") {

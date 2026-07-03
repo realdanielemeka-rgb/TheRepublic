@@ -18,10 +18,26 @@ html {
   scroll-behavior: auto;
 }
 
+/* §4.7.3 — global dark/light appearance. Two modes, not three (§4.1).
+   `data-appearance` is written on <html> before first paint by the
+   blocking boot script in layout.tsx's <head> (see src/lib/appearance.ts,
+   APPEARANCE_BOOT_SCRIPT) — this default here (dark) exists purely as the
+   no-JS baseline, matching the locked default in §2/§4.1, so a JS-disabled
+   visitor gets the correct default look with zero script involvement. */
+:root {
+  --app-bg: var(--color-ink);
+  --app-fg: var(--color-paper);
+}
+:root[data-appearance="light"] {
+  --app-bg: var(--color-paper);
+  --app-fg: var(--color-ink);
+}
+
 body {
-  background: var(--color-paper);
-  color: var(--color-ink);
+  background: var(--app-bg);
+  color: var(--app-fg);
   font-family: var(--font-sans);
+  transition: background-color 200ms ease, color 200ms ease;
 }
 
 /* Theme sections: full-bleed backgrounds set via data-theme, transitioned
@@ -52,6 +68,15 @@ body {
   );
   color: var(--color-paper);
 }
+/* Fifth theme, v3 only (§4.7.3): tracks the global appearance toggle
+   rather than an art-directed literal colour — see ThemeSection.tsx's
+   doc comment and DECISIONS.md's v3 Phase A section for why this is
+   additive/separate from the four themes above rather than changing what
+   they mean. */
+[data-theme="auto"] {
+  background-color: var(--app-bg);
+  color: var(--app-fg);
+}
 [data-theme] {
   transition: background-color 400ms ease;
 }
@@ -69,6 +94,13 @@ body {
 [data-theme="ink"] :focus-visible,
 [data-theme="republic"] :focus-visible,
 [data-theme="accent"] :focus-visible {
+  outline-color: var(--color-paper);
+}
+/* theme="auto" (§4.7.3) tracks the global appearance toggle, so its focus
+   ring needs to too: paper outline while dark (the default — matches
+   whenever data-appearance isn't explicitly "light"), default Republic
+   Blue outline while light (already correct contrast against paper). */
+:root:not([data-appearance="light"]) [data-theme="auto"] :focus-visible {
   outline-color: var(--color-paper);
 }
 
@@ -151,5 +183,37 @@ header :focus-visible {
   }
   .marquee-track {
     animation: none !important;
+  }
+}
+
+/* §4.5 — the fluid grid engine's no-JS / reduced-data baseline. A sane,
+   static, fixed Tailwind-style grid + type scale, present in the initial
+   server-rendered HTML so the site is fully readable and navigable with
+   JavaScript disabled. src/lib/grid-engine.ts's blocking boot script (see
+   layout.tsx's <head>) overwrites every one of these custom properties
+   with the real computed values before first paint whenever JS *is*
+   available — this block only ever wins when it isn't. 4 columns mobile /
+   12 desktop, per §4.5's own suggested no-JS numbers. */
+:root {
+  --grid-cols: 4;
+  --grid-font-size: 12px;
+  --grid-line-height: 24px;
+  --grid-letter-spacing: 0.5px;
+  --grid-gutter: 24px;
+}
+@media (min-width: 640px) {
+  :root {
+    --grid-cols: 8;
+    --grid-font-size: 13px;
+    --grid-gutter: 32px;
+  }
+}
+@media (min-width: 1024px) {
+  :root {
+    --grid-cols: 12;
+    --grid-font-size: 14px;
+    --grid-line-height: 28px;
+    --grid-letter-spacing: 0.3px;
+    --grid-gutter: 48px;
   }
 }

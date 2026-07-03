@@ -72,10 +72,11 @@ export default function DevPlaceholdersPage() {
         <h2 className="display-type text-2xl">Externally-controlled active state</h2>
         <p className="measure mt-2 text-sm text-smoke">
           This tile is rendered with <code>active</code> forced true — this
-          is the same mechanism Phase B should drive from a GSAP
-          ScrollTrigger callback (onEnter/onLeave) for scroll-active colour
-          reveal, OR&rsquo;d with native hover/focus. It should render in
-          full colour without being hovered.
+          is the same mechanism a parent interactive component drives from
+          its own hover/focus/selected-index state (v3 has no GSAP/
+          ScrollTrigger scroll-driven toggling), OR&rsquo;d with native
+          hover/focus. It should render in full colour without being
+          hovered.
         </p>
         <div className="mt-4 max-w-sm">
           <ScenePlaceholder category="launch" label="Heirs Insurance launch moment" active />

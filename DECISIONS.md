@@ -1161,3 +1161,390 @@ all correct status codes, no unexpected console errors.
       `/dev/work-strip` this session — still dev-console-only, still not
       user-visible or build-breaking, still not fixed (out of scope,
       same reasoning as Phase B).
+
+## v3 Phase A — grid engine, GSAP removal, appearance toggle, character-hover nav (this section)
+
+Scope: §11 build order steps 1-3 of the v3 spec (scaffold confirmation,
+`src/lib/grid-engine.ts` built and verified in isolation, tokens/fonts
+audit, `<Bracket>` catalogue-numbering variant, the appearance toggle
+§4.7.3, character-hover nav §4.7.2), plus removing everything §10-forbids
+that existed from the v2 GSAP/ScrollTrigger build. Phase B builds the
+actual homepage flowing grid and content layer on top of this.
+
+### GSAP/ScrollTrigger removal
+
+`gsap` is uninstalled (`npm uninstall gsap` — removed from
+`package.json`/`node_modules`). `grep -rn "gsap\|ScrollTrigger" src/
+content/ scripts/` now returns only prose comments (no `import`, no
+`gsap.*`/`ScrollTrigger.*` call sites) — several of those comments were
+themselves rewritten this phase to stop describing the now-dead GSAP
+pattern as current guidance (`ScenePlaceholder.tsx`, `dev/placeholders/
+page.tsx`, `MixBlendHover.tsx`, `reducedMotion.ts`), rather than leaving
+stale "Phase B should drive this from a GSAP ScrollTrigger callback"-style
+instructions for a mechanism that no longer exists in this codebase.
+
+- **`SmoothScroll.tsx`** rebuilt to the drastically simpler v3 spec: Lenis
+  only, driving itself via its own default `autoRaf` (no
+  `gsap.ticker`/`lagSmoothing`/`ScrollTrigger.update` wiring, no
+  `usePathname()`-triggered `ScrollTrigger.refresh()`). Reduced motion:
+  unchanged behaviour — no Lenis instance created at all, scroll stays
+  native.
+- **`WorkStrip.tsx`** — the v2 pinned GSAP strip (`PinnedStrip`,
+  `ResponsiveStrip`, the desktop/mobile `useMediaQuery` split) is deleted
+  outright, not just de-GSAP'd. What remains is a plain static grid
+  (`grid gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-4`) so the one real
+  call site (`src/app/page.tsx`'s Home) keeps compiling and rendering
+  actual featured-case content in the interim, but the file carries an
+  explicit `v3 NOTE` doc comment flagging it as a holdover, not a finished
+  v3 deliverable — **Phase B is expected to delete this component outright**
+  and replace its call site with the new flowing asymmetric media grid
+  built on the grid engine (§4.5), per the spec's own framing ("Phase B is
+  replacing the whole homepage work section with the new flowing grid
+  anyway, so WorkStrip as a pinned-scroll component is being fully
+  retired"). Chose delete-the-pin-but-keep-a-minimal-fallback over
+  deleting the whole component, since Home currently imports and renders
+  it with real (if empty-state-gated) content — leaving Home in a broken
+  import state for one phase felt worse than a short-lived, clearly-
+  labelled placeholder.
+- **`/dev/scroll-test`** and **`/dev/work-strip`** deleted outright (both
+  existed purely to visually/Playwright-verify the now-removed GSAP
+  pinning pattern — `/dev/scroll-test`'s pin/scrub box and
+  `/dev/work-strip`'s pinned-strip demo section had no reason to exist
+  once nothing pins). Confirmed both now 404 in a real
+  `next build && next start` (same production-only 404 gate,
+  `src/app/dev/layout.tsx`, unchanged) rather than merely being absent
+  from the route tree — belt-and-braces against a stale build artifact.
+  The other four `/dev/*` QA routes (`placeholders`, `hover-reveal`,
+  `service-swap`, `case-template`) are untouched and still 404-gated in
+  production, confirmed via the same Playwright pass.
+
+### `src/lib/grid-engine.ts` — the CSS custom property API Phase B consumes
+
+One base unit (`ch`, a character width in px) computed from
+`window.innerWidth`, everything else derived from it:
+
+```
+--grid-cols            unitless integer, e.g. "12"      → repeat(var(--grid-cols), 1fr)
+--grid-font-size       px string, e.g. "16.81px"         → mono label/eyebrow text only
+--grid-line-height     px string, e.g. "20.57px"         → = 2 × ch
+--grid-letter-spacing  px string, e.g. "0.480px" (can go negative as density increases)
+--grid-gutter          px string, e.g. "86.40px"
+```
+
+Also sets `data-grid-band="mobile"|"desktop"` on `<html>` for any CSS/JS
+that wants to branch on which band produced the current numbers without
+re-deriving it from `--grid-cols`.
+
+**Formula** (`computeGridMetrics`, `src/lib/grid-engine.ts`): column count
+is picked per band first (6→8 mobile below 769px, 12→16 desktop at 769px+,
+both monotonic-within-band and clamped at the edges so they can never
+leave their target range regardless of input); `ch` is then
+`clamp(width / (cols × 10), 5, 30)` — the "10" is `COLUMN_CHAR_BUDGET`,
+tuned (not guessed) by solving backwards from the target 10-20px mono
+font-size band at the five reference viewports; `fontSize =
+clamp(ch / charWidthRatio, 10, 20)`; `lineHeight = ch × 2`;
+`letterSpacing = 1.6 - cols × 0.08` (tightens as cols increases, i.e. as
+the grid densifies at larger viewports, per §4.5's explicit instruction);
+`gutter = clamp((width - cols×ch) / (cols + 1), 0, width)` (remaining
+horizontal space after `cols × ch` is subtracted, split across `cols + 1`
+gaps — inner gutters plus the two outer margins). `charWidthRatio` is
+"how many px wide is one Space Mono character, per 1px of font-size" —
+real client-measured font metrics, not a guessed constant, per §4.5's
+explicit instruction: `measureCharWidthRatio()` renders a hidden 100-
+character test string of the real `--font-mono` stack at a 100px
+reference size and divides. Verified sane/non-degenerate at all five
+required breakpoints via Playwright (reading the actual computed
+`getComputedStyle(document.documentElement)` custom-property values, not
+screenshots):
+
+| width | cols | fontSize | lineHeight | letterSpacing | gutter | band |
+|---|---|---|---|---|---|---|
+| 360 | 6 | 10.00px | 12.00px | 1.120px | 46.29px | mobile |
+| 768 | 8 | 15.69px* | 19.20px | 0.960px | 76.80px | mobile |
+| 1024 | 13 | 12.87px* | 15.75px | 0.560px | 65.83px | desktop |
+| 1440 | 14 | 16.81px* | 20.57px | 0.480px | 86.40px | desktop |
+| 1920 | 16 | 19.61px* | 24.00px | 0.320px | 101.65px | desktop |
+
+(*measured against the real, loaded Space Mono font in a live Playwright
+Chromium session — the actual measured `charWidthRatio` came out slightly
+different from the 0.6 fallback, which is exactly the "don't guess a
+constant" instruction working as intended; every value stayed inside
+range regardless.) All positive, all within the mandated 10-20px font
+band, no negative gutters, cols never left its band's target range.
+
+**Two-pass FOUC prevention, deliberately not one**: `GRID_ENGINE_BOOT_SCRIPT`
+(a hand-written, self-contained IIFE string, same file) runs as a blocking
+`<script>` in the root layout's `<head>` — before React hydrates, before
+first paint — using `FALLBACK_CHAR_WIDTH_RATIO` (0.6, the standard
+monospace average-advance-width-to-em-size ratio) since the real
+self-hosted Space Mono file isn't reliably guaranteed loaded/measurable
+that early. `GridEngineClient.tsx` (mounted once in the root layout,
+alongside `SmoothScroll`) then measures the *real* font on mount and
+re-applies, an imperceptible same-tick refinement rather than a visible
+jump — the boot script's job is only "prevent FOUC by setting something
+sane immediately," not "produce the final exact numbers." The boot
+script's math is a hand-copied mirror of `computeGridMetrics`, not
+generated from it — a blocking pre-paint script can't `import` a webpack
+module, it has to be a standalone string, so the two are kept in sync
+manually (documented at the top of both, `computeGridMetrics`'s own
+inline comments are the single source of truth for constants).
+`GridEngineClient` also owns the debounced (`120ms`) `resize` listener and
+an un-debounced `orientationchange` listener (fires immediately on
+rotate, ahead of `resize` on some mobile browsers) per §4.5.
+
+**No-JS / reduced-data baseline**: `globals.css` ships a plain
+`:root`/`@media (min-width: …)` static fallback for every one of these
+five custom properties (4 cols / 12px mono font mobile → 8 cols/13px at
+640px → 12 cols/14px at 1024px, per §4.5's own suggested "4 columns
+mobile / 12 desktop" numbers) — present in the initial server-rendered
+HTML with zero script involvement, overwritten by the boot script the
+moment JS *is* available. Verified with Playwright's
+`javaScriptEnabled: false` context option (not just a script-blocking
+route intercept — the harder, more literal reading of "JS disabled"):
+`/` returns 200, nav links (`/work`, `/contact`, etc.) are present and
+real `<a href>`s (no JS-only routing), `/work` navigates and returns 200,
+and `--grid-cols` reads the plain-CSS fallback value ("4" at a 375px
+viewport) rather than an unset/broken custom property.
+
+**Deep-research finding on the boot-script mechanism**: this Next.js
+version (16.2.10) ships a dedicated guide for exactly this pattern —
+`node_modules/next/dist/docs/01-app/02-guides/preventing-flash-before-
+hydration.md` — recommending a literal `<head><script
+dangerouslySetInnerHTML={{...}} /></head>` inside the root layout's JSX
+(which Next merges with its own generated metadata `<head>` content;
+only `<title>`/`<meta>` are discouraged as manual entries per the
+separate `layout.md` guide, not arbitrary elements like `<script>`) —
+**not** `next/script`'s `strategy="beforeInteractive"`, whose execution is
+documented (`docs/.../script.md`) to *not* block hydration, the opposite
+of what a pre-paint FOUC-prevention script needs. `layout.tsx`'s `<html>`
+gained `suppressHydrationWarning` accordingly, since both boot scripts
+mutate its attributes/inline styles before React ever touches the DOM —
+without it, React would treat the boot scripts' own changes as a
+hydration mismatch and roll them back. Confirmed this is genuinely a
+Next-version-specific answer worth verifying rather than assuming from
+training data, per this repo's own AGENTS.md warning.
+
+### §4.7.3 — the appearance toggle, and how it composes with `ThemeSection`
+
+This is flagged in the brief as "the single most architecturally
+important call this phase," so the reasoning in full:
+
+**The two systems stay separate, not merged.** `ThemeSection`'s existing
+four themes (`ink`/`republic`/`paper`/`accent`) remain pure, literal
+per-section art direction, completely unaffected by the new global
+toggle — a section that asks for `theme="ink"` always renders ink
+(`#0a0a0a`), regardless of whether the user has the site set to dark or
+light appearance; same for `"republic"` (a full Republic Blue field is a
+deliberate colour choice, not a "dark mode" surface) and `"accent"` (a
+per-case hex blend). This was the only defensible reading given the
+existing contrast law ("Republic Blue is a field/display-type colour
+only, never small body text on ink") and the existing "turning pages"
+scroll narrative these four themes already encode across every real page
+(Home/Work/Studio/Services/Contact alternate ink/republic/paper sections
+deliberately, as composed art direction, not as a light/dark state) — if
+toggling "light appearance" silently remapped every `theme="ink"` section
+to render as paper, it would invert that entire deliberate page rhythm
+and potentially put small text in front of a section that was
+specifically art-directed as an ink backdrop for a reason unrelated to
+"is dark mode on." Retrofitting *that* meaning onto the existing prop
+would be a bigger, riskier, and less honest change than building the new
+mechanism as its own thing.
+
+**What the toggle actually controls**: two things, both new, both
+additive (nothing existing changes behaviour):
+
+1. **Unthemed page chrome.** `body`'s own base background/text — visible
+   in any gap outside a `ThemeSection`, and the correct default for any
+   future page surface that doesn't wrap itself in one — now reads
+   `var(--app-bg)`/`var(--app-fg)` instead of the old hardcoded
+   `var(--color-paper)`/`var(--color-ink)`. `:root[data-appearance="dark"]`
+   (and the plain `:root` default, matching the locked "default dark"
+   rule) sets `--app-bg: var(--color-ink); --app-fg: var(--color-paper)`;
+   `:root[data-appearance="light"]` flips them. `body` gets a 200ms
+   background/colour transition (collapsed to ~instant under reduced
+   motion by the existing sitewide rule).
+2. **A new fifth `ThemeSection` value, `theme="auto"`.** Resolves to
+   `var(--app-bg)`/`var(--app-fg)` exactly like `body` — i.e. it tracks
+   the user's global appearance choice rather than being locked to one
+   literal colour. This is the actual mechanism Phase B/C should reach
+   for when a section specifically wants to *be* the page's default
+   reading surface (follow the user's dark/light preference) rather than
+   art-direct a fixed look. No existing page currently uses `"auto"` —
+   this phase only builds the mechanism and documents when to use it, per
+   the brief's own scoping ("don't wire every page to it yet").
+
+**Mechanism**: `data-appearance="dark"|"light"` on `<html>`, written
+before first paint by a blocking boot script (`APPEARANCE_BOOT_SCRIPT`,
+`src/lib/appearance.ts`) using the exact same pattern as the grid engine's
+own boot script — reads `localStorage["republic-appearance"]`,
+defaults to `"dark"` (LOCKED default) if unset or unreadable (private-mode
+`localStorage` throws are caught). `useAppearance()` is a
+`useSyncExternalStore`-based hook (same family as `usePrefersReducedMotion`/
+`useMediaQuery` — SSR-safe, reactive, no hydration mismatch) exposing
+`{ appearance, toggleAppearance, setAppearance }`. Same-tab reactivity
+uses a plain custom `window` event (`republic:appearance-change`) rather
+than the native `storage` event, since `storage` only fires in *other*
+tabs — the tab that actually clicked the toggle needs to re-render too.
+`<AppearanceToggle>` (`src/components/AppearanceToggle.tsx`) is a small
+`[ DARK / LIGHT ]`-styled button in Nav's desktop secondary group (next to
+"Start a project") and in the mobile overlay; `role="switch"` +
+`aria-checked` for the a11y-correct binary-toggle semantics.
+
+**Reduced motion**: the toggle's *state change* (attribute write,
+localStorage persist, event dispatch) is a plain synchronous function
+call — it's never gated on reduced motion and always works instantly,
+exactly per spec. Only the *animated* 200ms background/colour cross-fade
+is motion, and that's a plain CSS `transition` already collapsed to
+~0ms by the existing sitewide `@media (prefers-reduced-motion: reduce)`
+rule in `globals.css` — no bespoke JS gate needed, same treatment as
+`MixBlendHover`.
+
+**Focus ring**: extended the existing theme-scoped `:focus-visible`
+override (ink/republic/accent → paper outline) with
+`:root:not([data-appearance="light"]) [data-theme="auto"] :focus-visible`
+so an `auto` section gets the correct paper-on-dark ring while dark and
+falls through to the already-correct default (Republic Blue on paper)
+while light.
+
+### §4.7.2 — character-hover nav (`CharHoverLink.tsx`)
+
+Splits link text into individual character `motion.span`s on mount. A
+single parent `motion.span` carries `whileHover="active"`/
+`whileFocus="active"` variant state; each character shares the same
+`containerVariants`/`charVariants` objects, so Motion's own orchestration
+(`staggerChildren: 0.018` on the parent's active variant) staggers each
+character's transition start without any manual per-character
+`setTimeout` bookkeeping — a "brief vertical roll/flip stagger" via a
+small `y`/`rotateX` keyframe excursion and back (`transform`-only, per
+§4.6). A single `<span className="sr-only">` carries the real text for
+screen readers since each character span is `aria-hidden`.
+
+**Reduced motion**: per spec ("instant colour-only hover state, no
+character animation"), the reduced branch doesn't split the string or
+mount any `motion.span` at all — it renders plain text. The "instant
+colour" half of that requirement falls out for free: every caller wraps
+`<CharHoverLink>` in the existing `<MixBlendHover>` (§4.6.7), whose own
+hover block-scale is a plain CSS transform transition already collapsed
+to ~0ms sitewide under reduced motion — so the colour/contrast change on
+hover/focus still happens instantly, this component just needed to stay
+out of the way of it rather than reimplement it. Verified in Playwright:
+zero `motion.span` character nodes render under
+`page.emulateMedia({reducedMotion:'reduce'})`, and the same nav link
+renders the expected character spans under normal motion.
+
+Uses `usePrefersReducedMotion` from `@/lib/reducedMotion` rather than
+`motion/react`'s own `useReducedMotion`, even though every transition here
+is a `<motion.*>` component — deliberately follows the *practical*
+convention already established by `Reveal.tsx`/`Preloader.tsx` (both
+actually import `usePrefersReducedMotion` from `@/lib/reducedMotion` in
+their real code, despite `Preloader.tsx`'s own doc comment describing a
+different, narrower rule) rather than the more theoretical "Motion
+components → motion/react's hook" framing written into Phase B's
+DECISIONS.md section. `Reveal.tsx`'s comment explains why: `motion/react`'s
+hook reads `matchMedia` synchronously on first client render with no SSR
+guard, which mismatches server HTML whenever the OS already has reduced
+motion on — a real hydration bug, not a hypothetical one. Flagging this
+explicitly since it's a second phase now quietly diverging from Phase B's
+stated (but not, in practice, followed) rule of thumb — `@/lib/
+reducedMotion`'s hook is the one to reach for by default in this codebase
+for any new component, motion-driven or not, and the "Motion components
+use motion/react's hook" framing in Phase B's notes should probably be
+treated as superseded.
+
+Wired into Nav's four desktop nav links and the desktop "Start a
+project" button (inside their existing `<MixBlendHover>` wrappers,
+replacing the plain text children) — not into the mobile overlay's large
+touch-target links, since hover/character-roll has no meaningful touch
+equivalent and the mobile overlay already uses larger `display-type` text
+with its own `MixBlendHover` tap-contrast behaviour. `<AppearanceToggle>`
+was added to both the desktop nav and the mobile overlay, since the
+toggle itself (unlike character-hover) is equally meaningful on touch.
+
+### §4.3 — `<Bracket>` catalogue-numbering variant
+
+Added `CatalogueBracket` as a named export alongside the existing default
+`<Bracket>` (`src/components/Bracket.tsx`) rather than a new prop on
+`<Bracket>` itself — the two have a genuinely different shape:
+`<Bracket>` wraps arbitrary children in one bracket pair; the catalogue
+variant wraps only a zero-padded index number in brackets
+(`String(index).padStart(2, "0")`, reusing `<Bracket>` internally rather
+than duplicating the bracket markup) and renders the label immediately
+after, unbracketed — `[ 01 ]  CHIVITA — STYLE N' SIPS`. `index` is
+1-based, matching the spec's own "01" example; callers are responsible
+for passing the item's position in the full, flattened work archive (not
+a per-page/per-category counter) — Phase B wires this into the actual
+homepage/work grid once that content layer exists.
+
+### Tokens/fonts audit
+
+Re-confirmed against §4.1/§4.2, unchanged since Phase A/B/C: the five
+palette tokens, Space Mono/Inter via `next/font/google`, `.display-type`/
+`.mono-label`/`.measure` utilities all still match spec exactly. No
+changes made — this was a verify-not-rebuild step per the brief's own
+scoping.
+
+### Verification run (this phase)
+
+`npx eslint src content scripts` and `npx tsc --noEmit` both clean.
+`npm run build` clean (Turbopack, Next 16.2.10) after uninstalling
+`gsap` and deleting the two GSAP-testing dev routes — confirmed the
+`.next/types` validator no longer references the deleted routes (a stale
+`.next` from before the deletion did, transiently, until a clean rebuild).
+`npm start` against that production build, driven with Playwright
+(`chromium`, `/opt/pw-browsers/chromium-1194/chrome-linux/chrome`):
+
+- Grid engine sane/non-degenerate at all five required breakpoints (table
+  above) — cols positive and within its band's target range, font-size
+  10-20px, gutter non-negative, at every one.
+- No-JS (`javaScriptEnabled: false` context option, not just a script-
+  blocking route intercept): `/` and `/work` both 200, real `<a href>`
+  nav links present and correct, static CSS grid fallback (`--grid-cols:
+  4` at a 375px viewport) renders with zero script involvement.
+- Reduced motion (`page.emulateMedia({reducedMotion:'reduce'})`):
+  character-hover's per-character `motion.span` nodes are absent from the
+  real Home page's nav links; present under normal motion on the same
+  page.
+- Appearance toggle: defaults to `dark` on first load: `data-appearance`
+  flips to `light` on click, persists to `localStorage["republic-
+  appearance"]`, and survives a full page reload.
+- Every real route (`/`, `/work`, `/studio`, `/services`, `/contact`,
+  `/legal/privacy`) returns 200 with zero unexpected network failures —
+  the one console/network entry every page produces
+  (`/_vercel/insights/script.js` `net::ERR_ABORTED`/404) is the same
+  pre-existing, environment-only, Vercel-infrastructure-only entry Phase C
+  already documented, not a regression from this phase's changes.
+- All six `/dev/*` paths (`scroll-test`, `work-strip` — both now deleted
+  from the route tree entirely — plus the four still-live QA routes
+  `placeholders`/`hover-reveal`/`service-swap`/`case-template`) 404 in the
+  production build, confirming the removal is real and the still-live
+  harnesses' production gate is undisturbed.
+- Embla-based case-page carousels are unaffected by any change this
+  phase (Embla was never GSAP-driven) — not re-verified in depth this
+  session since nothing touched `CaseCarousel.tsx`/`CaseStudyTemplate.tsx`,
+  consistent with the brief's own framing that Embla "must still work,
+  they're unaffected by this change."
+
+### Handoff to Phase B
+
+- Consume the grid engine via the five `--grid-*` custom properties
+  documented above (`repeat(var(--grid-cols), 1fr)` +
+  `grid-column: span N` per §4.5) — they're already live on `<html>`
+  before first paint on every route, no additional wiring needed.
+- Delete `WorkStrip.tsx` and replace its one call site
+  (`src/app/page.tsx`) with the new flowing asymmetric media grid — the
+  static-grid version left in place this phase is explicitly a holdover,
+  not something to extend.
+- `theme="auto"` on `<ThemeSection>` is ready to use for any section that
+  should track the user's dark/light choice rather than render a fixed
+  ink/republic/paper/accent look.
+- `<CatalogueBracket index={n}>{label}</CatalogueBracket>` is ready for
+  the homepage/work grid's `[ 01 ]  CLIENT — TITLE` labels — remember
+  `index` must be the item's position across the *whole* work archive,
+  not per-category.
+- `<CharHoverLink text="…">` is available for any future nav-style link
+  (the brief specifically calls out Journal's new nav link) — wrap it in
+  the existing `<MixBlendHover>` the same way the four current nav links
+  do, don't reimplement the contrast mechanism.
+- `useAppearance()` (`@/lib/appearance`) is the hook for any component
+  that needs to read or react to the user's dark/light choice going
+  forward, beyond the nav toggle and `theme="auto"` itself.
