@@ -6,6 +6,8 @@ export const iInvestSecureTheBag: CaseStudy = {
   client: "I-Invest",
   title: "Secure the Bag",
   services: ["Digital & Performance", "Brand & Creative"],
+  sector: "Fintech",
+  market: "Nigeria",
   year: 2024,
   brief:
     "I-Invest needed to make investing feel accessible to a younger, digitally native audience that associates finance with jargon and gatekeeping.",

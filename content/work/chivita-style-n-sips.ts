@@ -6,6 +6,8 @@ export const chivitaStyleNSips: CaseStudy = {
   client: "Chivita",
   title: "Style N Sips",
   services: ["Content & Social", "Brand & Creative"],
+  sector: "FMCG & Beverage",
+  market: "Nigeria",
   year: 2025,
   brief:
     "Chivita needed its juice range to matter beyond the breakfast table — to earn a place in a younger, fashion-literate audience's social feed, not just their fridge.",

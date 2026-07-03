@@ -6,6 +6,8 @@ export const zenithHomecoming: CaseStudy = {
   client: "Zenith Bank",
   title: "Homecoming",
   services: ["Integrated Marketing", "Experiences"],
+  sector: "Financial Services",
+  market: "Nigeria",
   year: 2024,
   brief:
     "Zenith Bank needed to reconnect with the diaspora audience during the December homecoming season, when attention — and money — moves fast.",

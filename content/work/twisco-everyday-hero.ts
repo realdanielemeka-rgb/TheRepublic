@@ -6,6 +6,8 @@ export const twiscoEverydayHero: CaseStudy = {
   client: "Twisco",
   title: "Everyday Hero",
   services: ["Brand & Creative", "Content & Social"],
+  sector: "FMCG & Beverage",
+  market: "Nigeria",
   year: 2024,
   brief:
     "Twisco needed to make a household staple feel worth talking about again, in a category where every competitor claims the same three benefits.",

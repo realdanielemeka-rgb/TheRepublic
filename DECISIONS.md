@@ -1866,3 +1866,290 @@ changes (it never reads `media` at all).
   three-line manifesto, method/laws, leadership, footprint) to work with.
 - `content/clients.ts`'s `Client` type lost its `tier` field — any Phase
   C component reading client data should expect `{ name: string }` only.
+
+## v3 Phase C — Work/Studio/Services/Journal/Contact finish, footer rebuild, full audit (this section, final)
+
+Scope: §11 build order steps 7-12 — the last phase before handoff. Builds
+on v3 Phase A (grid engine, appearance toggle, character-hover nav) and
+Phase B (content layer, homepage flowing grid) to finish every remaining
+page, rebuild the footer, and run the full audit pass.
+
+Note on how this phase actually happened: this session ran concurrently
+with another agent working the identical task against the same working
+tree (not a hypothetical — `next build` genuinely collided mid-session,
+and several files listed below were built/refactored by the other process
+while this one was reading/reviewing them, most visibly `WorkArchive.tsx`
++ `CaseGridSlot.tsx` — the Home/Work shared grid-cell extraction — and
+Studio's `HoverRevealText` manifesto wiring). Rather than duplicate that
+work, this session deferred to it once verified consistent and focused on
+the parts that stayed unclaimed: `content/work` sector/market taxonomy
+below (confirmed already in place, reviewed rather than redone), the
+Journal pages end-to-end, the footer rebuild, sitemap/OG additions for
+Journal, and the final audit/build/push. Every file this section claims
+credit for was independently verified against the spec before being left
+alone or built.
+
+### Sector/market taxonomy for the 8 seed cases (§6.2 filters)
+
+`content/work/types.ts` gained `sector: string` / `market: string` —
+structural classification metadata only, distinct from `results`/`quote`
+(which stay empty/omitted, never fabricated). Sector/market are safe to
+populate ahead of client sign-off because they're not a claim about
+outcomes, just what industry and geography the real, publicly-known
+client operates in — the same category of fact as `client: "Chivita"`
+itself, already public via `content/clients.ts`'s "Trusted by" strip.
+
+Assignment (inferred from each case's real client, sensibly, not
+invented):
+
+| case | sector | market |
+|---|---|---|
+| chivita-style-n-sips | FMCG & Beverage | Nigeria |
+| pzl-you-matter | FMCG & Personal Care | Nigeria |
+| zenith-homecoming | Financial Services | Nigeria |
+| twisco-everyday-hero | FMCG & Beverage | Nigeria |
+| cowbell-mumtales | FMCG & Beverage | Nigeria |
+| i-invest-secure-the-bag | Fintech | Nigeria |
+| sanlamallianz-live-with-confidence | Insurance | Pan-African |
+| heirs-insurance-launch | Insurance | Nigeria |
+
+All eight cases share `market: "Nigeria"` except Sanlam Allianz
+("Pan-African" — the entity itself is a post-merger pan-African insurer,
+not a single-market Nigerian brand, unlike the other seven clients) —
+this is a real, honest reflection of the roster (every other client here
+genuinely is a Nigeria-headquartered/Nigeria-market brand), not a
+cosmetic attempt to manufacture filter diversity. `getWorkFacets()`
+(`content/work/index.ts`) derives the /work filter pills from whatever's
+actually present on the live case pool, so the pill list is never stale
+against this table and never leaks a pending case's sector into the UI.
+
+### /work filter semantics — OR within a facet, AND across facets
+
+Three facets: service, sector, market. Selecting more than one pill
+*within* one facet is OR ("Content & Social" OR "Brand & Creative" — an
+archive browse where widening one axis should show more, not fewer,
+results). Selecting pills *across* facets is AND (a case must match the
+selected services AND the selected sectors AND the selected markets). An
+empty selection in a facet imposes no constraint from that facet at all,
+so the all-clear state (nothing picked anywhere) shows every live case —
+this is the standard faceted-search reading and the one that keeps
+"select everything" behaviourally identical to "select nothing" per
+facet, which is the least surprising outcome for a first-time user
+combining filters. Implemented in `WorkArchive.tsx`.
+
+### Journal — build (`/journal`, `/journal/[slug]`)
+
+`/journal`: H1 `[ PERSPECTIVES ]` via `<Bracket>`, intro copy per spec,
+type filter (Perspective/Press/Recognition) that only renders pills for
+types actually present in the live entry pool (mirrors `/work`'s
+"never show a filter that filters nothing" pattern). Grid
+(`src/components/JournalGrid.tsx`) reuses `<GridRow>` from
+`WorkGrid.tsx` directly — same fluid engine as Home/Work, scaled down to
+card size (three-per-row text cards rather than media tiles, since a
+Journal entry has no hero image slot in the current schema). Empty state
+is the real, required, on-brand `[ NOTHING PUBLISHED YET — CHECK BACK ]`
+— `getJournalEntries()` returns `[]` today (see `content/journal/
+index.ts`, v3 Phase B), and this is an honest current state, not a
+placeholder waiting to be filled with invented press/award copy.
+
+`/journal/[slug]`: title, date, type tag, body, optional linked-case
+link (only rendered if `linkedCase` is set AND resolves to a *live* case
+via `getLiveCaseBySlug` — never trust a stored slug alone to gate a
+public link, same rule Services' `aiNativeCallout.caseSlug` already
+follows). `generateStaticParams()` reads `getJournalEntries()`, so it
+correctly produces zero routes today and will produce real ones the
+moment a real entry is added — no code change needed at that point.
+
+**Markdown-rendering approach**: a small hand-rolled paragraph/heading/
+list splitter (`src/components/JournalBody.tsx`), not `react-markdown`.
+`JournalEntry.body` (per v3 Phase B's schema) is always agency-authored
+prose — paragraphs, occasional `## `/`# ` subheadings, occasional `- `
+bullet lists — never arbitrary third-party markdown needing tables, code
+fences, embedded HTML, or footnotes. A dependency-free ~40-line splitter
+covers exactly that shape; pulling in a full CommonMark parser for a
+content type this constrained would be more dependency than the actual
+data justifies. It's a server component (no client JS at all for a page
+that's pure text), unlike everything else added this phase that touches
+interactivity. If a future entry's copy genuinely needs richer markdown
+(tables, etc.), swap this one file for `react-markdown` — nothing about
+the page or the content schema needs to change to make that swap, since
+`body` was always stored as plain markdown text specifically to keep this
+decision reversible.
+
+### Footer rebuild — the four-element version, everywhere
+
+`src/components/Footer.tsx` fully rebuilt (not patched) to exactly:
+wordmark · `LAGOS · [live time]` · "New Business" → email (+ any
+confirmed socials) · © + Privacy link. The old three-column v2 footer
+(sitemap nav column, phone number, address block) is gone outright — a
+page-closing footer that repeats the whole nav a user just saw in the
+header adds nothing on a five-route site.
+
+**Live Lagos time** (`src/components/LagosClock.tsx`): `Intl.
+DateTimeFormat` with an explicit `timeZone: "Africa/Lagos"`, so the
+displayed time is always Lagos local regardless of the visitor's own
+timezone or system clock setting — `Intl` handles the UTC-offset/DST
+math internally from the explicit IANA zone name, no manual offset
+arithmetic. Updates every 60s via `setInterval` inside a mount effect.
+
+Per spec's explicit pointer, this follows the repo's own established
+"class of bug" fix rather than reinventing an approach: `Reveal.tsx`'s
+doc comment documents a real, previously-hit hydration mismatch from a
+value that's synchronously different between server and client
+first-render (there: `motion/react`'s `useReducedMotion()` reading
+`matchMedia` synchronously on the client with no server equivalent). A
+clock is the same class of problem in a more literal form — the *value
+itself* (not just a boolean) is only ever knowable client-side, and it
+changes on its own schedule independent of any external store a
+`useSyncExternalStore` pattern (the reducedMotion/appearance/grid-cols
+convention elsewhere in this codebase) could subscribe to. The fix
+applied is the same shape as Reveal's: render a fixed, deterministic
+placeholder (`"--:--"`, identical in server HTML and the client's first
+hydration pass — deliberately NOT a build-time-computed Lagos timestamp,
+which would actually be a *second*, subtler source of the same bug, since
+this app is statically prerendered and a build-time value would go stale
+and diverge from a fresh `new Date()` call the moment the client's own
+module evaluates at a genuinely different wall-clock moment than the
+server did) and correct it to the real live value inside a post-mount
+effect, deferred one tick via `setTimeout(..., 0)` before the first
+`setState` call specifically to satisfy `eslint-plugin-react-hooks`'
+`set-state-in-effect` rule — the same pattern Preloader.tsx already
+established for its own post-mount session-gate write (see Phase A's
+DECISIONS.md section). No-JS visitors see the static `LAGOS · --:--`
+placeholder rather than a fake or stale live-looking value — an honest
+degrade, not a silently-wrong one.
+
+**Socials**: `Footer.tsx` maps `content/site.ts`'s `socials` array
+directly — currently empty (no confirmed Instagram/LinkedIn URL), so
+nothing renders in that slot today. Zero placeholder/invented URLs
+shipped, per the standing rule already documented in `content/site.ts`
+itself.
+
+### Studio — finishing what Phase B started
+
+Section order confirmed exactly per spec: Hero → Manifesto (hover-reveal)
+→ Method/Reaction Standard (`id="method"`) → Team (leadership first, full
+grid after) → Footprint (Lagos HQ, markets, Kigali gated). No heritage
+section, no awkward gap where it used to sit — Phase B's removal was
+already a clean full-section delete (confirmed by reading the page before
+this phase touched it: five sections, no orphaned spacing/wrapper left
+behind), so there was nothing to visually repair this phase.
+
+The one real gap this phase closed: the manifesto section had regressed
+to a plain scroll-`Reveal` (correct copy, all three lines, but no hover
+interaction) after v3 Phase A's GSAP-era cleanup removed the standalone
+`HoverReveal.tsx`/`HoverRevealText` components along with everything else
+GSAP-adjacent, even though `HoverReveal.tsx` itself has no GSAP
+dependency (it's plain `motion/react` + CSS) and was over-pruned in that
+sweep. This phase re-wires Studio's three manifesto lines through
+`HoverRevealText` (one key word per line — CLARITY / SYSTEMS / OUTCOMES —
+each opening a small placeholder-scene popover on hover/focus/tap),
+restoring the "hover-reveal, retained from v2" behaviour the spec calls
+for, on top of `HoverReveal.tsx`'s already-built, already-reduced-motion-
+aware mechanism (see Phase B's DECISIONS.md section for its
+implementation details) — no new component needed, just wiring a real
+call site back onto one that had gone unused after the cleanup.
+
+### SEO/OG — Journal routes
+
+`src/app/journal/opengraph-image.tsx` and `src/app/journal/[slug]/
+opengraph-image.tsx` added, both built on the shared `renderOgImage()`
+helper (`src/lib/og.tsx`) every other route already uses — "blue field,
+mono type, per-page title," `[ THE REPUBLIC ]` eyebrow, no visual
+divergence from the rest of the site's OG images. The `[slug]` variant's
+`generateStaticParams()` mirrors the case-template OG image's own
+pattern: reads `getJournalEntries()`, so it correctly produces zero
+prerendered images today and picks up real ones automatically the moment
+an entry is added. `sitemap.ts` now includes `/journal` and, once real
+entries exist, `/journal/[slug]` for each (`lastModified` sourced from
+the entry's own `date` field rather than "now", so the sitemap reflects
+actual publish dates instead of every entry appearing simultaneously
+"updated" on whatever day this ran). `robots.ts` already excluded `/dev`
+from Phase A; unchanged, still correct.
+
+### Verification (this session)
+
+- `npx tsc --noEmit` — clean, zero errors.
+- `npm run lint` (ESLint) — clean, zero warnings/errors.
+- `npm run build` — clean, all 24 routes compiled (Home, Work, Work
+  case-template ×2 static params today would be 0 since all 8 seeds are
+  still pending-approval, Studio, Services, Journal, Journal entry
+  template, Contact, legal/privacy, sitemap.xml, robots.txt, icon, four
+  dev routes, nine opengraph-image routes).
+- `npm start` against the real production build, hit with `curl`: `/`,
+  `/work`, `/studio`, `/services`, `/journal`, `/contact`,
+  `/legal/privacy` all `200`; an unknown path `404`s through
+  `not-found.tsx`; a case slug (`/work/chivita-style-n-sips`) correctly
+  `404`s since every seed case is still `pending-approval`; `/dev/
+  placeholders` correctly `404`s in the production build (Phase A's
+  `NODE_ENV === "production"` gate); `/journal` correctly renders the
+  `NOTHING PUBLISHED YET — CHECK BACK` empty state in the actual served
+  HTML; the footer's `LAGOS ·`, `New Business`, and `© 2026 The
+  Republic.` strings all present in the served markup; `/journal` present
+  in nav markup (5-item nav confirmed: Work/Studio/Services/Journal/
+  Contact).
+- Forbidden-content grep (`gsap`/`ScrollTrigger`, emoji, lorem ipsum,
+  purple, Guinness/Budweiser/NamPost, "Submit" button copy) — all
+  remaining hits are prose comments describing their *absence/removal*,
+  never live code paths or rendered copy. No `status: "live"` seed case.
+- Reduced-motion / no-JS: audited by code review (no Playwright browser
+  available in this sandbox session) — every animated pattern sits behind
+  either `usePrefersReducedMotion()`/`prefersReducedMotion()`
+  (`@/lib/reducedMotion`) or `motion/react`'s own `useReducedMotion()`,
+  per the established per-Phase convention, and every static no-JS
+  fallback (grid engine's CSS-only baseline, nav's plain `<Link>` markup,
+  footer's static placeholder clock) was confirmed to render real,
+  navigable content with zero script execution.
+
+### Final TODO punch-list (consolidated, from all phases)
+
+Real, outstanding, non-code work needed before this site can be
+considered client-ready — nothing on this list is a code defect, all of
+it is confirmation/asset/sign-off work outside an engineering session's
+ability to resolve:
+
+1. **Leadership titles** — confirm "Chairman & Co-Founder" / "Managing
+   Director & Co-Founder" (`content/site.ts`, `content/team.ts`) are the
+   exact, final titles Daniel wants public.
+2. **Real socials** — confirm and add real Instagram/LinkedIn (and any
+   other) URLs to `content/site.ts`'s `socials` array; currently empty by
+   design (no placeholder/invented links shipped) so the footer and
+   Organisation JSON-LD's `sameAs` both stay quiet until this happens.
+3. **Case results** — every one of the 8 seed cases ships `results: []`
+   and no `quote`; real, client-approved numbers/quotes needed before any
+   case can show more than "Results under NDA — ask us."
+4. **Kigali confirmation** — `content/site.ts`'s `flags.showKigali` stays
+   `false` until the Rwanda footprint is publicly confirmable; flip the
+   one flag when it is, no other code change needed.
+5. **Canonical six Reaction Standard laws** — `content/laws.ts` has 2
+   live, 4 slotted `[ LAW PENDING ]`; pull the canonical six from the
+   master doc.
+6. **Client logo display rights** — `content/clients.ts`'s 8-name roster
+   is text-only; confirm which clients grant logo display rights before
+   any logo imagery is added.
+7. **Case copy sign-off** — every case's `brief`/`idea` copy carries a
+   `// TODO: verify with Daniel` comment; needs a real approval pass
+   before any case can flip `status: "live"`.
+8. **Talent releases** — any case media eventually featuring real people
+   (the creator-led Chivita/Cowbell/PZ Cussons cases especially) needs
+   signed releases before real photography/video replaces the procedural
+   placeholders.
+9. **Wordmark/R-mark SVG** — every "The Republic" wordmark instance
+   sitewide (nav, footer, OG images, favicon) is still set type
+   (`display-type` class) or a placeholder `/icon` route, not a
+   designed logotype/mark; commission and swap in once available — see
+   `src/app/icon.tsx`.
+10. **Expanded per-case shot list** — per spec, 2-3 grid-weight loops +
+    8-12 stills + 1 detail sequence per case; today each case has exactly
+    8 `Media` entries (1 hero, 1 wide, 2 gallery-pair, 3 carousel, 1
+    ticker-chip) — real photography/video needs a materially larger shot
+    list per case than the placeholder system currently models.
+11. **Team photography** — every team member (leadership and wider roster
+    alike) renders `<Avatar>`'s initial-monogram placeholder; a real B/W,
+    grain, consistent-crop shoot is needed before real photography can
+    replace it (AI-generated portraits remain forbidden regardless).
+12. **Client logos** — see #6; once display rights are confirmed, actual
+    logo files are still needed (none exist in this repo today).
+13. **Confirmed social URLs** — see #2; listed separately here since it's
+    also referenced by the Organisation JSON-LD's `sameAs`, not just the
+    footer.

@@ -20,6 +20,14 @@ export type CaseStudy = {
   client: string;
   title: string;
   services: string[];
+  // v3 §6.2 — industry sector and market/geography, used by the /work
+  // index's service × sector × market filter. These are structural
+  // classification metadata (inferred from the real client), never a
+  // claim about results — safe to populate ahead of case sign-off, unlike
+  // brief/idea/results copy. See DECISIONS.md's v3 Phase C section for the
+  // taxonomy.
+  sector: string;
+  market: string;
   year: number;
   brief: string;
   idea: string;

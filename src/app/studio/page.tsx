@@ -4,6 +4,7 @@ import Eyebrow from "@/components/Eyebrow";
 import Reveal from "@/components/Reveal";
 import Bracket from "@/components/Bracket";
 import Avatar from "@/components/Avatar";
+import { HoverRevealText } from "@/components/HoverReveal";
 import { laws } from "../../../content/laws";
 import { leadershipTeam, team } from "../../../content/team";
 import { footprint, flags } from "../../../content/site";
@@ -37,22 +38,37 @@ export default function StudioPage() {
         </div>
       </ThemeSection>
 
+      {/* §4.7.4 — the manifesto, hover-reveal. All three lines render in
+          full, always visible (never hidden pending interaction) — the
+          hover-reveal only adds a small placeholder-scene popover under
+          one key word per line, the same <HoverRevealText> mechanism
+          Home's manifesto section used in v2 (src/components/HoverReveal.tsx).
+          Reduced motion falls back to the component's own built-in
+          static-underline + images-below treatment automatically. */}
       <ThemeSection theme="republic" className="px-6 py-24 sm:px-10 sm:py-32">
         <div className="mx-auto max-w-5xl text-center">
           <Reveal>
-            <p className="display-type text-[clamp(2rem,5vw,4rem)]">
-              CLARITY BEFORE VOLUME.
-            </p>
+            <HoverRevealText
+              text="CLARITY BEFORE VOLUME."
+              terms={{ CLARITY: { category: "civic-journey", label: "a clear, uncluttered brief on a wall" } }}
+              paragraphClassName="display-type text-[clamp(2rem,5vw,4rem)]"
+            />
           </Reveal>
           <Reveal delay={0.1}>
-            <p className="display-type text-[clamp(2rem,5vw,4rem)]">
-              SYSTEMS OVER STUNTS.
-            </p>
+            <HoverRevealText
+              text="SYSTEMS OVER STUNTS."
+              terms={{ SYSTEMS: { category: "generic", label: "a repeatable creative system, not a one-off stunt" } }}
+              className="mt-2"
+              paragraphClassName="display-type text-[clamp(2rem,5vw,4rem)]"
+            />
           </Reveal>
           <Reveal delay={0.2}>
-            <p className="display-type text-[clamp(2rem,5vw,4rem)]">
-              OUTCOMES OVER OUTPUTS.
-            </p>
+            <HoverRevealText
+              text="OUTCOMES OVER OUTPUTS."
+              terms={{ OUTCOMES: { category: "finance-growth", label: "a measurable business outcome, not a vanity output" } }}
+              className="mt-2"
+              paragraphClassName="display-type text-[clamp(2rem,5vw,4rem)]"
+            />
           </Reveal>
         </div>
       </ThemeSection>

@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { site } from "../../content/site";
 import { getLiveCases } from "../../content/work";
+import { getJournalEntries } from "../../content/journal";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes = [
@@ -8,6 +9,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/work",
     "/studio",
     "/services",
+    "/journal",
     "/contact",
     "/legal/privacy",
   ].map((path) => ({
@@ -20,5 +22,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: new Date(),
   }));
 
-  return [...staticRoutes, ...caseRoutes];
+  const journalRoutes = getJournalEntries().map((e) => ({
+    url: `${site.url}/journal/${e.slug}`,
+    lastModified: new Date(e.date),
+  }));
+
+  return [...staticRoutes, ...caseRoutes, ...journalRoutes];
 }

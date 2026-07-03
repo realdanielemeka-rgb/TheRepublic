@@ -6,6 +6,8 @@ export const heirsInsuranceLaunch: CaseStudy = {
   client: "Heirs Insurance",
   title: "Launch",
   services: ["Brand & Creative", "Integrated Marketing", "Experiences"],
+  sector: "Insurance",
+  market: "Nigeria",
   year: 2023,
   brief:
     "Heirs Insurance was entering a crowded, low-trust category and needed a market entrance that earned attention on day one.",

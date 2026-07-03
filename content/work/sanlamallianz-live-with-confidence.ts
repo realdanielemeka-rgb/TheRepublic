@@ -6,6 +6,8 @@ export const sanlamAllianzLiveWithConfidence: CaseStudy = {
   client: "Sanlam Allianz",
   title: "Live With Confidence",
   services: ["Communication Strategy", "Integrated Marketing"],
+  sector: "Insurance",
+  market: "Pan-African",
   year: 2023,
   brief:
     "Following the Sanlam and Allianz merger, the new entity needed a single, confident voice across every market it now served.",

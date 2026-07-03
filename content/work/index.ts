@@ -83,6 +83,23 @@ export function getFeaturedMedia(kind?: MediaKind): Media[] {
   return kind ? media.filter((m) => m.kind === kind) : media;
 }
 
+/** The distinct filter values present across the *live* case pool, for the
+ * /work index's service × sector × market pills — derived from
+ * getLiveCases() so a pending case never leaks a facet value into the UI,
+ * and so the pills always reflect exactly what the grid can actually show.
+ * Returns empty arrays while no case is live (true today) — the /work page
+ * then renders its honest empty state with no pills, rather than pills that
+ * filter nothing. Each facet is sorted for stable render order. */
+export function getWorkFacets(): { services: string[]; sectors: string[]; markets: string[] } {
+  const live = getLiveCases();
+  const uniqueSorted = (values: string[]) => [...new Set(values)].sort((a, b) => a.localeCompare(b));
+  return {
+    services: uniqueSorted(live.flatMap((c) => c.services)),
+    sectors: uniqueSorted(live.map((c) => c.sector)),
+    markets: uniqueSorted(live.map((c) => c.market)),
+  };
+}
+
 /** Shared "stat or NDA fallback" line — used by CaseCard and WorkStrip so
  * the copy can't drift between the two places it renders. */
 export function resultLine(item: CaseStudy): string {

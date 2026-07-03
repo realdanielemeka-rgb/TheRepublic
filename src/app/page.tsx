@@ -1,15 +1,11 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import ThemeSection from "@/components/ThemeSection";
-import Bracket, { CatalogueBracket } from "@/components/Bracket";
 import ManifestoLine from "@/components/ManifestoLine";
 import CtaBand from "@/components/CtaBand";
 import { GridRow } from "@/components/WorkGrid";
-import ScenePlaceholder, { CaseMedia } from "@/components/ScenePlaceholder";
-import SceneVideo, { CaseVideo } from "@/components/SceneVideo";
-import { SCENE_CATEGORIES, type SceneCategory } from "@/lib/scene/generator";
+import { GridSlotContent, type SlotIntent } from "@/components/CaseGridSlot";
 import { getLiveCases, type CaseStudy } from "../../content/work";
-import type { Media } from "../../content/work/types";
 
 export const metadata: Metadata = {
   description:
@@ -27,8 +23,6 @@ export const metadata: Metadata = {
  * (all 8 seed cases are `pending-approval` today) and the exact row
  * layout this file implements.
  */
-
-type SlotIntent = "image" | "video";
 
 // The row-by-row structure §6.1 specifies, expressed as [width fractions,
 // media-type intent per item]. Flattened, this is exactly 8 slots — one
@@ -66,13 +60,6 @@ const ROWS: { fractions: number[]; intents: SlotIntent[]; aspect: string[]; marg
   },
 ];
 
-function pickMedia(item: CaseStudy, intent: SlotIntent): Media | undefined {
-  return (
-    item.media.find((m) => m.type === intent) ??
-    item.media.find((m) => m.type === (intent === "video" ? "image" : "video"))
-  );
-}
-
 /** One flattened slot per grid cell across rows 1/3/4/5, paired 1:1 with
  * `getLiveCases()` in archive order — see the CatalogueBracket doc
  * comment in Bracket.tsx: index must be the item's position across the
@@ -97,73 +84,6 @@ function buildSlots(liveCases: CaseStudy[]) {
   );
 }
 
-function GridSlotContent({
-  intent,
-  aspect,
-  archiveIndex,
-  item,
-}: {
-  intent: SlotIntent;
-  aspect: string;
-  archiveIndex: number;
-  item?: CaseStudy;
-}) {
-  if (item) {
-    const media = pickMedia(item, intent);
-    const label = `${item.client.toUpperCase()} — ${item.title.toUpperCase()}`;
-    const body = media ? (
-      media.type === "video" ? (
-        <CaseVideo media={media} seedPrefix={item.slug} aspect={aspect} className="w-full" />
-      ) : (
-        <CaseMedia media={media} seedPrefix={item.slug} aspect={aspect} className="w-full" />
-      )
-    ) : null;
-    return (
-      <Link href={`/work/${item.slug}`} className="group block">
-        {body}
-        <CatalogueBracket index={archiveIndex + 1} className="mono-label mt-4 line-clamp-2 text-current">
-          {label}
-        </CatalogueBracket>
-      </Link>
-    );
-  }
-
-  // Empty-state cell: a real, on-brand placeholder — not a fabricated
-  // case. Category rotates through the full procedural-scene set purely
-  // for visual variety across the eight cells; it carries no meaning
-  // about which real case will eventually land here. See DECISIONS.md
-  // for why this renders per-cell rather than collapsing the whole grid
-  // to one empty-state block: the half/quarter/full-width rhythm is
-  // itself part of what §6.1 is demonstrating, even before real cases
-  // exist.
-  const category: SceneCategory = SCENE_CATEGORIES[archiveIndex % SCENE_CATEGORIES.length];
-  const seed = `home-empty-${archiveIndex}`;
-  return (
-    <div>
-      {intent === "video" ? (
-        <SceneVideo
-          category={category}
-          label="Case pending approval — placeholder loop"
-          seed={seed}
-          aspect={aspect}
-          className="w-full"
-        />
-      ) : (
-        <ScenePlaceholder
-          category={category}
-          label="Case pending approval — placeholder scene"
-          seed={seed}
-          aspect={aspect}
-          className="w-full"
-        />
-      )}
-      <p className="mono-label mt-4 text-smoke">
-        <Bracket>CASE PENDING APPROVAL</Bracket>
-      </p>
-    </div>
-  );
-}
-
 export default function HomePage() {
   const liveCases = getLiveCases();
   const slots = buildSlots(liveCases);
@@ -175,7 +95,7 @@ export default function HomePage() {
           {/* Row 1 */}
           <GridRow fractions={ROWS[0].fractions}>
             {slots[0].map((slot) => (
-              <GridSlotContent key={slot.archiveIndex} {...slot} />
+              <GridSlotContent key={slot.archiveIndex} {...slot} seedPrefix="home-empty" />
             ))}
           </GridRow>
 
@@ -195,21 +115,21 @@ export default function HomePage() {
           {/* Row 3 */}
           <GridRow fractions={ROWS[1].fractions} className={ROWS[1].marginClassName}>
             {slots[1].map((slot) => (
-              <GridSlotContent key={slot.archiveIndex} {...slot} />
+              <GridSlotContent key={slot.archiveIndex} {...slot} seedPrefix="home-empty" />
             ))}
           </GridRow>
 
           {/* Row 4 */}
           <GridRow fractions={ROWS[2].fractions} className={ROWS[2].marginClassName}>
             {slots[2].map((slot) => (
-              <GridSlotContent key={slot.archiveIndex} {...slot} />
+              <GridSlotContent key={slot.archiveIndex} {...slot} seedPrefix="home-empty" />
             ))}
           </GridRow>
 
           {/* Row 5 */}
           <GridRow fractions={ROWS[3].fractions} className={ROWS[3].marginClassName}>
             {slots[3].map((slot) => (
-              <GridSlotContent key={slot.archiveIndex} {...slot} />
+              <GridSlotContent key={slot.archiveIndex} {...slot} seedPrefix="home-empty" />
             ))}
           </GridRow>
         </div>

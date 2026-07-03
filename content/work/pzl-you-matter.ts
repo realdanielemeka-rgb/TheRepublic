@@ -6,6 +6,8 @@ export const pzlYouMatter: CaseStudy = {
   client: "PZ Cussons",
   title: "You Matter",
   services: ["Communication Strategy", "Content & Social"],
+  sector: "FMCG & Personal Care",
+  market: "Nigeria",
   year: 2025,
   brief:
     "PZ Cussons wanted a wellbeing message that felt earned, not bolted on — proof of care that didn't read as a press release.",

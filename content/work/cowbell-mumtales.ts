@@ -6,6 +6,8 @@ export const cowbellMumtales: CaseStudy = {
   client: "Cowbell",
   title: "Mumtales",
   services: ["Content & Social", "Communication Strategy"],
+  sector: "FMCG & Beverage",
+  market: "Nigeria",
   year: 2024,
   brief:
     "Cowbell wanted to speak to the mothers who buy the brand daily, not just the children who drink it — without losing its playful, family-first tone.",
