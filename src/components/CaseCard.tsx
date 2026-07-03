@@ -25,7 +25,7 @@ export default function CaseCard({ item }: { item: CaseStudy }) {
         <p className="mono-label text-smoke">{item.client}</p>
         <p className="display-type mt-1 text-2xl sm:text-3xl">{item.title}</p>
         <p className="mono-label mt-2 text-smoke">{item.services.join(" · ")}</p>
-        <Bracket className="mono-label mt-3 text-republic-press">
+        <Bracket className="mono-label mt-3 text-paper">
           <span className="bracket-fill">{resultLine(item)}</span>
         </Bracket>
       </div>

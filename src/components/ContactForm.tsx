@@ -114,7 +114,7 @@ export default function ContactForm() {
       </label>
 
       {error && (
-        <p role="alert" className="text-sm text-republic">
+        <p role="alert" className="text-sm text-paper underline decoration-republic decoration-2 underline-offset-4">
           {error}
         </p>
       )}

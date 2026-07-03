@@ -1,5 +1,6 @@
 import WorkStrip from "@/components/WorkStrip";
 import CaseCard from "@/components/CaseCard";
+import ThemeSection from "@/components/ThemeSection";
 import { chivitaStyleNSips } from "../../../../content/work/chivita-style-n-sips";
 import { pzlYouMatter } from "../../../../content/work/pzl-you-matter";
 import { zenithHomecoming } from "../../../../content/work/zenith-homecoming";
@@ -49,7 +50,11 @@ export default function DevWorkStripPage() {
         </p>
       </header>
 
-      <section data-testid="case-card-qa">
+      {/* Wrapped in theme="ink" — the only theme CaseCard is ever placed in
+          on a real page (Home's work-strip section, /work's grid), so this
+          QA harness's contrast matches production instead of falling back
+          to the default paper body background. */}
+      <ThemeSection theme="ink" as="div" className="px-0 py-8" id="case-card-qa">
         <h2 className="display-type text-2xl">CaseCard QA</h2>
         <p className="measure mt-2 text-sm text-smoke">
           Not otherwise reachable on any public route today — every seed case is still{" "}
@@ -62,7 +67,7 @@ export default function DevWorkStripPage() {
           <CaseCard item={pzlYouMatter} />
           <CaseCard item={zenithHomecoming} />
         </div>
-      </section>
+      </ThemeSection>
 
       <section data-testid="before-strip" className="mt-16 flex h-screen items-center justify-center bg-paper text-ink">
         <p className="display-type text-3xl">BEFORE STRIP — scroll down</p>

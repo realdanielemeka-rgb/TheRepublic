@@ -845,3 +845,319 @@ live).
 - [ ] Supply wordmark + speech-bubble "R" mark as SVG, hero film/stills,
       and per-case media once available — all currently render as
       `<Placeholder>` designed slots.
+
+## Phase C — Studio/Contact wire-up, SEO/OG/JSON-LD, full audit (this section, final)
+
+Continuing from checkpoint `346a051`, which had already rewired Home/
+Services/case-template to v2 and added per-page OG images. This session's
+job (per the brief): Studio, Contact, a reduced-motion pass on the real
+assembled pages, SEO/OG/JSON-LD completion, and a full pre-handoff audit.
+
+### First finding: Studio, Contact, `site.ts`, sitemap/robots, JSON-LD were
+### already correct — built in the v1 pass, never touched by Phase C's
+### checkpoint, but already conforming to the v2 spec verbatim
+
+Per this file's own "trust the code over the brief's summary" instruction,
+I read every file before touching anything. `src/app/studio/page.tsx` and
+`src/app/contact/page.tsx` were last modified in `6c03ee5` (the original v1
+rebuild) — `346a051`'s "in progress" checkpoint never got to them — but
+both already matched the v2 spec's exact copy, section order, and
+`id="method"` anchor target. `content/site.ts` already carried the correct
+final phone number (`+234 700 700 5252`) and address (`10 Onisiwo Road,
+Ikoyi, Lagos, Nigeria`) — the brief's warning that these were "likely
+empty/missing" didn't hold for this codebase's actual state. Root
+`layout.tsx` already had the Organisation JSON-LD block (name, url, logo,
+address, email, telephone, `sameAs` derived live from `content/site.ts`'s
+`socials` array so it can't go stale). `sitemap.ts`/`robots.ts` already
+listed Studio/Contact/Services/Work/legal-privacy and excluded `/dev/*`.
+None of this was re-built; all of it was verified against the spec line by
+line (metadata title templates, locked copy, bracket usage, budget-band
+options, button copy, success/error copy) and left alone once confirmed
+correct, rather than rewritten for the sake of motion.
+
+### Real defects found and fixed during the audit
+
+Everything above was "already right." The audit pass did find three real,
+confirmed contrast/focus defects — not hypothetical, verified by reading
+actual computed styles in Playwright against the real pages, not just by
+eye:
+
+1. **`CaseCard` and `WorkStrip`'s caption brackets used `text-republic-press`
+   on an `ink` background** (`src/components/CaseCard.tsx`,
+   `src/components/WorkStrip.tsx`). Both components are only ever placed
+   inside `theme="ink"` sections in production (Home's work-strip section,
+   `/work`'s grid). Measured contrast: Republic Press (`#1414cc`) against
+   ink (`#0a0a0a`) is **1.89:1** — nowhere near the 3:1 floor even for
+   large text, let alone 4.5:1 for the caption's actual small mono-label
+   size. This directly violates the spec's own contrast law and the
+   forbidden-list line "Republic Blue never carries body text." Fixed by
+   switching both to `text-paper` (19.80:1 against ink) — Bracket has no
+   built-in colour, so this is a plain class swap, no structural change.
+   Re-verified in Playwright post-fix: both read 19.80:1.
+2. **`ContactForm`'s validation-error text used `text-republic`** on the
+   same always-ink Contact page — `#1f1fff` vs `#0a0a0a` is **2.54:1**,
+   also failing AA. Fixed by moving the colour to `text-paper` (still
+   19.80:1) and keeping the Republic Blue accent as an `underline
+   decoration-republic` instead of the text colour itself — satisfies the
+   letter of "Republic Blue never carries body text" rather than just the
+   contrast number, while keeping a visible brand-coloured accent on the
+   error state. Verified by triggering a real validation error (invalid
+   email) in Playwright and reading the rendered `[role="alert"]` text's
+   computed colour/background.
+3. **Nav's keyboard focus ring had no reliable contrast against whatever
+   theme happened to be scrolled beneath the fixed header.** `Nav`'s
+   `<header>` is mounted once in the root layout and is deliberately
+   outside every `ThemeSection` (§4.6.7's own reasoning: it has to work
+   over ink/republic/paper alike, which is why its link *text* already
+   used the `mix-blend-difference` trick). But `globals.css`'s theme-scoped
+   focus-ring override (`[data-theme="ink"] :focus-visible { outline-color:
+   paper }`) is written as a descendant selector keyed to an *ancestor*
+   `data-theme` attribute — and Nav has no such ancestor, so it always fell
+   through to the plain default (`outline: 2px solid var(--color-republic)`),
+   i.e. **2.54:1 against the ink hero section every real page opens on**,
+   under the WCAG 1.4.11 non-text 3:1 minimum for a focus indicator.
+   Confirmed by tabbing through the real Home page in Playwright and
+   reading `getComputedStyle` on the focused link, then visually with a
+   screenshot (the ring was barely a sliver against the dark hero).
+   Text's own mix-blend trick doesn't extend to `outline` automatically
+   (outline is a separate paint layer from the blended text span), so the
+   fix is a dedicated rule: `header :focus-visible { outline: 2px solid
+   var(--color-paper); outline-offset: 2px; box-shadow: 0 0 0 4px
+   var(--color-ink) }` — a two-tone paper+ink "halo" that stays legible
+   regardless of which of the three themes is behind the bar at the time,
+   rather than trying to pick one colour that works everywhere (none of
+   the five tokens does). Re-verified: outline now reads `rgb(255,255,255)`
+   at 2px (19.80:1) with the ink box-shadow ring visible in the
+   screenshot.
+
+None of these three were touched by the earlier phases' own Playwright
+contrast checks because those checks (Phase A's accent-clamp math, Phase
+B's component-level a11y passes) verified the *systems* they were built
+for correctly; nobody had previously walked the *composed* real pages
+specifically checking every rendered text/background pair against the
+5-token palette + the accent system. This session's audit did that
+systematically (grep for every `text-republic`/`text-republic-press`
+non-hover usage, cross-referenced against the actual `ThemeSection` each
+one renders inside), which is what surfaced these three — flagging the
+method in case a future content addition reintroduces the same class of
+bug: **grep for `text-republic`/`text-republic-press` in new components,
+and confirm the theme it's rendered inside before assuming a passing
+component-level check means the composed page is fine.**
+
+### Dev harness fix: `/dev/work-strip`'s CaseCard QA section wasn't wrapped
+### in `theme="ink"`
+
+Same root cause as defect #1 above, one layer further out: the harness
+mounted `<CaseCard>` directly on the page's default (unthemed, paper)
+background rather than reproducing its real ink placement, so a
+Playwright contrast check against the harness read a false "passing"
+number purely because white-on-white text happened to still be
+white-on-*paper* by coincidence of the old blue-on-white combination,
+masking the real ink-background bug documented above until checked
+against an actual production placement. Fixed by wrapping the CaseCard QA
+section in `<ThemeSection theme="ink">` in `src/app/dev/work-strip/
+page.tsx` — the harness now matches production context, and the fix above
+reads correctly there too (19.80:1). Lesson applied: a `/dev/*` QA
+harness is only a useful regression check if it reproduces the *theme
+context* a component actually ships in, not just the component in
+isolation.
+
+### `eslint.config.mjs` ignore globs hardened against nested worktree checkouts
+
+Discovered while re-running `npm run lint` mid-session: this sandbox has a
+harness-managed git worktree at `.claude/worktrees/agent-<id>/` (not part
+of this repo's tracked history, not created by anything in this session's
+own tool calls, locked by the harness itself) that carries its own stale
+`.next` build output. `eslint.config.mjs`'s ignores were written as
+`".next/**"` etc — which only matches a `.next` directory at the lint
+invocation's own root, not one nested three directories down inside that
+worktree — so a bare `npm run lint` from the repo root was transitively
+scanning that worktree's *compiled, minified* JS output and reporting
+~6,500 unrelated problems. Confirmed real project lint was always clean by
+running `npx eslint src content scripts` directly (zero output, before and
+after). Fixed the ignore patterns to `"**/.next/**"` etc so `npm run lint`
+is correct regardless of what else happens to be checked out alongside
+this repo in a given sandbox — a real, if environmental, robustness fix,
+not a workaround left in place. Also explains an earlier hour of confusing
+stale-chunk-hash 500s during this session's own manual `next build`/`next
+start` cycles: multiple overlapped background server processes (my own,
+from repeated `npm start`/`npm run dev` invocations across tool calls)
+were left listening on the same ports after a rebuild changed chunk
+hashes underneath them — resolved by killing every stray Next.js process
+bound to this repo's working directory and doing one clean, sequential
+build → start cycle before trusting any Playwright reading. Not a code
+defect; noted here only so a future session recognises the symptom (a
+page loads but a specific `_next/static/chunks/*.js` 404s/500s inconsistently)
+immediately as "stale server process," not as an application bug.
+
+### Reduced-motion pass on the real assembled pages — all confirmed passing
+
+Re-verified every pattern from Phase B's component-level checks against
+the actual composed pages (`page.emulateMedia({ reducedMotion: 'reduce' })`),
+not just the isolated `/dev/*` harnesses, per this session's brief:
+
+- **WorkStrip**: Home currently renders `<CasesEmptyState>` instead of
+  `<WorkStrip>` (zero live cases — expected, see Phase A/B's
+  "zero live cases" decision, unchanged), so neither the pinned nor static
+  variant mounts on the real page today; re-confirmed the fallback
+  directly on `/dev/work-strip` instead (`work-strip-pinned`: 0 matches,
+  `work-strip-static`: 1 match under reduced motion) — the moment a case
+  goes live this same check should be re-run against Home/`/work`
+  directly.
+- **ServiceSwap**: real Home and `/services` both correctly render the
+  stacked fallback (`service-swap-sticky-frame`: 0 matches,
+  `service-swap-stacked`: 1 match, all six images at `opacity: 1`) under
+  reduced motion.
+- **HoverRevealText** (Home's manifesto section): confirmed the popover
+  markup never mounts (`hover-reveal-popover`: 0 matches) and the
+  "collect below the paragraph" fallback renders all three referenced
+  images with visible `<figcaption>`s (`provoke`, `participation`,
+  `citizens`).
+- **Preloader**: confirmed on the real Home page that the `"flashing"`
+  phase is never observed under reduced motion — the `data-phase`
+  attribute goes straight `wordmark → exit → (unmounted)`.
+- **Marquee**: confirmed `.marquee-track`'s computed `animationName` is
+  `"none"` under reduced motion on the real Home page (the sitewide
+  `@media (prefers-reduced-motion: reduce)` rule in `globals.css`, not a
+  per-instance gate — exactly as documented in Phase B's notes).
+- **MixBlendHover** (Nav + CtaBand): confirmed computed
+  `transitionDuration` collapses to ~1e-6s under reduced motion on the
+  real Home page, and the hover/focus state change itself (the block
+  appearing, the label inverting) still fires — motion removed, state
+  change preserved, as designed.
+
+### SEO/OG/JSON-LD — verified, not rebuilt
+
+Root `layout.tsx`'s Organisation JSON-LD, every route's `next/og`
+opengraph-image (Studio's and Contact's included — both render correctly,
+confirmed by fetching them directly and checking the returned PNG's
+dimensions), the `"%s — The Republic"` title template (confirmed resolved
+on Studio and Contact specifically, not just assumed from the template
+existing), and `sitemap.ts`/`robots.ts`'s route coverage were all audited
+against the spec and found already correct from earlier phases — nothing
+in this section needed rebuilding, only confirming.
+
+### Full audit results (this session)
+
+- **Typo/British-English sweep**: read every user-facing string across
+  every real page (not just Studio/Contact) plus `content/*.ts` and
+  `content/work/*.ts`. Zero American spellings, zero typos found. No
+  changes needed.
+- **Link check**: every literal `href="/…"` and every `href={\`/work/${…}\`}`
+  site-wide resolves to a real, live route — the dynamic case links are
+  gated by the same `getLiveCases()`/`getLiveCaseBySlug()` pool that
+  generates `/work/[slug]`'s static params, so they can't point at a
+  route that doesn't exist. `/studio#method` confirmed to actually scroll
+  the method section to the viewport top (measured
+  `getBoundingClientRect().top ≈ 0` after a direct anchor-URL navigation).
+- **Contrast**: full sweep, not spot-check — grepped every non-hover
+  `text-republic`/`text-republic-press` usage site-wide and checked each
+  against the theme it actually renders inside; found and fixed the three
+  defects documented above. Re-ran `npm run palette` (all eight generated
+  accents still pass AA, 14.55:1–18.88:1 against paper, unchanged from
+  Phase A) and re-confirmed the `hover:text-republic` link-hover instances
+  (Footer, CtaBand, Home's client list, etc.) are an accepted exception —
+  transient hover-only states, not the resting/body-text case the "never
+  carries body text" rule targets.
+- **Playwright visual + perf sanity**: screenshotted Home/Work/Studio/
+  Services/Contact at 360/768/1024/1440/1920, scrolling through each page
+  first so `whileInView`-gated `<Reveal>` content actually renders before
+  the full-page screenshot is taken (a naive full-page screenshot without
+  a pre-scroll undercounts below-fold content — worth remembering for any
+  future visual QA pass on this codebase). Zero horizontal overflow at
+  360px on any real route. Zero console errors beyond one expected,
+  environment-only entry (`/_vercel/insights/script.js` 404s under local
+  `next start`/`next dev` — Vercel Analytics' script only resolves on
+  actual Vercel infrastructure, confirmed harmless and not present at all
+  once accounted for). Hero LCP element on every page is the poster/
+  placeholder `<ScenePlaceholder>` image, never a live `<video>` (no
+  `<video>` tag exists anywhere in this codebase yet, per Phase A/B's
+  placeholder strategy).
+- **Forbidden-content grep**: repo-wide (`src/`, `content/`) for emoji,
+  "lorem ipsum", literal "Submit" button text, gradient/shadow utility
+  classes, "purple", any `status: 'live'` seed case, third-party/template
+  footer credits, AI-portrait/stock-photo references, autoplay audio,
+  custom cursors, default Next.js favicon. Zero matches beyond comments
+  *documenting* the rule (e.g. Placeholder.tsx's own comment mentioning
+  "lorem ipsum" as the thing it avoids).
+- **Naming/locked-copy consistency**: "The Republic" used consistently
+  (the one bracketed "[ REPUBLIC ]?" in CtaBand is the bracket *device*,
+  not a naming-rule violation — same pattern the spec itself uses for the
+  bracket motif). Leadership titles exact and consistent between
+  `content/site.ts`, `content/team.ts`, and Studio's render. Footer reads
+  exactly "© 2026 The Republic. Lagos." with the Legal link present and
+  socials correctly hidden (empty array).
+
+### Verification run (final)
+
+`npm run lint`, `npx tsc --noEmit`, `npm run build` all clean on a single,
+freshly-rebuilt `.next` output (no stray processes serving a stale build
+underneath the check — see the eslint/worktree note above for why that
+mattered this session). `npm start` against that production build, hit
+every real route with Playwright (`/`, `/work`, `/studio`, `/services`,
+`/contact`, `/legal/privacy`, `/sitemap.xml`, `/robots.txt`, plus every
+`/dev/*` route confirmed 404 and a genuine unknown path confirmed 404) —
+all correct status codes, no unexpected console errors.
+
+### Final consolidated TODO punch-list (carried forward from §2 and §8,
+### unchanged by this phase — nothing below was resolvable inside this
+### sandbox; all require real-world input from Daniel/the client)
+
+**§2 — confirm before public launch:**
+- [ ] Confirm Ola Olowu's and Daniel Emeka's final leadership titles.
+- [ ] Supply real, confirmed social handles in `content/site.ts` (ships
+      with zero social icons until then — correct, not a bug).
+- [ ] Supply numeric case results per project once client sign-off lands
+      (`results: []` on all eight seeds renders the "Results under NDA"
+      fallback correctly in the meantime).
+- [ ] Confirm the Kigali office publicly before flipping
+      `flags.showKigali` (currently `false`, verified still hidden this
+      session).
+- [ ] Pull the canonical six Reaction Standard laws from the master doc
+      (currently 2 live + 4 pending `[ LAW PENDING ]` slots — verified
+      still rendering correctly on `/studio#method` this session, not
+      rewritten).
+- [ ] Confirm display rights per client logo before deploy; swap the
+      text-based roster in `content/clients.ts` for real SVG logos once
+      cleared.
+- [ ] Confirm the eight seed case studies (brief/idea copy, service tags,
+      years) with Daniel — every case file still marked
+      `// TODO: verify with Daniel`; all eight remain `pending-approval`,
+      so none render publicly yet (by design).
+- [ ] Confirm final wider-team roster and commission the team
+      photography session (B/W, consistent crop) to replace `<Avatar>`
+      monogram placeholders on Studio.
+
+**§8 — real assets to source once available:**
+- [ ] Wordmark + speech-bubble "R" mark as SVG (currently type-only/
+      `<Bracket>`-based everywhere, including the newly-audited Studio/
+      Contact pages).
+- [ ] Hero film/stills for Home (currently `<ScenePlaceholder>` with
+      persistent "PLACEHOLDER — REPLACE WITH …" captions).
+- [ ] Per-case media (video + stills) for all eight seed cases, once each
+      clears client approval.
+- [ ] Team photography (leadership + wider roster) to replace `<Avatar>`
+      initial-monogram placeholders.
+- [ ] Client logos (pending display-rights confirmation above).
+- [ ] Confirmed social URLs for `content/site.ts`'s `socials` array (also
+      feeds the JSON-LD `sameAs` list automatically once populated — no
+      code change needed there).
+- [ ] On-camera talent releases for any real people appearing in future
+      case media, ahead of publishing that media.
+
+**Housekeeping, not client-facing:**
+- [ ] All eleven `/dev/*` QA routes (`/dev/placeholders`, `/dev/
+      scroll-test`, `/dev/work-strip`, `/dev/hover-reveal`, `/dev/
+      service-swap`, `/dev/case-template`) remain in place, still
+      404-gated in production (re-confirmed this session on a fresh
+      build) — no new dev routes were added or removed this phase.
+      Recommended next prune: once WorkStrip is live on Home with a real
+      case, `/dev/work-strip`'s pinned-strip demo section becomes
+      redundant (its CaseCard QA sub-section may still earn its keep a
+      little longer, until at least one case is live on a real page).
+- [ ] `generator.ts`'s known sub-pixel `Math.cos`/`Math.sin` hydration
+      warning (documented in Phase B's section above) is still present,
+      unchanged, confirmed via the same `insurance`-category symptom on
+      `/dev/work-strip` this session — still dev-console-only, still not
+      user-visible or build-breaking, still not fixed (out of scope,
+      same reasoning as Phase B).

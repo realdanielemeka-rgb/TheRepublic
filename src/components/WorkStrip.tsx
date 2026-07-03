@@ -64,7 +64,7 @@ function ResponsiveStrip({ cases, className }: WorkStripProps) {
 function CaseCaption({ item, index, className }: { item: CaseStudy; index: number; className?: string }) {
   return (
     <div className={className}>
-      <Bracket className="mono-label text-republic-press">
+      <Bracket className="mono-label text-paper">
         {String(index + 1).padStart(2, "0")} — {item.client.toUpperCase()}
       </Bracket>
       <p className="display-type mt-1 text-xl sm:text-2xl">{item.title}</p>

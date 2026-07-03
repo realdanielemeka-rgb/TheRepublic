@@ -72,6 +72,20 @@ body {
   outline-color: var(--color-paper);
 }
 
+/* Nav is a fixed-position bar sitting outside every ThemeSection (it scrolls
+   over ink/republic/paper content alike), so the theme-scoped overrides
+   above never match it — confirmed while auditing focus states: its links'
+   focus ring fell through to the plain :focus-visible default (Republic
+   Blue), which is only ~2.5:1 against the ink hero sections most pages open
+   on, under the WCAG 1.4.11 non-text 3:1 minimum for a focus indicator.
+   Fix: a two-tone halo (paper ring + ink ring) that stays ≥3:1 regardless of
+   which theme happens to be scrolled beneath the bar at the time. */
+header :focus-visible {
+  outline: 2px solid var(--color-paper);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px var(--color-ink);
+}
+
 .mono-label {
   font-family: var(--font-mono);
   font-size: 0.75rem;
