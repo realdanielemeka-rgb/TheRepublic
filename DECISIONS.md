@@ -1548,3 +1548,321 @@ scoping.
 - `useAppearance()` (`@/lib/appearance`) is the hook for any component
   that needs to read or react to the user's dark/light choice going
   forward, beyond the nav toggle and `theme="auto"` itself.
+
+---
+
+## v3 Phase B — content layer v3 + homepage flowing grid (this section)
+
+Scope: §7 content-layer changes (heritage removal, leadership bio trims,
+Journal content type, case media video budget) and §6.1's homepage
+rebuild — §11 build-order steps 4-6. Phase A's grid engine, appearance
+toggle, `CatalogueBracket`, and GSAP removal are consumed as-is, not
+rebuilt (see the previous section's "Handoff to Phase B" list — every
+item on it was used).
+
+### Content layer
+
+- **`content/clients.ts`**: `tier`/`heritageWork`/`HeritageCard` deleted
+  outright — `Client` is now just `{ name: string }`, and the roster is
+  the eight current clients only. The one other call site,
+  `src/app/studio/page.tsx`'s "BEFORE THE REPUBLIC" section (v2's
+  Budweiser/Guinness/NamPost heritage-work cards), is also deleted
+  outright rather than left importing a type that no longer exists —
+  Phase C owns the full Studio rebuild, but leaving that section in a
+  broken-import or still-heritage-rendering state for one phase would
+  violate v3's LOCKED "no heritage tier, anywhere" rule in the interim,
+  which matters more than keeping Studio's diff minimal this phase. A
+  `v3 NOTE` doc comment marks the deletion for Phase C.
+- **`content/team.ts`**: Ola Olowu's bio rewritten to 59 words (was ~120,
+  spec caps at ~60), Daniel Emeka's to 56 — both now describe role/focus
+  *at* The Republic only. Ola's old bio's two forbidden references
+  ("Guinness Africa Special", "the launch of Budweiser in Nigeria") are
+  gone, not softened — replaced with what he actually chairs (strategic
+  direction, cultural insight over borrowed formats), not a scrubbed
+  version of the same career narrative. Daniel's bio already had no
+  pre-Republic employer references; it was trimmed for length only, same
+  Republic-only scope preserved.
+- **`content/site.ts`**: added `defaultAppearance: "dark"` as a content-
+  layer documentation flag — the actual mechanism is still
+  `src/lib/appearance.ts`'s `DEFAULT_APPEARANCE` constant (a boot-script
+  string can't `import` this module, same constraint as the grid
+  engine's boot script, see the Phase A section above); the two must be
+  kept in sync by hand if the default ever changes. `flags.showKigali`
+  was already `false` — confirmed, not changed.
+- **`content/journal/types.ts` + `content/journal/index.ts`**: new. Body
+  format is **stored markdown** (a plain string field), not pre-rendered
+  HTML and not an `.mdx` file per entry — chosen because (a) entries live
+  as plain data objects alongside every other content file in this repo
+  (`content/work/*.ts`, `content/team.ts`), and introducing `.mdx` files
+  here would mean a second, structurally different content-authoring
+  pattern for exactly one content type; (b) storing markdown as a string
+  keeps `JournalEntry` a plain serialisable object with no build-time
+  MDX-compilation step, consistent with how every other content file in
+  this repo works; (c) rendering is explicitly deferred to Phase C
+  (`react-markdown` vs `next-mdx-remote` is a rendering-layer decision,
+  not a storage-format one) — Phase C can render a markdown string with
+  either without touching this file. `journalEntries` ships genuinely
+  empty (`[]`), not seeded with placeholder/fake entries — inventing a
+  press mention or award would violate the same zero-fabricated-proof
+  rule that keeps every case's `quote` field unpopulated. `getJournalEntries(type?)`
+  is the accessor Phase C should read through (sorts newest-first,
+  filters by `type` when given) — mirrors the `getLiveCases()`/
+  `getFeaturedCases()` accessor pattern in `content/work/index.ts` rather
+  than having call sites import the raw array.
+- **Case media video budget**: each of the 8 seed cases already had
+  exactly one `type: "video"` entry (the `hero` kind). Converted each
+  case's `wide` entry from `image` to `video` (added a `poster`, kept the
+  same `src` placeholder id, appended "(grid loop)" to the `alt` text) so
+  every case now ships 2 video entries — enough for the homepage's
+  video-native grid to draw a video from a case without exhausting it
+  down to zero remaining videos. Did not attempt the full "2-3 grid-
+  weight loops + 8-12 stills + 1 detail sequence" shot-list rebuild
+  §8 describes — that's a production/asset-scoping exercise, explicitly
+  out of scope this phase per the brief, and every media item is still a
+  procedural placeholder either way.
+
+### Real, genuinely-playing `<video>` placeholders — `src/components/SceneVideo.tsx`
+
+§6.1's Row 1 needs a native video cell that's actually playing, not a
+static image styled to look like it could be — but this sandbox has no
+`ffmpeg`, no video-encoding library, and (per Phase A's "Placeholder
+media strategy" section above) no reachable image/video CDN either. No
+encoded video file could be produced or fetched by any means available
+in this environment.
+
+The approach: `SceneVideo`/`CaseVideo` draw the *exact same* procedural,
+seed-deterministic, five-token scene `generateScene()` already produces
+for `<ScenePlaceholder>`, but onto a `<canvas>` (via a hand-written
+switch over each `SceneShape` variant — circle/rect/line/polyline —
+mirroring `ScenePlaceholder.tsx`'s own SVG-element switch), animate it
+with a slow, seeded, per-shape opacity drift (`requestAnimationFrame`,
+gated to 12fps/2fps normal/reduced-motion), and feed the canvas's own
+`captureStream(fps)` `MediaStream` directly into a real `<video>`'s
+`srcObject`. No file exists anywhere — the browser is genuinely decoding
+a live stream and painting real, changing frames, frame over frame.
+Verified in Playwright: every such `<video>` reports `readyState: 4`
+(`HAVE_ENOUGH_DATA`), `paused: false`, `hasSrcObject: true`, and the
+required `autoplay`/`muted`/`loop`/`playsinline` attributes are real
+DOM properties, not just styled to look that way. `muted` is load-
+bearing here, not decorative — a `MediaStream`-sourced `<video>` won't
+satisfy autoplay policy without it.
+
+Kept in its own file rather than added as a mode flag on
+`ScenePlaceholder.tsx`: canvas/rAF/`MediaStream` all require a client
+boundary, and `ScenePlaceholder.tsx`'s own doc comment states it's
+deliberately Server-Component safe (no hooks) so the large majority of
+plain-SVG media slots across the site don't ship extra client JS.
+`ASPECT_BY_KIND` was exported from `ScenePlaceholder.tsx` so
+`SceneVideo.tsx` doesn't duplicate the per-kind aspect-ratio table.
+Colour resolution (`var(--color-x)` → an actual canvas `fillStyle`)
+reads the live custom property via `getComputedStyle` at draw time (so a
+future palette edit in `globals.css` is still respected), falling back
+to a hand-copied hex mirror only if that read is unavailable — same
+"boot-script mirror, live value wins" pattern as
+`GRID_ENGINE_BOOT_SCRIPT`/`APPEARANCE_BOOT_SCRIPT` in the Phase A
+section above.
+
+Reduced motion: amplitude/speed are turned down (not fully removed) —
+this is ambient background media, not a UI transition with a resolved
+end state, so full-stop doesn't obviously apply the same way it does to
+`Reveal`/`GridRow`'s entrance stagger; a much subtler drift felt like the
+more defensible reading of "collapse motion" for a decorative loop that
+has no "settled" frame to jump to.
+
+### `src/lib/useGridCols.ts` + `src/lib/gridSpans.ts` — turning `--grid-cols` into real `grid-column: span N`
+
+§4.5's own guidance is `grid-template-columns: repeat(var(--grid-cols), 1fr)`
+with items spanning `grid-column: span N`. The complication: `--grid-cols`
+isn't a fixed number — it's 6-8 on mobile, 12-16 on desktop, chosen by
+`pickColumnCount(width)` — so "half width" can't be a single hardcoded
+Tailwind `col-span-N` class; it has to be computed from whatever the
+*actual current* column count is.
+
+`useGridCols()` is a small `useSyncExternalStore` hook that reads the
+live `--grid-cols` custom property back out of `document.documentElement`
+or width and re-reads on `resize`/`orientationchange`. It doesn't
+duplicate `GridEngineClient`'s own debounced resize handling — it reads
+*after* GridEngineClient has already written the new value, with its own
+180ms delay (strictly longer than `GridEngineClient`'s 120ms debounce) so
+it never reads a stale number mid-resize. `computeSpans(cols, fractions)`
+(`src/lib/gridSpans.ts`) then turns width fractions like `[0.5, 0.25,
+0.25]` into integer spans that always sum exactly to `cols` (largest-
+remainder rounding, the standard method for "integers that must sum to a
+fixed total") — this matters because independently rounding each
+fraction can leave a 1-column gap or overflow depending on whether
+`cols` divides evenly, which would either leave a visible gap in the row
+or silently push the last item onto an unwanted second line.
+
+`src/components/WorkGrid.tsx`'s `<GridRow fractions={[...]}>`/`<GridCell>`
+are the reusable primitives built on top of this — genuinely reusable,
+not homepage-specific: no homepage copy, case data, or row sequencing
+lives in that file, only the span math + the `whileInView` stagger
+(`staggerChildren: 0.04`, ~40ms per item, collapsing to a 0.15s opacity-
+only fade under reduced motion, mirroring `Reveal.tsx`'s existing
+pattern/hook choice). **Phase C's Work index page can import `<GridRow>`/
+`<GridCell>` directly** rather than re-deriving the span math — this was
+built with that reuse in mind. The specific 6-row §6.1 sequence (which
+rows get which fractions, which slots are video vs image, the manifesto/
+CTA placement) lives in `src/app/page.tsx` itself and is homepage
+content, not part of the reusable layer.
+
+### Homepage empty-state treatment — the real design decision
+
+All 8 seed cases are `status: "pending-approval"`, so `getLiveCases()`
+returns `[]` today and every media slot in rows 1/3/4/5 has no real case
+to show. Two options were on the table: collapse the whole grid to one
+`<CasesEmptyState>`-style block (the existing "CASES IN REVIEW" pattern
+used on `/` pre-Phase-B and on `/work`), or keep the full row rhythm and
+render an honest placeholder in each cell.
+
+**Chose the latter, per-cell placeholders** — not just because the brief
+suggested considering it, but because §6.1 states outright that the grid
+*rhythm itself* (half/quarter/full-width proportions, video mixed with
+stills across a row) is "the highest-priority visual proof point," and
+that proof is exactly as valid before real cases exist as after —
+collapsing eight cells into one static "check back soon" panel would
+throw away the one thing this phase was specifically asked to
+demonstrate. Each empty cell:
+
+- Renders a real procedural placeholder (`<ScenePlaceholder>`/`<SceneVideo>`),
+  category chosen by rotating through the full ten-category set
+  (`archiveIndex % SCENE_CATEGORIES.length`) purely for cell-to-cell
+  visual variety — the category carries no meaning about which real case
+  will eventually occupy that slot.
+- Carries an honest `[ CASE PENDING APPROVAL ]` label (`<Bracket>`,
+  reusing the same device as `<CatalogueBracket>`) instead of a
+  fabricated client/title pair — never a real case's `client`/`title`
+  rendered as if live, which would violate "pending never renders
+  publicly" even in a decorative/placeholder-adjacent context.
+- Is not a link (no `/work/[slug]` destination exists yet for it),
+  unlike a real slot, which wraps in `<Link href={`/work/${item.slug}`}>`.
+
+**Fully data-driven, not hardcoded**: `buildSlots()` zips `getLiveCases()`
+1:1 against the 8 slots in archive order (rows 1/3/4/5, left to right,
+top to bottom) — the moment cases start clearing approval, each one
+fills the next slot automatically, `CatalogueBracket`'s index tracks its
+real position in the whole archive, and the exact same row/fraction
+layout renders with zero code changes. The 8-slot/8-seed-case count
+lining up exactly is coincidental to this seed set, not a hardcoded
+assumption — `buildSlots` degrades gracefully (real cases fill from slot
+0, remaining slots stay placeholder) for any count above or below 8.
+
+**Caption legibility at extreme mobile widths**: found via this phase's
+own Playwright/screenshot pass — at the narrowest mobile band (6 cols),
+a "quarter" cell can round down to a single ~48px-wide column, and the
+placeholder's internal overlay caption (`"PLACEHOLDER — REPLACE WITH …"`,
+a full sentence) was wrapping unbounded and visually dominating the tiny
+cell. Fixed by clamping both the internal overlay caption
+(`ScenePlaceholder.tsx`/`SceneVideo.tsx`) and the per-cell label under
+each grid item (`CatalogueBracket`/the `CASE PENDING APPROVAL` line in
+`page.tsx`) to `line-clamp-2`, with the full text still available via
+`role="img" aria-label` (already existing) and a new `title` attribute
+on the overlay span. No DOM-level overlap existed at any point (verified
+via `getBoundingClientRect()` on every grid cell before this fix too) —
+this was a text-legibility issue inside a correctly-laid-out cell, not a
+layout bug, but a real one worth fixing since a caption that becomes
+unreadable mush undermines the "grid rhythm is part of the proof" point
+above.
+
+### §6.1 — the exact row structure `src/app/page.tsx` implements
+
+One continuous `<ThemeSection theme="auto">` (this is the first real use
+of the `"auto"` theme the previous phase built and flagged as unused —
+it's the correct fit for "the page's default reading surface," per that
+section's own framing) wraps rows 1 through 5; the closing CTA is a
+separate `<ThemeSection theme="republic">` via the existing, unmodified
+`<CtaBand>`, per §6.1's "styled as a colour field, not media" requirement.
+
+| row | layout | content today | content once live |
+|---|---|---|---|
+| 1 | half + half | 2 empty-state cells (image, video) | 1st 2 archive cases (image, video) |
+| 2 | full width | `<ManifestoLine>` word-by-word `whileInView` stagger + "All work →"/"Our services →" | unchanged — never media |
+| 3 | half + quarter + quarter | 3 empty-state cells (video, image, image) | archive cases 3-5 |
+| 4 | full width | 1 empty-state cell (video) | archive case 6, hero-weight |
+| 5 | half + half | 2 empty-state cells (image, video) | archive cases 7-8 |
+| final | full width, Republic Blue field | `<CtaBand>`, unchanged | unchanged |
+
+`<ManifestoLine>` (new) does the word-by-word stagger via a `motion`
+`staggerChildren` container (not GSAP), reusing `<Bracket>` (not
+`<BracketFill>`, which types in on a mount timer rather than a scroll
+trigger — a different mechanism for a different trigger) for the
+"CITIZENS" bracket-fill treatment. The two buttons beneath it
+deliberately do *not* use `<MixBlendHover>` — that device is reserved for
+exactly Nav links + the Start-a-project button + one primary CTA per page
+(`CtaBand`) per the existing §4.6.7 rule documented in the Phase A/B
+sections above; these are secondary links, styled like the homepage's
+existing `mono-label … hover:text-republic` pattern instead.
+
+### Verification run (this phase)
+
+`npx tsc --noEmit`, `npx eslint src content scripts`, and `npm run build`
+(Turbopack, Next 16.2.10) all clean. `npm run palette` re-run after the
+case media video-budget change (adding video entries to each case) —
+still produces 8 valid accents, all AA-passing against paper, confirming
+the script's slug-hash approach is unaffected by media-array shape
+changes (it never reads `media` at all).
+
+`npm start` against the production build, driven with Playwright
+(`chromium`, `/opt/pw-browsers/chromium-1194/chrome-linux/chrome`):
+
+- Grid cols at all five required breakpoints match the Phase A table
+  exactly (6/8/13/14/16 at 360/768/1024/1440/1920) — the homepage's own
+  `<GridRow>` doesn't recompute or override these, it only reads them.
+- 4 real `<video>` elements present on `/` at 1440px (rows 1, 3, 4, 5's
+  video slots), each with `autoplay`/`muted`/`loop`/`playsInline` true,
+  `readyState: 4`, `paused: false`, `hasSrcObject: true` — genuinely
+  playing, not styled placeholders.
+- No horizontal overflow (`document.documentElement.scrollWidth <=
+  clientWidth`) at 360/375/768/1024/1440/1920.
+- `whileInView` stagger: under `page.emulateMedia({reducedMotion:'reduce'})`,
+  the manifesto's first word and grid items resolve to `opacity: 1`
+  near-instantly on scroll-into-view; under normal motion, same resolved
+  end state after the transition completes — both verified via a real
+  incremental `scrollTo` loop (not a single `fullPage` screenshot, which
+  turned out to be a false-negative signal: Chromium's `fullPage`
+  screenshot capture does not itself trigger `IntersectionObserver`
+  entries the way scrolling through the viewport does, so a naive single-
+  shot `fullPage` screenshot right after `networkidle` showed rows 3-5 as
+  blank/uncomposited even though a real user scrolling down sees them
+  render correctly — re-verified by manually `scrollTo`-ing in ~300-400px
+  increments before capturing, which is the accurate test).
+- No-JS (`javaScriptEnabled: false`): `/` returns 200, `--grid-cols`
+  reads the static CSS fallback (`4` at 375px), real `<a href="/work">`
+  anchors present — unchanged from Phase A, confirmed still true with
+  the new homepage markup specifically (not just "in the abstract," per
+  this phase's own instruction).
+- `/`, `/work`, `/studio`, `/services`, `/contact`, `/legal/privacy` all
+  200; `/studio` confirmed to contain none of "Budweiser"/"Guinness"/
+  "NamPost"/"BEFORE THE REPUBLIC" post-edit, and to render both
+  leadership bios' new Republic-only copy.
+- `grep -rn "gsap\|ScrollTrigger"` — zero import/call sites (prose
+  comments only, same as the Phase A baseline). `grep -rn "heritage"` —
+  zero outside doc comments explaining the removal.
+  `grep -rn "Guinness\|Budweiser\|NamPost"` — zero outside the one
+  `studio/page.tsx` doc comment describing what was deleted. `grep -rn
+  "purple"` — zero.
+
+### Handoff to Phase C
+
+- The Journal content API is `content/journal/index.ts`'s
+  `getJournalEntries(type?)` — returns `[]` today by design, sorted
+  newest-first when non-empty. `JournalEntry.body` is a markdown string;
+  pick `react-markdown` or `next-mdx-remote` for rendering, nothing here
+  assumes either.
+- `<GridRow>`/`<GridCell>` (`src/components/WorkGrid.tsx`) are reusable —
+  built with the Work index page specifically in mind. The homepage's
+  specific row/fraction/slot sequence in `src/app/page.tsx` is not
+  reusable as-is (it's homepage content), but the primitives underneath
+  it are.
+- `src/components/SceneVideo.tsx`'s `<CaseVideo>` (real, genuinely-
+  playing `<video>` placeholder) is available anywhere a case's video
+  media needs to render as an actual video element rather than
+  `<ScenePlaceholder isVideo>`'s static SVG-with-badge treatment — the
+  Work index page and case-detail template are both reasonable next
+  call sites.
+- `src/app/studio/page.tsx`'s heritage section is fully removed, not
+  just stubbed — Phase C's Studio rebuild starts from a page with no
+  heritage content to strip, only the remaining five sections (hero,
+  three-line manifesto, method/laws, leadership, footprint) to work with.
+- `content/clients.ts`'s `Client` type lost its `tier` field — any Phase
+  C component reading client data should expect `{ name: string }` only.

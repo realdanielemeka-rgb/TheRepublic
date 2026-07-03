@@ -22,9 +22,10 @@ export const sanlamAllianzLiveWithConfidence: CaseStudy = {
     },
     {
       kind: "wide",
-      type: "image",
+      type: "video",
       src: "placeholder:insurance",
-      alt: "Sanlam Allianz — Live With Confidence brand still, wide shot across the merged identity system",
+      poster: "placeholder:insurance",
+      alt: "Sanlam Allianz — Live With Confidence brand still, wide shot across the merged identity system (grid loop)",
     },
     {
       kind: "gallery-pair",

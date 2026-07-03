@@ -130,7 +130,10 @@ export default function ScenePlaceholder({
       )}
 
       {showOverlay && (
-        <span className="mono-label absolute inset-x-0 bottom-0 bg-ink/70 px-3 py-2 text-paper">
+        <span
+          className="mono-label absolute inset-x-0 bottom-0 line-clamp-2 bg-ink/70 px-3 py-2 text-paper"
+          title={fullLabel}
+        >
           {fullLabel}
         </span>
       )}
@@ -191,7 +194,11 @@ function SceneShapeEl({ shape }: { shape: SceneShape }) {
   }
 }
 
-const ASPECT_BY_KIND: Record<MediaKind, string> = {
+/** Exported so SceneVideo.tsx's <CaseVideo> wrapper (the real-<video>
+ * variant, kept in its own client-boundary file — see that file's doc
+ * comment) can resolve the same per-kind default aspect ratio without
+ * duplicating this table. */
+export const ASPECT_BY_KIND: Record<MediaKind, string> = {
   hero: "aspect-[21/9]",
   wide: "aspect-[16/9]",
   "gallery-pair": "aspect-[4/5]",

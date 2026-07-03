@@ -22,9 +22,10 @@ export const pzlYouMatter: CaseStudy = {
     },
     {
       kind: "wide",
-      type: "image",
+      type: "video",
       src: "placeholder:wellbeing",
-      alt: "PZ Cussons — You Matter community wall, contributor stories laid out edge to edge",
+      poster: "placeholder:wellbeing",
+      alt: "PZ Cussons — You Matter community wall, contributor stories laid out edge to edge (grid loop)",
     },
     {
       kind: "gallery-pair",

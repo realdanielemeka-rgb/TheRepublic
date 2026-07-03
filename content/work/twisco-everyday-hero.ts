@@ -22,9 +22,10 @@ export const twiscoEverydayHero: CaseStudy = {
     },
     {
       kind: "wide",
-      type: "image",
+      type: "video",
       src: "placeholder:household",
-      alt: "Twisco — Everyday Hero household still, wide shot of the campaign's central character at home",
+      poster: "placeholder:household",
+      alt: "Twisco — Everyday Hero household still, wide shot of the campaign's central character at home (grid loop)",
     },
     {
       kind: "gallery-pair",

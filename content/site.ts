@@ -44,6 +44,15 @@ export const flags = {
   showKigali: false,
 } as const;
 
+// v3 §4.7.3 — documents the appearance toggle's LOCKED default so the
+// choice lives in content, not buried in src/lib/appearance.ts alone.
+// src/lib/appearance.ts's own APPEARANCE_BOOT_SCRIPT is the actual
+// mechanism (it can't import this module — it runs as a pre-hydration
+// blocking <script> string, same constraint as the grid engine's boot
+// script, see DECISIONS.md's v3 Phase A section) and must be kept in sync
+// with this value by hand if it's ever changed.
+export const defaultAppearance: "dark" | "light" = "dark";
+
 export const footprint = {
   hq: {
     label: "LAGOS — HQ",

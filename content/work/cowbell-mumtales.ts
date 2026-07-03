@@ -22,9 +22,10 @@ export const cowbellMumtales: CaseStudy = {
     },
     {
       kind: "wide",
-      type: "image",
+      type: "video",
       src: "placeholder:family",
-      alt: "Cowbell — Mumtales content wall, contributor stories from the recurring series",
+      poster: "placeholder:family",
+      alt: "Cowbell — Mumtales content wall, contributor stories from the recurring series (grid loop)",
     },
     {
       kind: "gallery-pair",

@@ -22,9 +22,10 @@ export const iInvestSecureTheBag: CaseStudy = {
     },
     {
       kind: "wide",
-      type: "image",
+      type: "video",
       src: "placeholder:finance-growth",
-      alt: "I-Invest — Secure the Bag content wall, full-funnel digital content grid",
+      poster: "placeholder:finance-growth",
+      alt: "I-Invest — Secure the Bag content wall, full-funnel digital content grid (grid loop)",
     },
     {
       kind: "gallery-pair",

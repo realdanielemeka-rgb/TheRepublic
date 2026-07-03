@@ -22,9 +22,10 @@ export const heirsInsuranceLaunch: CaseStudy = {
     },
     {
       kind: "wide",
-      type: "image",
+      type: "video",
       src: "placeholder:launch",
-      alt: "Heirs Insurance — Launch activation still, wide shot of the live launch experience",
+      poster: "placeholder:launch",
+      alt: "Heirs Insurance — Launch activation still, wide shot of the live launch experience (grid loop)",
     },
     {
       kind: "gallery-pair",

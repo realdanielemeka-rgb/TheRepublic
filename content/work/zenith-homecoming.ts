@@ -22,9 +22,10 @@ export const zenithHomecoming: CaseStudy = {
     },
     {
       kind: "wide",
-      type: "image",
+      type: "video",
       src: "placeholder:civic-journey",
-      alt: "Zenith Bank — Homecoming airport activation, wide shot of the arrivals touchpoint",
+      poster: "placeholder:civic-journey",
+      alt: "Zenith Bank — Homecoming airport activation, wide shot of the arrivals touchpoint (grid loop)",
     },
     {
       kind: "gallery-pair",

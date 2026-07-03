@@ -6,7 +6,6 @@ import Bracket from "@/components/Bracket";
 import Avatar from "@/components/Avatar";
 import { laws } from "../../../content/laws";
 import { leadershipTeam, team } from "../../../content/team";
-import { heritageWork } from "../../../content/clients";
 import { footprint, flags } from "../../../content/site";
 
 export const metadata: Metadata = {
@@ -123,38 +122,14 @@ export default function StudioPage() {
         </div>
       </ThemeSection>
 
-      <ThemeSection theme="paper" className="px-6 py-24 sm:px-10 sm:py-32">
-        <div className="mx-auto max-w-6xl">
-          <Reveal>
-            <Eyebrow>BEFORE THE REPUBLIC</Eyebrow>
-          </Reveal>
-          <Reveal delay={0.05}>
-            <h2 className="display-type mt-4 text-[clamp(2rem,5vw,4rem)]">
-              THE TRACK RECORD WE ARRIVED WITH
-            </h2>
-          </Reveal>
-          <Reveal delay={0.1}>
-            <p className="measure mt-6 text-lg">
-              Work our leadership made famous before founding the agency —
-              Budweiser&rsquo;s Nigerian launch, Guinness Africa Special, the
-              NamPost rebrand. Labelled exactly that way, because we&rsquo;re
-              precise about provenance.
-            </p>
-          </Reveal>
-
-          <div className="mt-12 grid gap-6 sm:grid-cols-3">
-            {heritageWork.map((h) => (
-              <Reveal key={h.client}>
-                <div className="rounded-[var(--radius-card)] border border-ink/15 p-6">
-                  <p className="mono-label text-smoke">Before The Republic</p>
-                  <p className="display-type mt-3 text-xl">{h.client}</p>
-                  <p className="mt-1 text-sm text-smoke">{h.project}</p>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </ThemeSection>
+      {/* v3 NOTE (Phase B): the v2 "BEFORE THE REPUBLIC" heritage section
+          (Budweiser/Guinness/NamPost pre-Republic leadership work) is
+          removed outright, not just de-linked — v3's LOCKED rule is
+          "current agency roster only, no heritage tier" and "zero founder
+          pre-Republic history, anywhere." heritageWork/HeritageCard no
+          longer exist in content/clients.ts. Phase C owns the full Studio
+          page rebuild; this phase only guarantees no heritage content
+          renders anywhere. See DECISIONS.md. */}
 
       <ThemeSection theme="republic" className="px-6 py-24 sm:px-10 sm:py-32">
         <div className="mx-auto max-w-6xl">

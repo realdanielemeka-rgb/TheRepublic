@@ -22,9 +22,10 @@ export const chivitaStyleNSips: CaseStudy = {
     },
     {
       kind: "wide",
-      type: "image",
+      type: "video",
       src: "placeholder:beverage",
-      alt: "Chivita — Style N Sips creator grid, nine outfit-and-flavour pairings from the campaign's UGC wall",
+      poster: "placeholder:beverage",
+      alt: "Chivita — Style N Sips creator grid, nine outfit-and-flavour pairings from the campaign's UGC wall (grid loop)",
     },
     {
       kind: "gallery-pair",
