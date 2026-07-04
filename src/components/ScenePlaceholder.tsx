@@ -56,6 +56,15 @@ export interface ScenePlaceholderProps {
    * on any instance that isn't itself aria-hidden — the caption is the
    * only thing telling a real content slot apart from a finished one. */
   showOverlay?: boolean;
+  /** Shorter visible caption for contexts where the full "PLACEHOLDER —
+   * REPLACE WITH …" sentence, repeated across many tiles (e.g. Home/Work's
+   * grid of pending-case cells), dilutes the bracket motif into visual
+   * noise rather than a considered signature — see DECISIONS.md's
+   * competition-pass note. The full sentence remains the accessible name
+   * (`aria-label`) and the caption's `title` tooltip regardless — nothing
+   * is lost for someone doing an asset-replacement pass later, it's just
+   * no longer the dominant visible text on every tile. */
+  overlayText?: string;
   className?: string;
 }
 
@@ -67,6 +76,7 @@ export default function ScenePlaceholder({
   active = false,
   seed,
   showOverlay = true,
+  overlayText,
   className,
 }: ScenePlaceholderProps) {
   const effectiveSeed = seed ?? label;
@@ -74,6 +84,7 @@ export default function ScenePlaceholder({
   const grainId = `scene-grain-${hashString(`${category}:${effectiveSeed}`)}`;
   const fullLabel = `PLACEHOLDER — REPLACE WITH ${label}`.toUpperCase();
   const ariaLabel = isVideo ? `${fullLabel} — VIDEO PENDING` : fullLabel;
+  const visibleCaption = overlayText ?? fullLabel;
 
   return (
     <div
@@ -134,7 +145,7 @@ export default function ScenePlaceholder({
           className="mono-label absolute inset-x-0 bottom-0 line-clamp-2 bg-ink/70 px-3 py-2 text-paper"
           title={fullLabel}
         >
-          {fullLabel}
+          {visibleCaption}
         </span>
       )}
     </div>

@@ -64,8 +64,20 @@ export function GridSlotContent({
   // case. Category rotates through the full procedural-scene set purely
   // for visual variety across cells; it carries no meaning about which
   // real case will eventually land here.
+  //
+  // Competition-pass fix: the visible caption is a short "[ PENDING ]" tag
+  // rather than the full "PLACEHOLDER — REPLACE WITH …" sentence — both
+  // audits flagged the full sentence, repeated across ~20 tiles on Home/
+  // Work, as diluting the bracket motif into a boilerplate stamp rather
+  // than a considered signature. This also fixed a real crowding bug at
+  // narrow grid-cell widths (the long sentence + the video badge had no
+  // room to coexist in a ~70px-tall cell at 360px). The full sentence is
+  // still available for anyone doing an asset-replacement pass later, via
+  // the media's own `aria-label`/`title` (unchanged, see ScenePlaceholder/
+  // SceneVideo) and this label's own `title` tooltip + `sr-only` text.
   const category: SceneCategory = SCENE_CATEGORIES[archiveIndex % SCENE_CATEGORIES.length];
   const seed = `${seedPrefix}-${archiveIndex}`;
+  const fullNote = "Case pending approval — not yet cleared for publishing";
   return (
     <div>
       {intent === "video" ? (
@@ -74,6 +86,8 @@ export function GridSlotContent({
           label="Case pending approval — placeholder loop"
           seed={seed}
           aspect={aspect}
+          overlayText="[ PENDING ]"
+          badgeText="[ VIDEO ]"
           className="w-full"
         />
       ) : (
@@ -82,11 +96,15 @@ export function GridSlotContent({
           label="Case pending approval — placeholder scene"
           seed={seed}
           aspect={aspect}
+          overlayText="[ PENDING ]"
           className="w-full"
         />
       )}
-      <p className="mono-label mt-4 text-smoke">
-        <Bracket>CASE PENDING APPROVAL</Bracket>
+      <p className="mono-label mt-4 text-smoke" title={fullNote}>
+        <Bracket>
+          <span aria-hidden="true">PENDING</span>
+          <span className="sr-only">{fullNote}</span>
+        </Bracket>
       </p>
     </div>
   );

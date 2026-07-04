@@ -139,6 +139,13 @@ export interface SceneVideoProps {
   active?: boolean;
   seed?: string;
   showOverlay?: boolean;
+  /** See the matching prop on <ScenePlaceholder> — a shorter visible
+   * caption for repeated grid tiles; the full sentence stays the
+   * accessible name and the caption's title tooltip either way. */
+  overlayText?: string;
+  /** Shorter visible text for the top-right "Procedural loop" badge, same
+   * reasoning as `overlayText`. */
+  badgeText?: string;
   className?: string;
 }
 
@@ -153,6 +160,8 @@ export default function SceneVideo({
   active = false,
   seed,
   showOverlay = true,
+  overlayText,
+  badgeText,
   className,
 }: SceneVideoProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -255,7 +264,7 @@ export default function SceneVideo({
 
       {showOverlay && (
         <span className="mono-label absolute right-3 top-3 rounded-full bg-ink/70 px-3 py-1 text-paper">
-          Procedural loop
+          {badgeText ?? "Procedural loop"}
         </span>
       )}
 
@@ -264,7 +273,7 @@ export default function SceneVideo({
           className="mono-label absolute inset-x-0 bottom-0 line-clamp-2 bg-ink/70 px-3 py-2 text-paper"
           title={fullLabel}
         >
-          {fullLabel}
+          {overlayText ?? fullLabel}
         </span>
       )}
     </div>

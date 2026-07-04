@@ -31,10 +31,15 @@ export const metadata: Metadata = {
 const ROWS: { fractions: number[]; intents: SlotIntent[]; aspect: string[]; marginClassName: string }[] = [
   {
     // Row 1 — two items, half-width each: one still, one native autoplay
-    // video (§6.1's single most important visual proof point).
+    // video (§6.1's single most important visual proof point). Competition-
+    // pass fix: shortened from aspect-[4/3] to aspect-[16/9] specifically so
+    // Row 1 takes noticeably less vertical space — the manifesto line
+    // (Row 2) needs to be reachable inside the first viewport at common
+    // 900px+ heights without throwing away "work leads" (real media is
+    // still first, just shorter). See DECISIONS.md.
     fractions: [0.5, 0.5],
     intents: ["image", "video"],
-    aspect: ["aspect-[4/3]", "aspect-[4/3]"],
+    aspect: ["aspect-[16/9]", "aspect-[16/9]"],
     marginClassName: "",
   },
   {
@@ -90,17 +95,30 @@ export default function HomePage() {
 
   return (
     <>
-      <ThemeSection theme="auto" className="px-6 pt-28 pb-20 sm:px-10 sm:pb-28">
+      <ThemeSection theme="auto" className="px-6 pt-24 pb-20 sm:px-10 sm:pb-28">
         <div className="mx-auto max-w-[1600px]">
+          {liveCases.length === 0 && (
+            <p className="mono-label text-smoke">
+              Every case here clears client approval before publishing —
+              check back soon.
+            </p>
+          )}
+
           {/* Row 1 */}
-          <GridRow fractions={ROWS[0].fractions}>
+          <GridRow fractions={ROWS[0].fractions} className={liveCases.length === 0 ? "mt-6" : ""}>
             {slots[0].map((slot) => (
               <GridSlotContent key={slot.archiveIndex} {...slot} seedPrefix="home-empty" />
             ))}
           </GridRow>
 
-          {/* Row 2 — the manifesto, the one full-width interruption */}
-          <div className="mt-24 sm:mt-32">
+          {/* Row 2 — the manifesto, the one full-width interruption.
+              Competition-pass fix: margin above tightened from
+              mt-24/sm:mt-32 to mt-12/sm:mt-16, in tandem with Row 1's
+              shorter aspect ratio above, specifically so this line sits
+              inside the first viewport at 1440x900/1920x1080 rather than
+              requiring a scroll — the single most-repeated finding across
+              both design audits. See DECISIONS.md. */}
+          <div className="mt-12 sm:mt-16">
             <ManifestoLine />
             <div className="mt-10 flex flex-wrap gap-4">
               <Link href="/work" className="mono-label inline-block hover:text-republic">

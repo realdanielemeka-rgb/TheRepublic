@@ -5,6 +5,7 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import SmoothScroll from "@/components/SmoothScroll";
 import Preloader from "@/components/Preloader";
+import PageTransition from "@/components/PageTransition";
 import GridEngineClient from "@/components/GridEngineClient";
 import { GRID_ENGINE_BOOT_SCRIPT } from "@/lib/grid-engine";
 import { APPEARANCE_BOOT_SCRIPT } from "@/lib/appearance";
@@ -107,6 +108,7 @@ export default function RootLayout({
         <SmoothScroll />
         <GridEngineClient />
         <Preloader frames={getFeaturedMedia()} />
+        <PageTransition />
         <Nav />
         <main className="flex-1">{children}</main>
         <Footer />

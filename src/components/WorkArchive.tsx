@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import clsx from "clsx";
 import { GridRow } from "./WorkGrid";
 import { GridSlotContent } from "./CaseGridSlot";
+import { useMediaQuery } from "@/lib/useMediaQuery";
 import type { CaseStudy } from "../../content/work";
 
 /**
@@ -23,7 +24,6 @@ import type { CaseStudy } from "../../content/work";
  * filtered view — per <CatalogueBracket>'s contract.
  */
 
-const ROW_SIZE = 3; // cases per grid row on the archive layout
 const PLACEHOLDER_COUNT = 8; // matches the seed archive's total case count
 
 function chunk<T>(items: T[], size: number): T[][] {
@@ -79,6 +79,18 @@ export default function WorkArchive({
   const [sectors, setSectors] = useState<Set<string>>(new Set());
   const [markets, setMarkets] = useState<Set<string>>(new Set());
 
+  // Competition-pass fix: cases-per-row now responds to viewport width
+  // instead of a fixed 3 — a fixed 3-across row at 360px squeezed each
+  // cell down to roughly a 70px-tall thumbnail, not enough room for the
+  // media's own overlay caption and the sector/market line beneath it to
+  // coexist without crowding (confirmed via screenshot). 1-across below
+  // 640px, 2-across 640-1023px, 3-across at 1024px+ — same breakpoints the
+  // rest of this codebase already uses for structural layout decisions
+  // (see useMediaQuery.ts's own doc comment).
+  const isSmUp = useMediaQuery("(min-width: 640px)");
+  const isLgUp = useMediaQuery("(min-width: 1024px)");
+  const rowSize = isLgUp ? 3 : isSmUp ? 2 : 1;
+
   const toggle = (setter: React.Dispatch<React.SetStateAction<Set<string>>>) => (value: string) =>
     setter((prev) => {
       const next = new Set(prev);
@@ -113,7 +125,7 @@ export default function WorkArchive({
     setMarkets(new Set());
   };
 
-  const rows = chunk(filtered, ROW_SIZE);
+  const rows = chunk(filtered, rowSize);
 
   // Zero live cases at all (no filters even active — the facet pills
   // themselves only ever contain values derived from live cases, so this
@@ -125,12 +137,19 @@ export default function WorkArchive({
   const placeholderRows = emptyArchive
     ? chunk(
         Array.from({ length: PLACEHOLDER_COUNT }, (_, i) => i),
-        ROW_SIZE
+        rowSize
       )
     : [];
 
   return (
     <div>
+      {emptyArchive && (
+        <p className="mono-label mt-8 text-smoke">
+          Every case here clears client approval before publishing — check
+          back soon.
+        </p>
+      )}
+
       {hasFacets && (
         <div className="mt-12 flex flex-col gap-5" role="group" aria-label="Filter the archive">
           <FilterFacet legend="Service" values={facets.services} selected={services} onToggle={toggle(setServices)} />

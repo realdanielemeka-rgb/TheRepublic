@@ -35,7 +35,12 @@ export default function ManifestoLine() {
       whileInView="show"
       viewport={{ once: true, margin: "-15% 0px" }}
       variants={container}
-      className="display-type flex flex-wrap items-baseline gap-x-4 gap-y-2 text-[clamp(2.5rem,7vw,7rem)] leading-[1.05]"
+      // Competition-pass fix: ceiling brought down from 7rem/7vw to
+      // 5.5rem/6vw so the line resolves in fewer wrapped rows at
+      // 1440-1920px widths — part of getting it to sit inside the first
+      // viewport without scrolling (paired with page.tsx's Row 1/margin
+      // changes). Still comfortably the largest type on the page.
+      className="display-type flex flex-wrap items-baseline gap-x-4 gap-y-2 text-[clamp(2.25rem,6vw,5.5rem)] leading-[1.05]"
     >
       {WORDS.map((word) => (
         <motion.span key={word} variants={wordVariant} transition={transition}>

@@ -47,11 +47,11 @@ export default function ContactForm() {
 
   if (status === "sent") {
     return (
-      <div className="rounded-[var(--radius-card)] border border-paper/20 p-8">
+      <div className="rounded-[var(--radius-card)] border border-current/20 p-8">
         <p className="display-type text-2xl">
           <Bracket>RECEIVED</Bracket>
         </p>
-        <p className="measure mt-4 text-paper/80">
+        <p className="measure mt-4 text-current/80">
           We reply within two working days.
         </p>
       </div>
@@ -60,6 +60,16 @@ export default function ContactForm() {
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-6" noValidate>
+      {/* Honeypot — invisible to a real visitor (off-screen, not in the tab
+          order, not exposed to assistive tech), a filled value here means a
+          bot filled every field it found. See route.ts's matching check. */}
+      <div className="absolute -left-[9999px] h-0 w-0 overflow-hidden" aria-hidden="true">
+        <label>
+          Leave this field blank
+          <input type="text" name="hp_field" tabIndex={-1} autoComplete="off" />
+        </label>
+      </div>
+
       <div className="grid gap-6 sm:grid-cols-2">
         <label className="flex flex-col gap-2">
           <span className="mono-label">Name</span>
@@ -67,7 +77,7 @@ export default function ContactForm() {
             required
             name="name"
             type="text"
-            className="border-b border-paper/40 bg-transparent py-2 outline-none focus:border-republic"
+            className="border-b border-current/40 bg-transparent py-2 outline-none focus:border-republic"
           />
         </label>
         <label className="flex flex-col gap-2">
@@ -75,7 +85,7 @@ export default function ContactForm() {
           <input
             name="company"
             type="text"
-            className="border-b border-paper/40 bg-transparent py-2 outline-none focus:border-republic"
+            className="border-b border-current/40 bg-transparent py-2 outline-none focus:border-republic"
           />
         </label>
         <label className="flex flex-col gap-2">
@@ -84,7 +94,7 @@ export default function ContactForm() {
             required
             name="email"
             type="email"
-            className="border-b border-paper/40 bg-transparent py-2 outline-none focus:border-republic"
+            className="border-b border-current/40 bg-transparent py-2 outline-none focus:border-republic"
           />
         </label>
         <label className="flex flex-col gap-2">
@@ -92,7 +102,7 @@ export default function ContactForm() {
           <select
             name="budget"
             defaultValue={budgetBands[0]}
-            className="border-b border-paper/40 bg-transparent py-2 outline-none focus:border-republic"
+            className="border-b border-current/40 bg-transparent py-2 outline-none focus:border-republic"
           >
             {budgetBands.map((band) => (
               <option key={band} value={band} className="text-ink">
@@ -109,12 +119,12 @@ export default function ContactForm() {
           required
           name="message"
           rows={5}
-          className="border-b border-paper/40 bg-transparent py-2 outline-none focus:border-republic"
+          className="border-b border-current/40 bg-transparent py-2 outline-none focus:border-republic"
         />
       </label>
 
       {error && (
-        <p role="alert" className="text-sm text-paper underline decoration-republic decoration-2 underline-offset-4">
+        <p role="alert" className="text-sm text-current underline decoration-republic decoration-2 underline-offset-4">
           {error}
         </p>
       )}
