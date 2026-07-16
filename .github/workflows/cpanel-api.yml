@@ -1,0 +1,47 @@
+name: cPanel API
+
+# Bridge for calling the cPanel UAPI from environments that cannot reach
+# port 2083 directly. Dispatch with an endpoint (and optional query params);
+# the JSON response is printed in the job log.
+#
+# Requires repository Actions secrets:
+#   CPANEL_USER      - cPanel account username
+#   CPANEL_API_TOKEN - API token from cPanel > Manage API Tokens
+#   CPANEL_HOST      - server hostname, e.g. server220.web-hosting.com
+
+on:
+  workflow_dispatch:
+    inputs:
+      endpoint:
+        description: "UAPI endpoint, e.g. Quota/get_quota_info"
+        required: true
+        type: string
+      params:
+        description: "Optional URL-encoded query string, e.g. dir=public_html"
+        required: false
+        type: string
+        default: ""
+
+jobs:
+  call:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call cPanel UAPI
+        env:
+          CPANEL_USER: ${{ secrets.CPANEL_USER }}
+          CPANEL_API_TOKEN: ${{ secrets.CPANEL_API_TOKEN }}
+          CPANEL_HOST: ${{ secrets.CPANEL_HOST }}
+          ENDPOINT: ${{ inputs.endpoint }}
+          PARAMS: ${{ inputs.params }}
+        run: |
+          if [ -z "$CPANEL_USER" ] || [ -z "$CPANEL_API_TOKEN" ] || [ -z "$CPANEL_HOST" ]; then
+            echo "::error::Missing CPANEL_USER / CPANEL_API_TOKEN / CPANEL_HOST repository secrets."
+            exit 1
+          fi
+          url="https://${CPANEL_HOST}:2083/execute/${ENDPOINT}"
+          if [ -n "$PARAMS" ]; then
+            url="${url}?${PARAMS}"
+          fi
+          curl -sS --fail-with-body --max-time 60 \
+            -H "Authorization: cpanel ${CPANEL_USER}:${CPANEL_API_TOKEN}" \
+            "$url" | python3 -m json.tool
