@@ -1,0 +1,35 @@
+name: Mail TLS Check
+
+# Diagnostic: inspects the SSL/TLS certificate the mail server presents on
+# IMAP (993) and SMTP-submission (465), and does a raw IMAP capability
+# handshake. No secrets required — this only reads public certificate data.
+
+on:
+  workflow_dispatch:
+    inputs:
+      host:
+        description: "Mail hostname to check"
+        required: true
+        type: string
+        default: "mail.therepublic.agency"
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Certificate on port 993 (IMAP)
+        run: |
+          echo "===== Certificate presented on ${{ inputs.host }}:993 ====="
+          echo | openssl s_client -connect ${{ inputs.host }}:993 -servername ${{ inputs.host }} 2>&1 \
+            | openssl x509 -noout -subject -issuer -dates -ext subjectAltName 2>&1 || echo "(handshake or parse failed)"
+
+      - name: Certificate on port 465 (SMTP submission)
+        run: |
+          echo "===== Certificate presented on ${{ inputs.host }}:465 ====="
+          echo | openssl s_client -connect ${{ inputs.host }}:465 -servername ${{ inputs.host }} 2>&1 \
+            | openssl x509 -noout -subject -issuer -dates -ext subjectAltName 2>&1 || echo "(handshake or parse failed)"
+
+      - name: Raw IMAP capability handshake
+        run: |
+          echo "===== IMAP greeting/capabilities on ${{ inputs.host }}:993 ====="
+          timeout 10 bash -c "echo -e 'a CAPABILITY\r\na LOGOUT\r\n' | openssl s_client -quiet -connect ${{ inputs.host }}:993 -servername ${{ inputs.host }} 2>/dev/null" || echo "(no response / timeout)"
