@@ -1,8 +1,8 @@
 name: cPanel API
 
 # Bridge for calling the cPanel UAPI from environments that cannot reach
-# port 2083 directly. Dispatch with an endpoint (and optional query params);
-# the JSON response is printed in the job log.
+# port 2083 directly. Dispatch with one or more endpoints (semicolon-
+# separated); each JSON response is printed in the job log.
 #
 # Requires repository Actions secrets:
 #   CPANEL_USER      - cPanel account username
@@ -13,14 +13,9 @@ on:
   workflow_dispatch:
     inputs:
       endpoint:
-        description: "UAPI endpoint, e.g. Quota/get_quota_info"
+        description: "UAPI call(s), semicolon-separated, e.g. Quota/get_quota_info;Email/list_pops?skip_main=1"
         required: true
         type: string
-      params:
-        description: "Optional URL-encoded query string, e.g. dir=public_html"
-        required: false
-        type: string
-        default: ""
 
 jobs:
   call:
@@ -32,16 +27,15 @@ jobs:
           CPANEL_API_TOKEN: ${{ secrets.CPANEL_API_TOKEN }}
           CPANEL_HOST: ${{ secrets.CPANEL_HOST }}
           ENDPOINT: ${{ inputs.endpoint }}
-          PARAMS: ${{ inputs.params }}
         run: |
           if [ -z "$CPANEL_USER" ] || [ -z "$CPANEL_API_TOKEN" ] || [ -z "$CPANEL_HOST" ]; then
             echo "::error::Missing CPANEL_USER / CPANEL_API_TOKEN / CPANEL_HOST repository secrets."
             exit 1
           fi
-          url="https://${CPANEL_HOST}:2083/execute/${ENDPOINT}"
-          if [ -n "$PARAMS" ]; then
-            url="${url}?${PARAMS}"
-          fi
-          curl -sS --fail-with-body --max-time 60 \
-            -H "Authorization: cpanel ${CPANEL_USER}:${CPANEL_API_TOKEN}" \
-            "$url" | python3 -m json.tool
+          IFS=';' read -ra CALLS <<< "$ENDPOINT"
+          for c in "${CALLS[@]}"; do
+            echo "===== ${c} ====="
+            curl -sS --fail-with-body --max-time 60 \
+              -H "Authorization: cpanel ${CPANEL_USER}:${CPANEL_API_TOKEN}" \
+              "https://${CPANEL_HOST}:2083/execute/${c}" | python3 -m json.tool || echo "(call failed)"
+          done
