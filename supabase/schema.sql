@@ -23,6 +23,8 @@ create table if not exists public.legacy_assets (
   bytes bigint,
   sha256 text,
   storage_path text,
+  storage_bytes bigint,
+  storage_sha256 text,
   archived_at timestamptz not null default now()
 );
 
