@@ -1,6 +1,6 @@
-import pageData from "../../../content/wix-export/pages.json";
-import imageData from "../../../content/wix-export/images.json";
-import videoData from "../../../content/wix-export/videos.json";
+import pageData from "../../content/wix-export/pages.json";
+import imageData from "../../content/wix-export/images.json";
+import videoData from "../../content/wix-export/videos.json";
 
 export type ArchivedPage = (typeof pageData)[number];
 
