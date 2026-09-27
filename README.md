@@ -1,31 +1,11 @@
-# The Republic Studios
+# The Republic
 
-The Republic Studios' marketing site, rebuilt as a Next.js + Framer Motion application (migrated off Wix).
+The website of The Republic, an independent creative and marketing agency in Lagos: an immersive, scroll-driven 3D site built with Three.js.
 
-## Stack
+- **Run locally:** `python3 -m http.server 8765` from the repo root, then open http://127.0.0.1:8765/public/
+- **Deploy:** static, via Vercel's Git integration (see `vercel.json`). No build step.
+- **Test:** `tests/run_all.sh` (see `CLAUDE.md`)
 
-- [Next.js](https://nextjs.org) (App Router, TypeScript)
-- [Tailwind CSS v4](https://tailwindcss.com)
-- [Framer Motion](https://www.framer.com/motion/) for scroll reveals, staggered text and page interactions
+`CLAUDE.md` covers the architecture, editorial rules and launch checklist.
 
-## Structure
-
-- `src/app` — root layout, global styles and the home page
-- `src/components` — Navbar, Hero, Marquee, Services, Work, Studio, Process, Contact, Footer
-- `src/lib/content.ts` — site copy and content data (business info, services, work, process, stats)
-
-## Getting started
-
-```bash
-npm install
-npm run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) to view the site.
-
-## Build
-
-```bash
-npm run build
-npm start
-```
+© The Republic Studios Ltd · RC 7371417

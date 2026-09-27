@@ -1,0 +1,7 @@
+{
+  "private": true,
+  "description": "Test tooling only; the site itself has no build step.",
+  "devDependencies": {
+    "axe-core": "^4.10.0"
+  }
+}
