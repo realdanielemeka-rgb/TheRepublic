@@ -1,0 +1,265 @@
+[
+  {
+    "id": "107d4f65-836b-4963-bbca-96ef2aef4592",
+    "name": "Subscribe",
+    "namespace": "wix.form_app.form",
+    "enabled": true,
+    "fields": [
+      {
+        "id": "fa3b0aad-f2fe-47df-ee69-6441506710df",
+        "target": "email_443e",
+        "label": "EMAIL\n",
+        "fieldType": "CONTACTS_EMAIL",
+        "required": true,
+        "validation": {
+          "string": {
+            "format": "EMAIL",
+            "enum": []
+          },
+          "required": true
+        }
+      },
+      {
+        "id": "0fe1b3d2-1f0e-47d5-474c-3bee32f0868f",
+        "target": "form_field_de1e",
+        "label": {
+          "nodes": [
+            {
+              "id": "dyarx15",
+              "type": "PARAGRAPH",
+              "nodes": [
+                {
+                  "id": "",
+                  "type": "TEXT",
+                  "nodes": [],
+                  "textData": {
+                    "text": "Yes, subscribe me to your newsletter.",
+                    "decorations": []
+                  }
+                }
+              ],
+              "paragraphData": {
+                "textStyle": {
+                  "textAlignment": "AUTO"
+                }
+              }
+            }
+          ],
+          "metadata": {
+            "id": "3bde29af-887e-48bd-b382-742e7bd7e80e",
+            "version": 1,
+            "createdTimestamp": "2023-05-10T09:25:43.037Z",
+            "updatedTimestamp": "2023-05-10T09:25:43.037Z"
+          }
+        },
+        "fieldType": "CONTACTS_SUBSCRIBE",
+        "required": true,
+        "validation": {
+          "boolean": {
+            "enum": [
+              true
+            ]
+          },
+          "required": true
+        }
+      },
+      {
+        "id": "d5df37db-369b-4f3c-f561-579e39eeee46",
+        "fieldType": "SUBMIT_BUTTON"
+      },
+      {
+        "id": "9c5d853d-7654-4b58-5574-bf0262076a35",
+        "fieldType": "HEADER"
+      }
+    ],
+    "submitSettings": {
+      "submitSuccessAction": "THANK_YOU_MESSAGE",
+      "thankYouMessageOptions": {
+        "durationInSeconds": 8,
+        "richContent": {
+          "nodes": [
+            {
+              "type": "PARAGRAPH",
+              "id": "06udw27",
+              "nodes": [
+                {
+                  "type": "TEXT",
+                  "id": "",
+                  "nodes": [],
+                  "textData": {
+                    "text": "Thanks, we received your submission.",
+                    "decorations": []
+                  }
+                }
+              ],
+              "paragraphData": {
+                "textStyle": {
+                  "textAlignment": "CENTER"
+                }
+              }
+            }
+          ],
+          "metadata": {
+            "version": 1,
+            "createdTimestamp": "2023-05-10T09:25:43.052Z",
+            "updatedTimestamp": "2023-05-10T09:25:43.052Z",
+            "id": "4eed8828-bee0-4b73-9a8d-3610631c9875"
+          }
+        }
+      }
+    },
+    "postSubmissionTriggers": {
+      "upsertContact": {
+        "fieldsMapping": {
+          "email_443e": {
+            "contactField": "EMAIL",
+            "emailInfo": {
+              "tag": "UNTAGGED"
+            }
+          },
+          "form_field_de1e": {
+            "contactField": "SUBSCRIPTION"
+          }
+        },
+        "labels": []
+      }
+    },
+    "spamFilterProtectionLevel": "ADVANCED"
+  },
+  {
+    "id": "eeed6ad2-f3cd-491c-8697-9ec02704ea09",
+    "name": "Contact",
+    "namespace": "wix.form_app.form",
+    "enabled": true,
+    "fields": [
+      {
+        "id": "0bc00247-bf82-4568-b2fc-2ff4274dbd29",
+        "target": "first_name",
+        "label": "FIRST NAME\n",
+        "fieldType": "CONTACTS_FIRST_NAME",
+        "required": true,
+        "validation": {
+          "string": {
+            "format": "UNDEFINED",
+            "enum": []
+          },
+          "required": true
+        },
+        "placeholder": "John"
+      },
+      {
+        "id": "37274bb7-95a4-40a5-430b-fe940c1ffac1",
+        "target": "email",
+        "label": "EMAIL",
+        "fieldType": "CONTACTS_EMAIL",
+        "required": true,
+        "validation": {
+          "string": {
+            "format": "EMAIL",
+            "enum": []
+          },
+          "required": true
+        },
+        "placeholder": "hello@example.com"
+      },
+      {
+        "id": "ec56f152-7a85-4f85-d098-ebe96cc55048",
+        "target": "long_answer",
+        "label": "MESSAGE",
+        "fieldType": "TEXT_AREA",
+        "required": true,
+        "validation": {
+          "string": {
+            "format": "UNDEFINED",
+            "enum": []
+          },
+          "required": true
+        },
+        "placeholder": "Type your message here"
+      },
+      {
+        "id": "189faace-f73c-41c6-13ae-9c415e1647e8",
+        "fieldType": "SUBMIT_BUTTON"
+      },
+      {
+        "id": "aabed776-b9b2-44da-4ac5-9214ab3f0b4a",
+        "target": "last_name_d2f1",
+        "label": "LAST NAME",
+        "fieldType": "CONTACTS_LAST_NAME",
+        "required": true,
+        "validation": {
+          "string": {
+            "format": "UNDEFINED",
+            "enum": []
+          },
+          "required": true
+        },
+        "placeholder": "Smith"
+      },
+      {
+        "id": "a4191b5e-4166-45c6-2847-a084e8ef2eec",
+        "fieldType": "HEADER"
+      },
+      {
+        "id": "99c94738-8800-4314-76b9-c190c801ed85",
+        "fieldType": "HEADER"
+      }
+    ],
+    "submitSettings": {
+      "submitSuccessAction": "THANK_YOU_MESSAGE",
+      "thankYouMessageOptions": {
+        "durationInSeconds": 8,
+        "richContent": {
+          "nodes": [
+            {
+              "type": "PARAGRAPH",
+              "id": "zoioe579",
+              "nodes": [
+                {
+                  "type": "TEXT",
+                  "id": "",
+                  "nodes": [],
+                  "textData": {
+                    "text": "Thanks, we received your submission.",
+                    "decorations": []
+                  }
+                }
+              ],
+              "paragraphData": {
+                "textStyle": {
+                  "textAlignment": "CENTER"
+                }
+              }
+            }
+          ],
+          "metadata": {
+            "version": 1,
+            "createdTimestamp": "2023-07-19T07:04:45.340Z",
+            "updatedTimestamp": "2023-07-19T07:04:45.340Z",
+            "id": "ee1e547b-a271-4ad9-92d9-98b4a202f9da"
+          }
+        }
+      }
+    },
+    "postSubmissionTriggers": {
+      "upsertContact": {
+        "fieldsMapping": {
+          "email": {
+            "contactField": "EMAIL",
+            "emailInfo": {
+              "tag": "UNTAGGED"
+            }
+          },
+          "first_name": {
+            "contactField": "FIRST_NAME"
+          },
+          "last_name_d2f1": {
+            "contactField": "LAST_NAME"
+          }
+        },
+        "labels": []
+      }
+    },
+    "spamFilterProtectionLevel": "ADVANCED"
+  }
+]

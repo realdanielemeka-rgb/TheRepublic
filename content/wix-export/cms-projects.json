@@ -1,0 +1,562 @@
+{
+  "collection": {
+    "id": "Projects",
+    "collectionType": "NATIVE",
+    "displayName": "Projects",
+    "displayField": "title",
+    "capabilities": {
+      "dataOperations": [
+        "PATCH",
+        "IS_REFERENCED",
+        "INSERT",
+        "SAVE",
+        "BULK_INSERT",
+        "BULK_UPDATE",
+        "UPDATE",
+        "TRUNCATE",
+        "REMOVE",
+        "REMOVE_REFERENCE",
+        "COUNT",
+        "BULK_PATCH",
+        "FIND",
+        "REPLACE_REFERENCES",
+        "BULK_REMOVE",
+        "INSERT_REFERENCE",
+        "GET",
+        "BULK_SAVE",
+        "QUERY_REFERENCED",
+        "DISTINCT",
+        "AGGREGATE"
+      ],
+      "collectionOperations": [
+        "UPDATE",
+        "REMOVE"
+      ],
+      "indexLimits": {
+        "regular": 3,
+        "unique": 1,
+        "total": 4
+      },
+      "indexQuotaLimits": {
+        "regular1Field": 0,
+        "regular3Field": 3,
+        "unique1Field": 1,
+        "total": 4
+      }
+    },
+    "fields": [
+      {
+        "key": "title",
+        "displayName": "Title",
+        "type": "TEXT",
+        "systemField": false,
+        "capabilities": {
+          "sortable": true,
+          "queryOperators": [
+            "EQ",
+            "LT",
+            "GT",
+            "NE",
+            "LTE",
+            "GTE",
+            "STARTS_WITH",
+            "ENDS_WITH",
+            "CONTAINS",
+            "HAS_SOME",
+            "HAS_ALL",
+            "EXISTS",
+            "URLIZED"
+          ]
+        },
+        "encrypted": false,
+        "plugins": []
+      },
+      {
+        "key": "description",
+        "displayName": "Description",
+        "type": "TEXT",
+        "systemField": false,
+        "capabilities": {
+          "sortable": true,
+          "queryOperators": [
+            "EQ",
+            "LT",
+            "GT",
+            "NE",
+            "LTE",
+            "GTE",
+            "STARTS_WITH",
+            "ENDS_WITH",
+            "CONTAINS",
+            "HAS_SOME",
+            "HAS_ALL",
+            "EXISTS",
+            "URLIZED"
+          ]
+        },
+        "encrypted": false,
+        "plugins": []
+      },
+      {
+        "key": "image",
+        "displayName": "Project Image",
+        "type": "IMAGE",
+        "systemField": false,
+        "capabilities": {
+          "sortable": true,
+          "queryOperators": [
+            "EQ",
+            "LT",
+            "GT",
+            "NE",
+            "LTE",
+            "GTE",
+            "STARTS_WITH",
+            "ENDS_WITH",
+            "CONTAINS",
+            "HAS_SOME",
+            "HAS_ALL",
+            "EXISTS",
+            "URLIZED"
+          ]
+        },
+        "encrypted": false,
+        "plugins": []
+      },
+      {
+        "key": "projectImagesAltText",
+        "displayName": "Project Image’s alt text",
+        "type": "TEXT",
+        "systemField": false,
+        "capabilities": {
+          "sortable": true,
+          "queryOperators": [
+            "EQ",
+            "LT",
+            "GT",
+            "NE",
+            "LTE",
+            "GTE",
+            "STARTS_WITH",
+            "ENDS_WITH",
+            "CONTAINS",
+            "HAS_SOME",
+            "HAS_ALL",
+            "EXISTS",
+            "URLIZED"
+          ]
+        },
+        "encrypted": false,
+        "description": "Search engines and accessibility tools can’t see images, but they can read alt text. Add a description to improve your site's SEO and accessibility.",
+        "plugins": []
+      },
+      {
+        "key": "infoDescription",
+        "displayName": "Info description",
+        "type": "TEXT",
+        "systemField": false,
+        "capabilities": {
+          "sortable": true,
+          "queryOperators": [
+            "EQ",
+            "LT",
+            "GT",
+            "NE",
+            "LTE",
+            "GTE",
+            "STARTS_WITH",
+            "ENDS_WITH",
+            "CONTAINS",
+            "HAS_SOME",
+            "HAS_ALL",
+            "EXISTS",
+            "URLIZED"
+          ]
+        },
+        "encrypted": false,
+        "plugins": []
+      },
+      {
+        "key": "longDescription",
+        "displayName": "Long Description",
+        "type": "TEXT",
+        "systemField": false,
+        "capabilities": {
+          "sortable": true,
+          "queryOperators": [
+            "EQ",
+            "LT",
+            "GT",
+            "NE",
+            "LTE",
+            "GTE",
+            "STARTS_WITH",
+            "ENDS_WITH",
+            "CONTAINS",
+            "HAS_SOME",
+            "HAS_ALL",
+            "EXISTS",
+            "URLIZED"
+          ]
+        },
+        "encrypted": false,
+        "plugins": []
+      },
+      {
+        "key": "shortDescription",
+        "displayName": "Short Description",
+        "type": "TEXT",
+        "systemField": false,
+        "capabilities": {
+          "sortable": true,
+          "queryOperators": [
+            "EQ",
+            "LT",
+            "GT",
+            "NE",
+            "LTE",
+            "GTE",
+            "STARTS_WITH",
+            "ENDS_WITH",
+            "CONTAINS",
+            "HAS_SOME",
+            "HAS_ALL",
+            "EXISTS",
+            "URLIZED"
+          ]
+        },
+        "encrypted": false,
+        "plugins": []
+      },
+      {
+        "key": "_id",
+        "displayName": "ID",
+        "type": "TEXT",
+        "systemField": true,
+        "capabilities": {
+          "sortable": true,
+          "queryOperators": [
+            "EQ",
+            "LT",
+            "GT",
+            "NE",
+            "LTE",
+            "GTE",
+            "STARTS_WITH",
+            "ENDS_WITH",
+            "CONTAINS",
+            "HAS_SOME",
+            "HAS_ALL",
+            "EXISTS",
+            "URLIZED"
+          ]
+        },
+        "encrypted": false,
+        "plugins": []
+      },
+      {
+        "key": "_createdDate",
+        "displayName": "Created Date",
+        "type": "DATETIME",
+        "systemField": true,
+        "capabilities": {
+          "sortable": true,
+          "queryOperators": [
+            "EQ",
+            "LT",
+            "GT",
+            "NE",
+            "LTE",
+            "GTE",
+            "STARTS_WITH",
+            "ENDS_WITH",
+            "CONTAINS",
+            "HAS_SOME",
+            "HAS_ALL",
+            "EXISTS",
+            "URLIZED"
+          ]
+        },
+        "encrypted": false,
+        "plugins": []
+      },
+      {
+        "key": "_updatedDate",
+        "displayName": "Updated Date",
+        "type": "DATETIME",
+        "systemField": true,
+        "capabilities": {
+          "sortable": true,
+          "queryOperators": [
+            "EQ",
+            "LT",
+            "GT",
+            "NE",
+            "LTE",
+            "GTE",
+            "STARTS_WITH",
+            "ENDS_WITH",
+            "CONTAINS",
+            "HAS_SOME",
+            "HAS_ALL",
+            "EXISTS",
+            "URLIZED"
+          ]
+        },
+        "encrypted": false,
+        "plugins": []
+      },
+      {
+        "key": "_owner",
+        "displayName": "Owner",
+        "type": "TEXT",
+        "systemField": true,
+        "capabilities": {
+          "sortable": true,
+          "queryOperators": [
+            "EQ",
+            "LT",
+            "GT",
+            "NE",
+            "LTE",
+            "GTE",
+            "STARTS_WITH",
+            "ENDS_WITH",
+            "CONTAINS",
+            "HAS_SOME",
+            "HAS_ALL",
+            "EXISTS",
+            "URLIZED"
+          ]
+        },
+        "encrypted": false,
+        "plugins": []
+      },
+      {
+        "key": "link-projects-title",
+        "displayName": "Projects (Item)",
+        "type": "PAGE_LINK",
+        "typeMetadata": {
+          "pageLink": {
+            "calculator": {
+              "fieldsPattern": {
+                "pattern": "/projects/{title}",
+                "lowercase": true
+              }
+            },
+            "linkedRouterPage": "clwof",
+            "pageLinkType": "COLLECTION_DEFINED"
+          }
+        },
+        "systemField": true,
+        "capabilities": {
+          "sortable": false,
+          "queryOperators": [
+            "EQ",
+            "NE",
+            "LT",
+            "GT",
+            "LTE",
+            "GTE",
+            "EXISTS"
+          ]
+        },
+        "encrypted": false,
+        "plugin": "dataBinding",
+        "readOnly": false,
+        "plugins": []
+      },
+      {
+        "key": "link-projects-all",
+        "displayName": "Projects (List)",
+        "type": "PAGE_LINK",
+        "typeMetadata": {
+          "pageLink": {
+            "calculator": {
+              "fieldsPattern": {
+                "pattern": "/projects/",
+                "lowercase": true
+              }
+            },
+            "linkedRouterPage": "fdr7o",
+            "pageLinkType": "COLLECTION_DEFINED"
+          }
+        },
+        "systemField": true,
+        "capabilities": {
+          "sortable": false,
+          "queryOperators": [
+            "EQ",
+            "NE"
+          ]
+        },
+        "encrypted": false,
+        "plugin": "dataBinding",
+        "readOnly": true,
+        "plugins": []
+      }
+    ],
+    "permissions": {
+      "insert": "ADMIN",
+      "update": "ADMIN",
+      "remove": "ADMIN",
+      "read": "ANYONE"
+    },
+    "revision": "2",
+    "plugins": [
+      {
+        "type": "EDITABLE_PAGE_LINK",
+        "editablePageLinkOptions": {
+          "isPersisted": true,
+          "isMutable": true
+        }
+      }
+    ],
+    "pagingModes": [
+      "OFFSET",
+      "CURSOR"
+    ],
+    "createdDate": "2026-01-06T14:42:37.961Z",
+    "updatedDate": "2026-01-06T14:42:51.387Z",
+    "dataPermissions": {
+      "itemRead": "ANYONE",
+      "itemInsert": "CMS_EDITOR",
+      "itemUpdate": "CMS_EDITOR",
+      "itemRemove": "CMS_EDITOR"
+    }
+  },
+  "items": [
+    {
+      "id": "2617e452-45c5-4f56-8b51-ed7bd9f09bad",
+      "dataCollectionId": "Projects",
+      "data": {
+        "longDescription": "This is a paragraph. It is connected to a CMS collection through a dataset. Click “Edit Text” to update content in the connected CMS collection. The CMS can be used to store website content, or to collect data from site visitors when they submit a form. The CMS collection is already set up with some fields and content. To customize it with your own content, import a CSV file or simply edit this placeholder text from the collection. You can also add more fields, which you can then connect to other page elements to display content on your published site.\n\nThis is a paragraph. It is connected to a CMS collection through a dataset. Click “Edit Text” to update content in the connected CMS collection. The CMS can be used to store website content, or to collect data from site visitors when they submit a form. The CMS collection is already set up with some fields and content. To customize it with your own content, import a CSV file or simply edit this placeholder text from the collection. You can also add more fields, which you can then connect to other page elements to display content on your published site.",
+        "image": "wix:image://v1/0446d4_04eab2a53981446d8ec56e6deea23cd2~mv2.jpg/architecture3.jpg#originWidth=2448&originHeight=3059",
+        "description": "I'm a paragraph. I'm connected to your collection through a dataset. Click Preview to see my content. To update me, go to the Data Manager.",
+        "_id": "2617e452-45c5-4f56-8b51-ed7bd9f09bad",
+        "_owner": "042f2745-8100-4cf9-9c4c-c6e8e6eb9647",
+        "_createdDate": {
+          "$date": "2026-01-06T14:42:39.147Z"
+        },
+        "link-projects-title": "/projects/project-name-01",
+        "shortDescription": "This is a paragraph. It is connected to a CMS collection through a dataset. Click “Edit Text” to update content from the connected collection.",
+        "link-projects-all": "/projects/",
+        "_updatedDate": {
+          "$date": "2026-01-06T14:42:39.147Z"
+        },
+        "infoDescription": "I’m text. To update me, go to the Data Manager.",
+        "title": "Project Name 01"
+      }
+    },
+    {
+      "id": "025451a3-9fad-432e-a723-41ee6218ef2f",
+      "dataCollectionId": "Projects",
+      "data": {
+        "longDescription": "This is a paragraph. It is connected to a CMS collection through a dataset. Click “Edit Text” to update content in the connected CMS collection. The CMS can be used to store website content, or to collect data from site visitors when they submit a form. The CMS collection is already set up with some fields and content. To customize it with your own content, import a CSV file or simply edit this placeholder text from the collection. You can also add more fields, which you can then connect to other page elements to display content on your published site.\n\nThis is a paragraph. It is connected to a CMS collection through a dataset. Click “Edit Text” to update content in the connected CMS collection. The CMS can be used to store website content, or to collect data from site visitors when they submit a form. The CMS collection is already set up with some fields and content. To customize it with your own content, import a CSV file or simply edit this placeholder text from the collection. You can also add more fields, which you can then connect to other page elements to display content on your published site.",
+        "image": "wix:image://v1/0446d4_0ff722a7b36241aca12545c0ee03ae35~mv2.jpg/21-3018-FRGR8oZqCKA-unsplash.jpg#originWidth=4000&originHeight=6016",
+        "description": "I'm a paragraph. I'm connected to your collection through a dataset. Click Preview to see my content. To update me, go to the Data Manager.",
+        "_id": "025451a3-9fad-432e-a723-41ee6218ef2f",
+        "_owner": "042f2745-8100-4cf9-9c4c-c6e8e6eb9647",
+        "_createdDate": {
+          "$date": "2026-01-06T14:42:39.146Z"
+        },
+        "link-projects-title": "/projects/project-name-02",
+        "shortDescription": "This is a paragraph. It is connected to a CMS collection through a dataset. Click “Edit Text” to update content from the connected collection.",
+        "link-projects-all": "/projects/",
+        "_updatedDate": {
+          "$date": "2026-01-06T14:42:39.146Z"
+        },
+        "infoDescription": "I’m text. To update me, go to the Data Manager.",
+        "title": "Project Name 02"
+      }
+    },
+    {
+      "id": "fa92ae76-2dfb-40e8-829a-75a3abdef993",
+      "dataCollectionId": "Projects",
+      "data": {
+        "longDescription": "This is a paragraph. It is connected to a CMS collection through a dataset. Click “Edit Text” to update content in the connected CMS collection. The CMS can be used to store website content, or to collect data from site visitors when they submit a form. The CMS collection is already set up with some fields and content. To customize it with your own content, import a CSV file or simply edit this placeholder text from the collection. You can also add more fields, which you can then connect to other page elements to display content on your published site.\n\nThis is a paragraph. It is connected to a CMS collection through a dataset. Click “Edit Text” to update content in the connected CMS collection. The CMS can be used to store website content, or to collect data from site visitors when they submit a form. The CMS collection is already set up with some fields and content. To customize it with your own content, import a CSV file or simply edit this placeholder text from the collection. You can also add more fields, which you can then connect to other page elements to display content on your published site.",
+        "image": "wix:image://v1/0446d4_7e1113be72a44150939d8a88703b4c86~mv2.jpg/sarah-dorweiler-Sy8dsVyiPgs-unsplash.jpg#originWidth=4272&originHeight=2848",
+        "description": "I'm a paragraph. I'm connected to your collection through a dataset. Click Preview to see my content. To update me, go to the Data Manager.",
+        "_id": "fa92ae76-2dfb-40e8-829a-75a3abdef993",
+        "_owner": "042f2745-8100-4cf9-9c4c-c6e8e6eb9647",
+        "_createdDate": {
+          "$date": "2026-01-06T14:42:39.145Z"
+        },
+        "link-projects-title": "/projects/project-name-03",
+        "shortDescription": "This is a paragraph. It is connected to a CMS collection through a dataset. Click “Edit Text” to update content from the connected collection.",
+        "link-projects-all": "/projects/",
+        "_updatedDate": {
+          "$date": "2026-01-06T14:42:39.145Z"
+        },
+        "infoDescription": "I’m text. To update me, go to the Data Manager.",
+        "title": "Project Name 03"
+      }
+    },
+    {
+      "id": "00000000-0000-0000-0000-000000000003",
+      "dataCollectionId": "Projects",
+      "data": {
+        "longDescription": "This is a paragraph. It is connected to a CMS collection through a dataset. Click “Edit Text” to update content in the connected CMS collection. The CMS can be used to store website content, or to collect data from site visitors when they submit a form. The CMS collection is already set up with some fields and content. To customize it with your own content, import a CSV file or simply edit this placeholder text from the collection. You can also add more fields, which you can then connect to other page elements to display content on your published site.\n\nThis is a paragraph. It is connected to a CMS collection through a dataset. Click “Edit Text” to update content in the connected CMS collection. The CMS can be used to store website content, or to collect data from site visitors when they submit a form. The CMS collection is already set up with some fields and content. To customize it with your own content, import a CSV file or simply edit this placeholder text from the collection. You can also add more fields, which you can then connect to other page elements to display content on your published site.",
+        "image": "wix:image://v1/0446d4_bf6f629b33234e6ebdb8069ff80ce0bf~mv2.jpg/binyu-liu-_YxX2BZziFs-unsplash.jpg#originWidth=2246&originHeight=2907",
+        "description": "I'm a paragraph. I'm connected to your collection through a dataset. Click Preview to see my content. To update me, go to the Data Manager.",
+        "_id": "00000000-0000-0000-0000-000000000003",
+        "_owner": "042f2745-8100-4cf9-9c4c-c6e8e6eb9647",
+        "_createdDate": {
+          "$date": "2026-01-06T14:42:39.144Z"
+        },
+        "link-projects-title": "/projects/project-name-04",
+        "shortDescription": "This is a paragraph. It is connected to a CMS collection through a dataset. Click “Edit Text” to update content from the connected collection.",
+        "link-projects-all": "/projects/",
+        "_updatedDate": {
+          "$date": "2026-01-06T14:42:39.144Z"
+        },
+        "infoDescription": "I’m text. To update me, go to the Data Manager.",
+        "title": "Project Name 04"
+      }
+    },
+    {
+      "id": "00000000-0000-0000-0000-000000000002",
+      "dataCollectionId": "Projects",
+      "data": {
+        "longDescription": "This is a paragraph. It is connected to a CMS collection through a dataset. Click “Edit Text” to update content in the connected CMS collection. The CMS can be used to store website content, or to collect data from site visitors when they submit a form. The CMS collection is already set up with some fields and content. To customize it with your own content, import a CSV file or simply edit this placeholder text from the collection. You can also add more fields, which you can then connect to other page elements to display content on your published site.\n\nThis is a paragraph. It is connected to a CMS collection through a dataset. Click “Edit Text” to update content in the connected CMS collection. The CMS can be used to store website content, or to collect data from site visitors when they submit a form. The CMS collection is already set up with some fields and content. To customize it with your own content, import a CSV file or simply edit this placeholder text from the collection. You can also add more fields, which you can then connect to other page elements to display content on your published site.",
+        "image": "wix:image://v1/0446d4_60f13e4d98b7447ab6e3d98035a65a2c~mv2.jpg/jean-philippe-delberghe-2wTxSnQaoqQ-unsp.jpg#originWidth=3456&originHeight=5184",
+        "description": "I'm a paragraph. I'm connected to your collection through a dataset. Click Preview to see my content. To update me, go to the Data Manager.",
+        "_id": "00000000-0000-0000-0000-000000000002",
+        "_owner": "042f2745-8100-4cf9-9c4c-c6e8e6eb9647",
+        "_createdDate": {
+          "$date": "2026-01-06T14:42:39.143Z"
+        },
+        "link-projects-title": "/projects/project-name-05",
+        "shortDescription": "This is a paragraph. It is connected to a CMS collection through a dataset. Click “Edit Text” to update content from the connected collection.",
+        "link-projects-all": "/projects/",
+        "_updatedDate": {
+          "$date": "2026-01-06T14:42:39.143Z"
+        },
+        "infoDescription": "I’m text. To update me, go to the Data Manager.",
+        "title": "Project Name 05"
+      }
+    },
+    {
+      "id": "00000000-0000-0000-0000-000000000001",
+      "dataCollectionId": "Projects",
+      "data": {
+        "longDescription": "This is a paragraph. It is connected to a CMS collection through a dataset. Click “Edit Text” to update content in the connected CMS collection. The CMS can be used to store website content, or to collect data from site visitors when they submit a form. The CMS collection is already set up with some fields and content. To customize it with your own content, import a CSV file or simply edit this placeholder text from the collection. You can also add more fields, which you can then connect to other page elements to display content on your published site.\n\nThis is a paragraph. It is connected to a CMS collection through a dataset. Click “Edit Text” to update content in the connected CMS collection. The CMS can be used to store website content, or to collect data from site visitors when they submit a form. The CMS collection is already set up with some fields and content. To customize it with your own content, import a CSV file or simply edit this placeholder text from the collection. You can also add more fields, which you can then connect to other page elements to display content on your published site.",
+        "image": "wix:image://v1/0446d4_3c81d43d9e4149d6a9ba337e746f2851~mv2.jpg/anna-sullivan-hx7MkJVwVYs-unsplash.jpg#originWidth=3456&originHeight=4608",
+        "description": "I'm a paragraph. I'm connected to your collection through a dataset. Click Preview to see my content. To update me, go to the Data Manager.",
+        "_id": "00000000-0000-0000-0000-000000000001",
+        "_owner": "042f2745-8100-4cf9-9c4c-c6e8e6eb9647",
+        "_createdDate": {
+          "$date": "2026-01-06T14:42:39.142Z"
+        },
+        "link-projects-title": "/projects/project-name-06",
+        "shortDescription": "This is a paragraph. It is connected to a CMS collection through a dataset. Click “Edit Text” to update content from the connected collection.",
+        "link-projects-all": "/projects/",
+        "_updatedDate": {
+          "$date": "2026-01-06T14:42:39.142Z"
+        },
+        "infoDescription": "I’m text. To update me, go to the Data Manager.",
+        "title": "Project Name 06"
+      }
+    }
+  ]
+}

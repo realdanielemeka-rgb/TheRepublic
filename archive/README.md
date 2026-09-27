@@ -1,16 +1,17 @@
 # Wix preservation snapshot
 
-This directory preserves the public Wix pages as they were fetched from
-`https://www.therepublic.agency/` on 26 September 2026. The compressed
-`public-html.tar.gz` contains the original HTML for all 22 sitemap URLs.
+The public Wix pages were fetched from `https://www.therepublic.agency/`
+on 26 September 2026. The downloadable preservation archive contains
+the original HTML for all 22 sitemap URLs.
 
 Structured, editable copies of the page text, SEO metadata, internal links,
-image references and asset manifest are in `content/wix-export/`. The
+image references, form definitions, and asset manifests are in `content/wix-export/`. The
 `supabase/schema.sql` file defines the preservation tables used by the
 separate Republic Supabase project. Web-ready images and videos are hosted
-in its `site-assets` bucket; their permanent URLs are in `images.json`
-and `videos.json`. The original files and hashes are kept in separate
-downloadable preservation archives.
+in its `site-assets` bucket; their permanent URLs are in `images.json`,
+`videos.json`, and `library-images.json`. The original files and hashes
+are kept in separate downloadable preservation archives. The extra image
+library contains 160 files that did not appear on the published pages.
 
 The HTML archive is evidence and a recovery source. It is not intended to
 run as a standalone site because Wix generated it with Wix runtime scripts.

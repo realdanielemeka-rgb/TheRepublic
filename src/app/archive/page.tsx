@@ -75,6 +75,18 @@ export default function ArchiveIndex() {
             })}
           </ul>
         </section>
+
+        <section className="mt-16 border-t border-current/20 pt-8" aria-labelledby="library-images">
+          <h2 id="library-images" className="display-type text-3xl">ADDITIONAL IMAGE LIBRARY</h2>
+          <p className="measure mt-4 max-w-3xl">
+            The Wix media library includes 160 more images that do not appear on the
+            published pages. Their source files and smaller viewing copies have also
+            been preserved for future creative work.
+          </p>
+          <Link href="/archive/library" className="mt-6 inline-block border border-current/25 px-4 py-2 hover:border-republic">
+            BROWSE 160 IMAGES →
+          </Link>
+        </section>
       </main>
     </ThemeSection>
   );
