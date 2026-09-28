@@ -62,7 +62,7 @@ The harness serves `public/index.html` locally and substitutes local copies of T
 
 ## Deploy
 
-Vercel's Git integration deploys every push; this branch gets a preview URL. The site is static, so there is nothing to build.
+Vercel's Git integration deploys every push. **`main` is production**; every other branch gets a preview URL (behind Vercel login). Work on `immersive-site` (or a feature branch), check the preview, then fast-forward `main` to ship. The site is static, so there is nothing to build.
 
 Pre-launch safeguards to remove at launch:
 - the `X-Robots-Tag: noindex` header in `vercel.json`;
@@ -75,5 +75,5 @@ Pre-launch safeguards to remove at launch:
 2. Contact form and newsletter delivery. Both use mailto fallbacks today; add a Vercel function (for example with Resend).
 3. Captions (WebVTT) for films with dialogue.
 4. Real-device performance pass on mid-range Android and iPhone.
-5. Remove the pre-launch safeguards above, set the production branch, and point therepublic.agency at Vercel.
+5. Remove the pre-launch safeguards above and point therepublic.agency at the Vercel project.
 6. Absolute share-image URLs per route. Only the home page's are absolute today; the rest are set client-side.
