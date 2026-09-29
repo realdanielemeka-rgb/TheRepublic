@@ -2521,25 +2521,24 @@ const COLLAGE = {
   zenith: { p: [4.6, 2.9, .4], w: 9.4, r: -.05 }
 };
 const TEAM = [
-  { d: 'strategy', n: 'Owanemi Ngalo', r: 'Strategy and Campaign Manager' },
   { d: 'creative', n: 'Fredrick Aniekwe', r: 'Senior Art Director' },
   { d: 'creative', n: 'Caleb Ogiri', r: 'Art Director' },
-  { d: 'creative', n: 'Akinkunmi Nathaniel', r: 'Art Director' },
-  { d: 'creative', n: 'Morolake Olayiwola', r: 'Copywriter' },
   { d: 'lead', n: 'Ola Olowu', r: 'Chairman & Co-Founder' },
   { d: 'lead', n: 'Daniel Emeka', r: 'Managing Director & Co-Founder', b: 'More than 13 years across brand strategy, creative direction, graphic design and filmmaking. He founded Blank White Sheet, a platform that brings young creatives together and teaches them marketing, and has spoken at industry events, including TEDx.' },
   { d: 'lead', n: 'Aderoju Adeniji', r: 'Head of Operations & Client Service' },
-  { d: 'client', n: 'Oyinkansola Ogundepo', r: 'Brand Manager' },
   { d: 'client', n: 'Mmesoma Obikobe', r: 'Brand Manager' },
   { d: 'content', n: 'Wuraola Bamidele', r: 'Content Creator' },
-  { d: 'content', n: 'Jemima Adedeji', r: 'Community Manager' }
+  { d: 'content', n: 'Jemima Adedeji', r: 'Community Manager' },
+  { d: 'studio', n: 'Oluwadoyinsola Iyiola', r: 'Intern' },
+  { d: 'studio', n: 'Flora Obigwe', r: 'Intern' }
 ];
 const DISC = {
   lead: { name: 'Leadership', x: 0, z: 0 },
   strategy: { name: 'Strategy', x: -10.6, z: -3.2 },
   creative: { name: 'Creative', x: -5.7, z: -1.9 },
   client: { name: 'Client & Brand', x: 5.4, z: -1.9 },
-  content: { name: 'Content & Community', x: 10.4, z: -3.2 }
+  content: { name: 'Content & Community', x: 10.4, z: -3.2 },
+  studio: { name: 'Studio', x: 0, z: -4.4 }
 };
 TEAM.forEach(p => {
   const D = DISC[p.d], mem = TEAM.filter(q => q.d === p.d), j = mem.indexOf(p);
@@ -4278,8 +4277,8 @@ const slug = n => n.toLowerCase().replace(/\s+/g, '-');
 const LEAD = ['Ola Olowu', 'Daniel Emeka', 'Aderoju Adeniji'];
 const PEOPLE = LEAD.map(n => TEAM.find(p => p.n === n)).concat(TEAM.filter(p => !LEAD.includes(p.n)).sort((a, b) => a.n.localeCompare(b.n)));
 // one colour per person, each set against Republic blue
-const PAL = { 'Aderoju Adeniji': '#FFB000', 'Akinkunmi Nathaniel': '#FF5A36', 'Caleb Ogiri': '#B6FF3B', 'Daniel Emeka': '#9A4DFF', 'Fredrick Aniekwe': '#00D1B2', 'Jemima Adedeji': '#FF2E88',
-  'Mmesoma Obikobe': '#FF7A00', 'Morolake Olayiwola': '#FF8FC0', 'Ola Olowu': '#E8C547', 'Owanemi Ngalo': '#3FD0FF', 'Oyinkansola Ogundepo': '#FF3B3B', 'Wuraola Bamidele': '#2BD46A' };
+const PAL = { 'Aderoju Adeniji': '#FFB000', 'Caleb Ogiri': '#B6FF3B', 'Daniel Emeka': '#9A4DFF', 'Fredrick Aniekwe': '#00D1B2', 'Jemima Adedeji': '#FF2E88',
+  'Mmesoma Obikobe': '#FF7A00', 'Ola Olowu': '#E8C547', 'Oluwadoyinsola Iyiola': '#3FD0FF', 'Flora Obigwe': '#FF3B3B', 'Wuraola Bamidele': '#2BD46A' };
 const lineup = $('#lineup');
 const LGRP = [['Leadership', 0, LEAD.length], ['The studio', LEAD.length, PEOPLE.length]].map(([k, a, z]) => {
   const g = document.createElement('div'); g.className = 'lgrp'; g.dataset.n = (z - a) * (k === 'Leadership' ? 1.4 : 1); g.style.flexGrow = g.dataset.n;
