@@ -9,7 +9,7 @@ async def run(w,h,tag,mobile):
         print(tag, len(names), names)
         await pg.evaluate("document.querySelector('#lineup').scrollIntoView({block:'center'})"); await pg.wait_for_timeout(1200)
         await pg.screenshot(path=f'shots/{tag}-lineup.png')
-        for s in ('oluwadoyinsola-iyiola','simi-lawal'):
+        for s in ('nifemi-olotu',):
             await pg.evaluate(f"location.hash='studio/{s}'"); await pg.wait_for_timeout(2600)
             await pg.screenshot(path=f'shots/{tag}-{s}.png')
         print(tag, '\n'.join(errs) or 'no errors'); await b.close()
