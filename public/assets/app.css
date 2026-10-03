@@ -296,8 +296,8 @@ body.daylight .crumb,body.daylight .nextw{background:rgba(244,242,238,.8);color:
 .b4 .col{display:flex;flex-direction:column;gap:12px}
 .b4 .lower{margin-top:auto;display:flex;flex-direction:column;gap:14px}
 .services{display:flex;flex-wrap:wrap;gap:8px}
-.services button{background:rgba(10,10,10,.6);border:1px solid var(--line);padding:9px 12px;font:500 16px/1 var(--sign);letter-spacing:.04em;text-transform:uppercase;color:var(--paper)}
-.services button:hover{border-color:var(--blue-soft)}
+.services a{background:rgba(10,10,10,.6);border:1px solid var(--line);padding:9px 12px;font:500 16px/1 var(--sign);letter-spacing:.04em;text-transform:uppercase;color:var(--paper);text-decoration:none;display:inline-flex;align-items:center}
+.services a:hover{border-color:var(--blue-soft)}
 .flags{font:500 16px/1.6 var(--sign);letter-spacing:.04em;color:var(--smoke-2);margin:0}
 .flags b{color:var(--paper);font-weight:400}
 
@@ -921,7 +921,7 @@ body[data-route="gate"] .proto.hideable{opacity:var(--protoop,1)}
 @media (max-width:760px){
   .proto{display:none}
   .services{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin-right:calc(-1*var(--g))}
-  .services button{flex:none}
+  .services a{flex:none}
   .flags{display:none}
   .turn{padding:14px 16px;gap:10px}
   .turn .addr,.turn>.k{display:none}
@@ -932,3 +932,33 @@ body[data-route="gate"] .proto.hideable{opacity:var(--protoop,1)}
   .wipe{transition:none}
   .toast{transition:none}
 }
+
+/* services hub and service pages */
+.page .sin.svcin{max-width:1040px}
+.mega.svch{font-size:clamp(40px,6.2vw,100px);line-height:.96}
+.page .svcin .lead{max-width:52ch}
+.page .eyebrow a{color:inherit;text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--blue-soft)}
+.svcgrid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0 28px}
+.svcgrid a{display:grid;grid-template-columns:auto 1fr auto;grid-template-areas:"n b i" "n s i";gap:8px 14px;height:100%;box-sizing:border-box;padding:16px 0 22px;border-top:2px solid var(--blue);color:var(--paper);text-decoration:none}
+.svcgrid .num{grid-area:n;font:500 16px/1.5 var(--sign);letter-spacing:.06em;color:var(--blue-soft)}
+.svcgrid b{grid-area:b;font-weight:850;font-size:clamp(22px,2.2vw,30px);line-height:1.02;letter-spacing:-.025em}
+.svcgrid span:not(.num){grid-area:s;font-size:16px;line-height:1.4;color:var(--paper-2)}
+.svcgrid i{grid-area:i;font-style:normal;font-size:20px;color:var(--blue-soft);transition:transform .25s}
+.svcgrid a:hover b,.svcgrid a:focus-visible b{text-decoration:underline;text-decoration-color:var(--blue);text-underline-offset:5px}
+.svcgrid a:hover i{transform:translateX(4px)}
+.svcwork{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0 28px}
+.svcwork a{display:flex;flex-direction:column;gap:8px;height:100%;box-sizing:border-box;padding:16px 0 22px;border-top:1px solid var(--line);color:var(--paper);text-decoration:none}
+.svcwork .k{font:500 15px/1.2 var(--sign);letter-spacing:.06em;text-transform:uppercase;color:var(--blue-soft)}
+.svcwork b{font-weight:800;font-size:clamp(20px,1.8vw,26px);line-height:1.05;letter-spacing:-.02em}
+.svcwork span:not(.k){font-size:15px;line-height:1.45;color:var(--paper-2)}
+.svcwork a:hover b,.svcwork a:focus-visible b{text-decoration:underline;text-decoration-color:var(--blue);text-underline-offset:4px}
+.svcmore{display:flex;flex-wrap:wrap;gap:4px 28px}
+.faq{display:flex;flex-direction:column;border-bottom:1px solid var(--line)}
+.faq details{border-top:1px solid var(--line)}
+.faq summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:baseline;gap:20px;padding:16px 0;font-weight:750;font-size:clamp(18px,1.6vw,22px);line-height:1.25;letter-spacing:-.01em}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";flex:none;font:400 30px/.8 var(--display);color:var(--blue-soft)}
+.faq details[open] summary::after{content:"\2013"}
+.faq p{margin:0 0 18px;max-width:72ch;font-size:16px;line-height:1.5;color:var(--paper-2)}
+@media (max-width:900px){.svcgrid,.svcwork{grid-template-columns:1fr 1fr}}
+@media (max-width:760px){.svcgrid,.svcwork{grid-template-columns:1fr}.svcmore{flex-direction:column;gap:0}}

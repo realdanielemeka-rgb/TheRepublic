@@ -8,8 +8,9 @@ This branch (`immersive-site`) supersedes the earlier Next.js rebuild, which rem
 
 - `src/site.html`: the page template (all markup for every page; head metadata is written per page by the build).
 - `public/assets/app.css`, `public/assets/app.js`: the stylesheet and the app. Edit these directly.
-- `scripts/build.py` (+ `scripts/routes.py`, `scripts/LASTMOD`): writes one pre-rendered HTML file per address into `public/` (`index.html`, `work.html`, `onga-taste-of-home.html`, ..., `404.html`), plus `public/assets/routes.js` and `public/sitemap.xml`. **Run `python3 scripts/build.py` after any edit**, and commit the output; Vercel does not build.
-- `public/img/` (WebP), `public/films/` (H.264 MP4 + JPG posters), `public/og/` (1200×630 share cards), `robots.txt`, favicons.
+- `scripts/build.py` (+ `scripts/routes.py`, `scripts/services.py`, `scripts/LASTMOD`): writes one pre-rendered HTML file per address into `public/` (`index.html`, `work.html`, `onga-taste-of-home.html`, `services/brand-and-creative.html`, ..., `404.html`), plus `public/assets/routes.js`, `public/sitemap.xml`, `public/robots.txt` and `public/llms.txt`. **Run `python3 scripts/build.py` after any edit**, and commit the output; Vercel does not build.
+- `scripts/services.py`: copy, search metadata and proof cases for `/services` and the six service pages (the pages that target "advertising agency in Nigeria" and similar searches). Its keys must match `SVC_PAGES` in `app.js`; the build checks. `scripts/og_cards.py` draws their share cards.
+- `public/img/` (WebP), `public/films/` (H.264 MP4 + JPG posters), `public/og/` (1200×630 share cards), favicons.
 - `vercel.json`: static deploy (`framework: null`, output `public/`, clean URLs), 301s for `/home` and `/portfolio`, a rewrite so `/studio/<person>` serves the Studio page, headers.
 - `tests/`: Playwright regression suite (Python), SEO checks and an axe-core audit.
 
@@ -45,6 +46,8 @@ This branch (`immersive-site`) supersedes the earlier Next.js rebuild, which rem
 - New page: add its route to `scripts/routes.py`, its title (60 characters or fewer) and description (110–160 characters) to `scripts/build.py`, a 1200×630 share card in `public/og/`, then build. The build refuses duplicate titles or descriptions and more than one `h1`.
 - Bump `scripts/LASTMOD` when content changes, so the sitemap dates move.
 - `tests/seo_test.py` checks every page as a crawler and as a visitor.
+- Service pages may only cite cases published on the site, and only for disciplines the case records show (`SVC` in `app.js`). Never claim "best", rankings or awards on the site without a public source; that standing comes from third parties (directories, reviews, awards, press).
+- `robots.txt` welcomes AI crawlers and `llms.txt` gives AI assistants a plain summary; both are generated, so edit the build, not the files.
 
 ## Editorial rules (non-negotiable)
 

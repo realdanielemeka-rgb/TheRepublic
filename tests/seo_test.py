@@ -5,12 +5,13 @@ from playwright.async_api import async_playwright
 ROOT = os.path.join(os.path.dirname(__file__), '..'); PUB = os.path.join(ROOT, 'public')
 DOMAIN = 'https://www.therepublic.agency'
 problems = []
-pages = sorted(glob.glob(os.path.join(PUB, '*.html')))
-built = {('/' + os.path.basename(f)[:-5]).replace('/index', '/') for f in pages if not f.endswith('404.html')}
+pages = sorted(glob.glob(os.path.join(PUB, '**', '*.html'), recursive=True))
+rel = lambda f: os.path.relpath(f, PUB).replace(os.sep, '/')
+built = {('/' + rel(f)[:-5]).replace('/index', '/') for f in pages if not f.endswith('404.html')}
 redirects = {r['source'] for r in json.load(open(os.path.join(ROOT, 'vercel.json')))['redirects']}
 titles, descs = {}, {}
 for f in pages:
-    s, name = open(f).read(), os.path.basename(f)
+    s, name = open(f).read(), rel(f)
     want = '/' if name == 'index.html' else '/' + name[:-5]
     t = re.search(r'<title>([^<]+)</title>', s); d = re.search(r'<meta name="description" content="([^"]+)">', s)
     if not t or not d: problems.append((name, 'missing title or description')); continue
@@ -45,16 +46,22 @@ async def live():
     bad = []
     async with async_playwright() as p:
         b, pg, errs = await page(p, 1280, 800, False)
-        for path in ('index.html', 'work.html', 'studio.html', 'twisco-everyday-hero.html', 'onga-taste-of-home.html', 'onga.html', 'journal.html'):
+        for path in ('index.html', 'work.html', 'studio.html', 'twisco-everyday-hero.html', 'onga-taste-of-home.html', 'onga.html', 'journal.html', 'services.html', 'services/experiences.html'):
             await pg.goto(BASE + path); await pg.wait_for_timeout(1500)
             r = await pg.evaluate("""() => { const h = [...document.querySelectorAll('h1')]; const c = document.querySelector('link[rel=canonical]');
                 return { n: h.length, vis: h[0] ? !h[0].closest('[hidden]') : false, txt: h[0] ? h[0].textContent.trim().slice(0, 40) : '', can: c && c.href, path: location.pathname }; }""")
             if r['n'] != 1 or not r['vis'] or not r['txt']: bad.append((path, r))
         # move around inside the app
-        for hop in ('/studio', '/prudential-zenith-you-matter', '/method'):
+        for hop in ('/studio', '/prudential-zenith-you-matter', '/method', '/services', '/services/content-and-social'):
             await pg.evaluate(f"document.querySelector('a[href=\"{hop}\"]') ? document.querySelector('a[href=\"{hop}\"]').click() : history.pushState(null,'','{hop}') || dispatchEvent(new PopStateEvent('popstate'))"); await pg.wait_for_timeout(1400)
             r = await pg.evaluate("""() => ({ path: location.pathname, t: document.title, can: document.querySelector('link[rel=canonical]').href, n: document.querySelectorAll('h1').length, vis: !document.querySelector('h1').closest('[hidden]') })""")
             if r['path'] != hop or r['can'] != DOMAIN + hop or r['n'] != 1 or not r['vis']: bad.append((hop, r))
+        # footer links (written by the app) must move between pages too
+        for hop in ('/work', '/services', '/journal'):
+            await pg.goto(BASE + 'privacy.html'); await pg.wait_for_timeout(1200)
+            await pg.evaluate(f"[...document.querySelectorAll('.sfcol a[href=\"{hop}\"]')].find(a => !a.closest('[hidden]')).click()"); await pg.wait_for_timeout(1400)
+            r = await pg.evaluate("({ path: location.pathname, can: document.querySelector('link[rel=canonical]').href })")
+            if r['path'] != hop or r['can'] != DOMAIN + hop: bad.append(('footer link', hop, r))
         await pg.goto(BASE + '#onga-case'); await pg.wait_for_timeout(1200)
         if await pg.evaluate('location.pathname') != '/onga-taste-of-home': bad.append(('old #link did not move to the clean address',))
         print('live DOM:', 'no problems' if not bad else bad)

@@ -278,16 +278,16 @@ $$('[data-foot]').forEach((el, i) => {
   <div class="sfcta">
     <p class="eyebrow">Your turn</p>
     <p class="sfbig">Let's talk.</p>
-    ${full ? `<form data-turn class="sfturn"><label class="sr" for="turn-${i}">What are you trying to change?</label><input id="turn-${i}" name="change" type="text" placeholder="What are you trying to change?" autocomplete="off"><button class="send" type="submit">Start →</button></form>` : `<a class="btn primary" href="#contact">Start a conversation →</a>`}
+    ${full ? `<form data-turn class="sfturn"><label class="sr" for="turn-${i}">What are you trying to change?</label><input id="turn-${i}" name="change" type="text" placeholder="What are you trying to change?" autocomplete="off"><button class="send" type="submit">Start →</button></form>` : `<a class="btn primary" href="/contact">Start a conversation →</a>`}
     <p class="sfdirect"><a href="mailto:office@therepublic.agency">office@therepublic.agency</a><a href="tel:+2347007005252">+234 700 700 5252</a>${WHATSAPP ? `<a href="${waLink()}" target="_blank" rel="noopener">WhatsApp</a>` : ''}</p>
   </div>
   <div class="sfgrid">
-    <nav class="sfcol" aria-label="Footer"><p class="k">Explore</p><a href="#work">Work</a><a href="#studio">Studio</a><a href="#method">Method</a><a href="#journal">Journal</a><a href="#contact" data-careers>Careers</a><a href="#contact">Contact</a></nav>
+    <nav class="sfcol" aria-label="Footer"><p class="k">Explore</p><a href="/work">Work</a><a href="/services">Services</a><a href="/studio">Studio</a><a href="/method">Method</a><a href="/journal">Journal</a><a href="/contact" data-careers>Careers</a><a href="/contact">Contact</a></nav>
     <div class="sfcol"><p class="k">Visit</p><p>10 Onisiwo Road<br>Ikoyi, Lagos, Nigeria</p><p class="sfclock">Lagos --:--</p></div>
     <nav class="sfcol sfsoc" aria-label="The Republic on social media"><p class="k">Follow</p>${socialLinks()}</nav>
     <div class="sfcol sfnews"><p class="k">The Dispatch</p><p>New work and thinking from the studio, now and then.</p><form class="sfsub" novalidate><label class="sr" for="sub-${i}">Your email</label><input id="sub-${i}" type="email" placeholder="Your email" autocomplete="email"><button type="submit">Subscribe</button><p class="msg" role="status" hidden></p></form></div>
   </div>
-  <div class="sfbase"><img src="img/logo.png" alt="The Republic" width="56" height="41" loading="lazy"><p>© 2026 The Republic Studios Ltd · RC 7371417 · <a href="#privacy">Privacy notice</a></p><p>Creating Tomorrow.</p></div>
+  <div class="sfbase"><img src="img/logo.png" alt="The Republic" width="56" height="41" loading="lazy"><p>© 2026 The Republic Studios Ltd · RC 7371417 · <a href="/privacy">Privacy notice</a></p><p>Creating Tomorrow.</p></div>
 </footer>`;
 });
 setInterval(() => $$('.sfclock').forEach(c => { c.textContent = clockEl ? clockEl.textContent : 'Lagos'; }), 20000);
@@ -334,8 +334,11 @@ function tick() {
 tick(); setInterval(tick, 20000);
 
 /* ---------------- routing ---------------- */
-const ROUTES = ['gate', 'work', 'onga', 'onga-case', 'cowbell', 'cowbell-case', 'spruce', 'spruce-case', 'pzl', 'pzl-case', 'zenith', 'zenith-case', 'studio', 'method', 'journal', 'contact', 'privacy', 'lost'].concat(Object.keys(CASEFILES).map(k => k + '-case'));
-const PLACE = { gate: 'The Gate · Home', work: 'The City of Work · /work', onga: 'Onga world · Taste of Home', 'onga-case': 'Case · /onga-taste-of-home', cowbell: 'Cowbell world · Your First Taste', 'cowbell-case': 'Case · /cowbell-ramadan-your-first-taste', spruce: 'Spruce world · Show Your True Colours', 'spruce-case': 'Case · /spruce-dulux-digital-launch', pzl: 'Prudential Zenith world · Empowering Tomorrow', 'pzl-case': 'Case · /prudential-zenith-empowering-tomorrow', zenith: 'Zenith world · See Homecoming Differently', 'zenith-case': 'Case · /zenith-bank-homecoming', studio: 'The Capitol · /studio', method: 'The Constitution · /method', journal: 'The Dispatch · /journal', contact: 'Your Turn · /contact', privacy: 'Your Rights · /privacy', lost: 'Unbuilt street · 404' };
+// the service pages (keys and addresses come from scripts/services.py; the build checks this list matches)
+const SVC_PAGES = ['svc-strategy', 'svc-brand', 'svc-content', 'svc-integrated', 'svc-digital', 'svc-experiences'];
+const isSvc = r => r === 'services' || SVC_PAGES.includes(r);
+const ROUTES = ['gate', 'work', 'onga', 'onga-case', 'cowbell', 'cowbell-case', 'spruce', 'spruce-case', 'pzl', 'pzl-case', 'zenith', 'zenith-case', 'studio', 'services'].concat(SVC_PAGES, ['method', 'journal', 'contact', 'privacy', 'lost'], Object.keys(CASEFILES).map(k => k + '-case'));
+const PLACE = { gate: 'The Gate · Home', work: 'The City of Work · /work', onga: 'Onga world · Taste of Home', 'onga-case': 'Case · /onga-taste-of-home', cowbell: 'Cowbell world · Your First Taste', 'cowbell-case': 'Case · /cowbell-ramadan-your-first-taste', spruce: 'Spruce world · Show Your True Colours', 'spruce-case': 'Case · /spruce-dulux-digital-launch', pzl: 'Prudential Zenith world · Empowering Tomorrow', 'pzl-case': 'Case · /prudential-zenith-empowering-tomorrow', zenith: 'Zenith world · See Homecoming Differently', 'zenith-case': 'Case · /zenith-bank-homecoming', studio: 'The Capitol · /studio', services: 'What we do · /services', 'svc-strategy': 'Services · Communication Strategy', 'svc-brand': 'Services · Brand & Creative', 'svc-content': 'Services · Content & Social', 'svc-integrated': 'Services · Integrated Marketing', 'svc-digital': 'Services · Digital & Performance', 'svc-experiences': 'Services · Experiences', method: 'The Constitution · /method', journal: 'The Dispatch · /journal', contact: 'Your Turn · /contact', privacy: 'Your Rights · /privacy', lost: 'Unbuilt street · 404' };
 Object.keys(CASEFILES).forEach(k => { PLACE[k + '-case'] = 'Case · /' + CASEFILES[k].slug; });
 const TITLES = {
   gate: 'Creative & Marketing Agency in Lagos | The Republic', work: 'Portfolio: Campaigns & Creative Work | The Republic',
@@ -2146,7 +2149,8 @@ subBtns.forEach(b => b.addEventListener('click', () => {
   if (el) el.scrollIntoView({ behavior: RM ? 'auto' : 'smooth', block: v === 'careers' ? 'center' : 'start' });
 }));
 let studioCenters = [];
-const PAGES = { method: 1, journal: 1, contact: 1, privacy: 1, lost: 1 };
+const PAGES = { method: 1, journal: 1, contact: 1, privacy: 1, lost: 1, services: 1 };
+SVC_PAGES.forEach(k => { PAGES[k] = 1; });
 const isPage = r => r === 'studio' || !!PAGES[r];
 function measureStudio() {
   const art = $(`[data-for="${S.route}"]:not(.pscrim)`);
@@ -2438,7 +2442,7 @@ $('#cdone-again').addEventListener('click', () => { cform.reset(); cdone.hidden 
 const stageGate = $('.stage.gate'), stageOnga = $('.stage.onga'), stageCb = $('.stage.cb');
 const routeEls = $$('[data-for]');
 const placeEl = $('#place');
-const navWork = $('#nav-work'), navStudio = $('#nav-studio');
+const navWork = $('#nav-work'), navStudio = $('#nav-studio'), navServices = $('#nav-services');
 function applyRoute(r) {
   if (r !== 'studio') closePerson(true);
   if (S.releaseTex) { if (r === 'work') S.releaseTex('city'); else if (r === 'gate') setTimeout(() => S.releaseTex('city'), 3500); const w = r.replace('-case', ''); if (WORLDS[w]) S.releaseTex(w); }
@@ -2466,6 +2470,7 @@ function applyRoute(r) {
   if (r !== 'spruce') S.spTi = null;
   if (r !== 'cowbell' && r !== 'spruce') body.classList.remove('daylight');
   if (r === 'studio') navStudio.setAttribute('aria-current', 'page'); else navStudio.removeAttribute('aria-current');
+  if (navServices) { if (isSvc(r)) navServices.setAttribute('aria-current', 'page'); else navServices.removeAttribute('aria-current'); }
   ['method', 'journal', 'contact'].forEach(k => { const a = $('#nav-' + k); if (r === k) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });
   $$('.mlinks a').forEach(a => { const h = a.dataset.mgo || (routeFromPath(a.getAttribute('href')) || {}).r; if (h === r) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });
   setCrumbs(r);
@@ -2509,7 +2514,7 @@ function applyRoute(r) {
   if (r === 'contact' && S.turnText != null) { const m = $('#c-msg'); if (m && S.turnText) m.value = S.turnText; S.turnText = null; setTimeout(() => $('#c-first').focus({ preventScroll: true }), 80); }
   if (r === 'contact' && S.goCareers) { S.goCareers = false; setTimeout(() => { const c = $('#careers-sec'); if (c) c.scrollIntoView({ behavior: 'auto', block: 'center' }); }, 60); }
   S.booted = true;
-  const h = { gate: '#gate-h', work: '#work-h', onga: '#onga-h', 'onga-case': '#case-h', cowbell: '#cb-h', 'cowbell-case': '#cbcase-h', spruce: '#sp-h', 'spruce-case': '#spcase-h', pzl: '#pz-h', 'pzl-case': '#pzcase-h', zenith: '#zb-h', 'zenith-case': '#zbcase-h', studio: '#studio-h', method: '#method-h', journal: '#journal-h', contact: '#contact-h' }[r] || (isFile(r) ? '#cf-h' : null);
+  const h = { gate: '#gate-h', work: '#work-h', onga: '#onga-h', 'onga-case': '#case-h', cowbell: '#cb-h', 'cowbell-case': '#cbcase-h', spruce: '#sp-h', 'spruce-case': '#spcase-h', pzl: '#pz-h', 'pzl-case': '#pzcase-h', zenith: '#zb-h', 'zenith-case': '#zbcase-h', studio: '#studio-h', method: '#method-h', journal: '#journal-h', contact: '#contact-h' }[r] || (isFile(r) ? '#cf-h' : isSvc(r) ? '#' + r + '-h' : null);
   if (prev !== r && S.hadRoute && h) { const el = $(h); if (el) el.focus({ preventScroll: true }); }
   S.hadRoute = true;
 }
@@ -2809,7 +2814,8 @@ document.addEventListener('click', e => {
   if (!a || e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey || e.button || a.target === '_blank' || a.hasAttribute('data-world')) return;
   const url = new URL(a.href, location.href);
   if (url.origin !== location.origin) return;
-  const m = routeFromPath(url.pathname);
+  const hk = url.pathname === location.pathname && url.hash && url.hash !== '#main' ? decodeURIComponent(url.hash.slice(1)) : '';
+  const m = hk ? (ALIAS[hk] ? { r: ALIAS[hk] } : ROUTES.includes(hk) ? { r: hk } : null) : routeFromPath(url.pathname);
   if (!m) return;
   e.preventDefault();
   if (m.person) { S.personSlug = m.person; if (m.r === S.route) { applyRoute('studio'); return; } }

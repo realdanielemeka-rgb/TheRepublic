@@ -24,7 +24,11 @@ def casefiles(js=None):
 
 
 def paths(js=None):
+    from services import HUB, SERVICES
     p = dict(BASE)
+    p['services'] = HUB['path']
+    for sv in SERVICES:
+        p[sv['key']] = sv['path']
     for k, c in casefiles(js).items():
         p[k + '-case'] = '/' + c['slug']
     return p

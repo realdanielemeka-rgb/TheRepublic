@@ -2,7 +2,7 @@ import asyncio, json, sys
 from harness import page, BASE
 from playwright.async_api import async_playwright
 AXE=open('node_modules/axe-core/axe.min.js').read()
-ROUTES=['gate','work','onga-case','studio','method','journal','contact','privacy','twisco-case']
+ROUTES=['gate','work','onga-case','studio','services','svc-strategy','svc-experiences','method','journal','contact','privacy','twisco-case']
 async def run(w,h,tag,mobile=False):
     async with async_playwright() as p:
         b,pg,errs=await page(p,w,h,mobile)
