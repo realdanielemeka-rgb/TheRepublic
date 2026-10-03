@@ -1,0 +1,264 @@
+"""Build the site's HTML: one pre-rendered page per address, each with its own title, description,
+canonical link, share card and structured data, and exactly one h1.
+
+Edit src/site.html (markup), public/assets/app.css and public/assets/app.js, then run:
+    python3 scripts/build.py          # writes public/*.html, public/404.html, public/assets/routes.js, public/sitemap.xml
+    python3 scripts/build.py --check  # fails if the committed output is out of date
+"""
+import datetime, hashlib, html, json, os, re, subprocess, sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from routes import ROOT, DOMAIN, paths  # noqa: E402
+
+PUB = os.path.join(ROOT, 'public')
+# sitemap lastmod: scripts/LASTMOD (bump it when content changes), so the output is the same on every machine
+_LM = os.path.join(ROOT, 'scripts', 'LASTMOD')
+TODAY = os.environ.get('BUILD_DATE') or (open(_LM).read().strip() if os.path.exists(_LM) else datetime.date.today().isoformat())
+
+TITLES = {
+    'gate': 'Creative & Marketing Agency in Lagos | The Republic',
+    'work': 'Portfolio: Campaigns & Creative Work | The Republic',
+    'studio': 'About Our Lagos Creative Agency | The Republic',
+    'method': 'How We Work: Strategy First | The Republic',
+    'journal': 'Journal: Essays and Case Films | The Republic',
+    'contact': 'Contact The Republic | Marketing Agency in Lagos',
+    'privacy': 'Privacy Notice | The Republic',
+    'lost': 'Page not found | The Republic',
+    'onga': 'Onga Taste of Home: Interactive World | The Republic',
+    'cowbell': 'Cowbell Your First Taste: Interactive | The Republic',
+    'spruce': 'Spruce by Dulux True Colours: Interactive | The Republic',
+    'pzl': 'Prudential Zenith Tomorrow: Interactive | The Republic',
+    'zenith': 'Zenith Bank Homecoming: Interactive | The Republic',
+    'onga-case': 'Onga Taste of Home Campaign Case Study | The Republic',
+    'cowbell-case': 'Cowbell Ramadan Social Media Campaign | The Republic',
+    'spruce-case': 'Spruce by Dulux: Digital Launch Case Study | The Republic',
+    'pzl-case': 'Prudential Zenith: Empowering Tomorrow | The Republic',
+    'zenith-case': 'Zenith Bank Homecoming Strategy | The Republic',
+}
+DESCRIPTIONS = {
+    'gate': 'The Republic is an independent creative and marketing agency in Lagos, Nigeria. Strategy first, then work that helps ambitious brands make their next move.',
+    'work': 'Campaigns, films and digital work by The Republic for Promasidor, CHI, Prudential Zenith, Zenith Bank, Dulux and more. Explore every case in the City of Work.',
+    'studio': 'Meet The Republic, an independent creative and marketing agency at 10 Onisiwo Road, Ikoyi, Lagos: the team, our story and the clients we build for.',
+    'method': 'How The Republic works: three commitments, six questions on every brief and five steps from problem to proof. Strategy first, and the work must prove it.',
+    'journal': 'Essays and case films from The Republic, a creative and marketing agency in Lagos. Read Write for the reply, and watch the work behind our campaigns.',
+    'contact': 'Start a conversation with The Republic, a creative and marketing agency in Ikoyi, Lagos. Email office@therepublic.agency or call +234 700 700 5252.',
+    'privacy': 'How The Republic Studios Ltd collects, uses and protects personal data from this website, and the rights you have under the Nigeria Data Protection Act 2023.',
+    'lost': 'This page does not exist or has moved. Explore the work of The Republic, an independent creative and marketing agency in Lagos.',
+    'onga': "Step into Onga Taste of Home: an interactive world built on the question behind The Republic's campaign for Promasidor Nigeria: what does home mean to you?",
+    'cowbell': "Move from Suhoor to Iftar in Cowbell Your First Taste, an interactive world from The Republic's Ramadan campaign about who cares before the first taste.",
+    'spruce': 'Who decided a colour had one meaning? Paint the room in Spruce by Dulux Show Your True Colours, an interactive world from The Republic.',
+    'pzl': "Drive to 2066 in Prudential Zenith Life's Empowering Tomorrow, an interactive world from The Republic's campaign that made the next 40 years personal.",
+    'zenith': "Land in Lagos with Zenith Bank's See Homecoming Differently, an interactive world from The Republic's strategy for Nigerians coming home every December.",
+    'onga-case': "Onga Taste of Home case study: how The Republic asked Nigerians what home means and built Promasidor's digital platform for Onga around their answers.",
+    'cowbell-case': "Cowbell Your First Taste case study: The Republic's Nigerian digital and social execution of Cowbell's Ramadan campaign, honouring who cares first.",
+    'spruce-case': 'Spruce by Dulux case study: how The Republic amplified the Show Your True Colours launch with creators, social distribution and digital visualisation.',
+    'pzl-case': "Empowering Tomorrow case study: The Republic's integrated campaign that helped Prudential Zenith Life make the next 40 years personal and planning practical.",
+    'zenith-case': "See Homecoming Differently: The Republic's strategy and creative platform for Zenith Bank, built for Nigerians in the diaspora coming home every December.",
+}
+CAPABILITIES = ['Communication Strategy', 'Brand & Creative', 'Content & Social', 'Integrated Marketing', 'Digital & Performance', 'Experiences']
+WORLDS = ['onga', 'cowbell', 'spruce', 'pzl', 'zenith']
+ESSAY = {'headline': 'Write for the reply.', 'description': 'Good brand work gives people a reason to bring their own lives into the story.', 'date': '2026-10-03'}
+
+
+def js_value(js, name):
+    """Evaluate a top-level `const NAME = <literal>` from app.js with node and return it as Python data."""
+    i = js.index(f'const {name} = ') + len(f'const {name} = ')
+    depth, j, q = 0, i, None
+    while True:
+        ch = js[j]
+        if q:
+            if ch == '\\': j += 2; continue
+            if ch == q: q = None
+        elif ch in '\'"`': q = ch
+        elif ch in '{[': depth += 1
+        elif ch in '}]':
+            depth -= 1
+            if depth == 0: break
+        j += 1
+    out = subprocess.run(['node', '-e', 'process.stdout.write(JSON.stringify(' + js[i:j + 1] + '))'], capture_output=True, text=True, check=True).stdout
+    return json.loads(out)
+
+
+def esc(x):
+    return html.escape(str(x), quote=True)
+
+
+def pick(cands, lo=110, hi=160):
+    ok = [c for c in cands if lo <= len(c) <= hi]
+    return ok[0] if ok else min(cands, key=lambda c: abs(len(c) - (lo + hi) / 2))
+
+
+def main(check=False):
+    js = open(os.path.join(PUB, 'assets', 'app.js')).read()
+    css = open(os.path.join(PUB, 'assets', 'app.css')).read()
+    tpl = open(os.path.join(ROOT, 'src', 'site.html')).read()
+    CF, CASES, TEAM = js_value(js, 'CASEFILES'), js_value(js, 'CASES'), js_value(js, 'TEAM')
+    byId = {c['id']: c for c in CASES}
+    P = paths(js)
+    meta = {}
+    for r, p in P.items():
+        k = r[:-5] if r.endswith('-case') else r
+        if r.endswith('-case') and k in CF:
+            f = CF[k]
+            t = f['seo']
+            client = f['facts'][0][1]
+            d = pick([f"{f['title']}: {f['line']} A case study by The Republic, a creative and marketing agency in Lagos, for {client}.",
+                      f"{f['title']}: {f['line']} A case study by The Republic, the Lagos creative agency, for {client}.",
+                      f"{f['title']} for {client}: {f['line']} A case study by The Republic, an independent creative and marketing agency in Lagos, Nigeria.",
+                      f"{f['title']}: {f['line']} A case study by The Republic for {client}, from our Lagos studio."])
+            og = f'/og/og-{k}-case.jpg'
+        else:
+            t, d = TITLES[r], DESCRIPTIONS[r]
+            og = f'/og/og-{k}.jpg' if k in WORLDS else ('/og/og-home.jpg' if r == 'gate' else f'/og/og-{r}.jpg')
+        assert os.path.exists(os.path.join(PUB, og.lstrip('/'))), og
+        meta[r] = {'p': p, 't': t, 'd': d, 'o': og}
+    meta['lost'] = {'p': '/404', 't': TITLES['lost'], 'd': DESCRIPTIONS['lost'], 'o': '/og/og-home.jpg'}
+
+    routes_js = '// generated by scripts/build.py: every page\'s address, title, description and share card\nwindow.SEO = ' + json.dumps(
+        {'domain': DOMAIN, 'paths': {**P, 'lost': None}, 'meta': meta}, ensure_ascii=False, separators=(',', ':')) + ';\n'
+    ver = lambda b: hashlib.sha1(b.encode()).hexdigest()[:10]
+    css_tag = f'<link rel="stylesheet" href="/assets/app.css?v={ver(css)}">'
+    js_tag = f'<script src="/assets/routes.js?v={ver(routes_js)}"></script>\n<script src="/assets/app.js?v={ver(js)}"></script>'
+
+    org = {
+        '@type': 'ProfessionalService', '@id': DOMAIN + '/#org', 'name': 'The Republic', 'legalName': 'The Republic Studios Ltd',
+        'url': DOMAIN + '/', 'logo': {'@type': 'ImageObject', 'url': DOMAIN + '/img/logo.png'}, 'image': DOMAIN + '/og/og-home.jpg',
+        'description': DESCRIPTIONS['gate'], 'email': 'office@therepublic.agency', 'telephone': '+234 700 700 5252',
+        'address': {'@type': 'PostalAddress', 'streetAddress': '10 Onisiwo Road', 'addressLocality': 'Ikoyi', 'addressRegion': 'Lagos', 'addressCountry': 'NG'},
+        'founder': [{'@type': 'Person', 'name': 'Ola Olowu'}, {'@type': 'Person', 'name': 'Daniel Emeka'}],
+        'knowsAbout': CAPABILITIES, 'slogan': 'Creating Tomorrow',
+        'sameAs': re.findall(r"\['[^']+', '(https://[^']+)'\]", js[js.index('const SOCIALS'):js.index('const SOCIALS') + 800]),
+    }
+    website = {'@type': 'WebSite', '@id': DOMAIN + '/#website', 'url': DOMAIN + '/', 'name': 'The Republic', 'inLanguage': 'en-GB', 'publisher': {'@id': DOMAIN + '/#org'}}
+
+    def crumbs(r):
+        items = [('Home', '/')]
+        if r == 'gate': return None
+        if r.endswith('-case') or r in WORLDS: items.append(('Work', '/work'))
+        name = meta[r]['t'].split(' | ')[0]
+        items.append((name, meta[r]['p']))
+        return {'@type': 'BreadcrumbList', 'itemListElement': [{'@type': 'ListItem', 'position': i + 1, 'name': n, 'item': DOMAIN + (u if u != '/' else '/')} for i, (n, u) in enumerate(items)]}
+
+    def ld(r):
+        m, url = meta[r], DOMAIN + (meta[r]['p'] if meta[r]['p'] != '/' else '/')
+        typ = {'gate': 'WebPage', 'work': 'CollectionPage', 'studio': 'AboutPage', 'contact': 'ContactPage'}.get(r, 'WebPage')
+        page = {'@type': typ, '@id': url + '#webpage', 'url': url, 'name': m['t'], 'description': m['d'], 'inLanguage': 'en-GB',
+                'isPartOf': {'@id': DOMAIN + '/#website'}, 'about': {'@id': DOMAIN + '/#org'}, 'primaryImageOfPage': {'@type': 'ImageObject', 'url': DOMAIN + m['o']}}
+        b = crumbs(r)
+        if b: page['breadcrumb'] = b
+        g = [org, website, page]
+        k = r[:-5] if r.endswith('-case') else r
+        if r.endswith('-case') or r in WORLDS:
+            name = CF[k]['title'] if k in CF else m['t'].split(' | ')[0].split(':')[0]
+            client = CF[k]['facts'][0][1] if k in CF else (byId.get(k) or {}).get('c')
+            work = {'@type': 'CreativeWork', '@id': url + '#work', 'name': name, 'description': m['d'], 'url': url, 'image': DOMAIN + m['o'],
+                    'creator': {'@id': DOMAIN + '/#org'}, 'inLanguage': 'en-GB'}
+            if client: work['sourceOrganization'] = {'@type': 'Organization', 'name': client}
+            page['mainEntity'] = {'@id': url + '#work'}
+            g.append(work)
+        if r == 'journal':
+            g.append({'@type': 'BlogPosting', 'headline': ESSAY['headline'], 'description': ESSAY['description'], 'datePublished': ESSAY['date'],
+                      'author': {'@type': 'Person', 'name': 'Daniel Emeka', 'jobTitle': 'Managing Director & Co-Founder', 'worksFor': {'@id': DOMAIN + '/#org'}},
+                      'publisher': {'@id': DOMAIN + '/#org'}, 'mainEntityOfPage': url, 'image': DOMAIN + m['o'], 'inLanguage': 'en-GB'})
+        if r == 'studio':
+            g.append({'@type': 'ItemList', 'name': 'The Republic team', 'itemListElement': [
+                {'@type': 'ListItem', 'position': i + 1, 'item': {'@type': 'Person', 'name': p['n'], 'jobTitle': p['r'], 'worksFor': {'@id': DOMAIN + '/#org'}}}
+                for i, p in enumerate(sorted(TEAM, key=lambda p: (p['d'] != 'lead', p['n'])))]})
+        return json.dumps({'@context': 'https://schema.org', '@graph': g}, ensure_ascii=False, separators=(',', ':'))
+
+    def head(r):
+        m = meta[r]
+        url = DOMAIN + (m['p'] if m['p'] != '/' else '/')
+        out = [f'<title>{esc(m["t"])}</title>', f'<meta name="description" content="{esc(m["d"])}">']
+        if r == 'lost':
+            out.append('<meta name="robots" content="noindex">')
+        else:
+            out.append(f'<link rel="canonical" href="{url}">')
+        out += ['<meta property="og:site_name" content="The Republic">', '<meta property="og:locale" content="en_GB">',
+                f'<meta property="og:type" content="{"article" if r == "journal" else "website"}">',
+                f'<meta property="og:title" content="{esc(m["t"])}">', f'<meta property="og:description" content="{esc(m["d"])}">',
+                f'<meta property="og:image" content="{DOMAIN}{m["o"]}">', '<meta property="og:image:width" content="1200">', '<meta property="og:image:height" content="630">']
+        if r != 'lost': out.append(f'<meta property="og:url" content="{url}">')
+        out += ['<meta name="twitter:card" content="summary_large_image">', '<meta name="twitter:site" content="@TheRepHQ">',
+                f'<meta name="twitter:title" content="{esc(m["t"])}">', f'<meta name="twitter:description" content="{esc(m["d"])}">', f'<meta name="twitter:image" content="{DOMAIN}{m["o"]}">']
+        if r != 'lost': out.append(f'<script type="application/ld+json">{ld(r)}</script>')
+        return '\n'.join(out)
+
+    def prerender_case(s, k):
+        """Fill the case-file template with the case's own text so the raw HTML carries it (the app re-renders the same on load)."""
+        f, c = CF[k], byId[k]
+        def fill(sid, inner):
+            nonlocal s
+            pat = re.compile(r'(<(\w+)[^>]*\bid="' + sid + r'"[^>]*>)(.*?)(</\2>)', re.S)
+            s, n = pat.subn(lambda mm: mm.group(1) + inner + mm.group(4), s, count=1)
+            assert n == 1, sid
+        fill('cf-k', esc(c.get('b') or f['facts'][0][1]))
+        fill('cf-h', esc(f['title']))
+        fill('cf-line', esc(f['line']))
+        fill('cf-facts', ''.join(f'<div><dt>{esc(a)}</dt><dd>{esc(b)}</dd></div>' for a, b in f['facts']))
+        fill('cf-story-b', ''.join(f'<p class="big" style="font-size:clamp(28px,3.2vw,48px)">{esc(p)}</p>' if i == 0 else f'<p class="p">{esc(p)}</p>' for i, p in enumerate(f['story'])))
+        fill('cf-steps', ''.join(f'<li><span><b>{esc(a)}.</b> {esc(b)}</span></li>' for a, b in f['steps']))
+        if f.get('stats'):
+            fill('cf-stats', ''.join(f'<div class="stat"><span class="n">{esc(a)}</span><p>{esc(b)}</p></div>' for a, b in f['stats']))
+        if f.get('hero'):
+            s = re.sub(r'(<img[^>]*\bid="cf-img")', lambda mm: mm.group(1) + f' src="img/{esc(f["hero"])}" alt="{esc(f.get("cap", f["title"]))}"', s, count=1)
+        return s
+
+    def page(r):
+        key = 'file' if (r.endswith('-case') and r[:-5] in CF) else r
+        s = tpl.replace('<!--SEO-->', head(r)).replace('<!--CSS-->', css_tag).replace('<!--JS-->', js_tag)
+        # show this page's section in the raw HTML and hide the rest (the app does the same on load)
+        def vis(mm):
+            tag, fk = mm.group(0), mm.group(1)
+            tag = re.sub(r'\shidden(?=[\s>])', '', tag)
+            return tag if fk == key else tag[:-1] + ' hidden>'
+        s = re.sub(r'<(?:section|article|div)[^>]*\bdata-for="([^"]+)"[^>]*>', vis, s)
+        # one h1: this page's heading; every other page heading becomes h2
+        out, last, pos = [], None, 0
+        for mm in re.finditer(r'<(?:section|article|div)[^>]*\bdata-for="([^"]+)"[^>]*>|<h1 data-ph([^>]*)>(.*?)</h1>', s, re.S):
+            if mm.group(1): last = mm.group(1); continue
+            lvl = 'h1' if last == key else 'h2'
+            out.append(s[pos:mm.start()]); out.append(f'<{lvl} data-ph{mm.group(2)}>{mm.group(3)}</{lvl}>'); pos = mm.end()
+        out.append(s[pos:]); s = ''.join(out)
+        if key == 'file': s = prerender_case(s, r[:-5])
+        return s
+
+    outputs = {}
+    for r in list(P) + ['lost']:
+        fn = '404.html' if r == 'lost' else ('index.html' if P[r] == '/' else P[r].lstrip('/') + '.html')
+        outputs[fn] = page(r)
+    outputs['assets/routes.js'] = routes_js
+    urls = sorted(P.values(), key=lambda u: (u != '/', u))
+    outputs['sitemap.xml'] = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join(
+        f'  <url><loc>{DOMAIN}{u if u != "/" else "/"}</loc><lastmod>{TODAY}</lastmod></url>\n' for u in urls) + '</urlset>\n'
+
+    # sanity: one h1 per page, unique titles and descriptions, sensible lengths
+    titles, descs, warn = {}, {}, []
+    for fn, s in outputs.items():
+        if not fn.endswith('.html'): continue
+        h1 = re.findall(r'<h1[\s>]', s)
+        assert len(h1) == 1, (fn, len(h1))
+        t = re.search(r'<title>(.*?)</title>', s).group(1); d = re.search(r'name="description" content="([^"]*)"', s).group(1)
+        assert t not in titles, (fn, 'duplicate title', titles.get(t)); titles[t] = fn
+        assert d not in descs, (fn, 'duplicate description', descs.get(d)); descs[d] = fn
+        if len(html.unescape(t)) > 62: warn.append(f'{fn}: title {len(html.unescape(t))} chars')
+        dl = len(html.unescape(d))
+        if not 110 <= dl <= 160: warn.append(f'{fn}: description {dl} chars')
+
+    stale = []
+    for fn, s in outputs.items():
+        path = os.path.join(PUB, fn)
+        cur = open(path).read() if os.path.exists(path) else None
+        if cur != s:
+            stale.append(fn)
+            if not check:
+                os.makedirs(os.path.dirname(path), exist_ok=True)
+                open(path, 'w').write(s)
+    print(f'{len([f for f in outputs if f.endswith(".html")])} pages, {len(urls)} sitemap URLs; ' + (f'{len(stale)} out of date' if check else f'{len(stale)} written'))
+    for w in warn: print('  warning:', w)
+    if check and stale:
+        print('  out of date:', ', '.join(stale[:10])); sys.exit(1)
+
+
+if __name__ == '__main__':
+    main(check='--check' in sys.argv)
