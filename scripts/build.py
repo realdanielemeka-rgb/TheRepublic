@@ -89,6 +89,85 @@ def pick(cands, lo=110, hi=160):
     return ok[0] if ok else min(cands, key=lambda c: abs(len(c) - (lo + hi) / 2))
 
 
+def htaccess():
+    """Apache configuration for the cPanel host (Namecheap), mirroring vercel.json: one canonical https://www address,
+    clean URLs, the same redirects and rewrites, security headers and caching."""
+    vc = json.load(open(os.path.join(ROOT, 'vercel.json')))
+    host = DOMAIN.split('://', 1)[1]                      # www.therepublic.agency
+    bare = host[4:] if host.startswith('www.') else host
+    esc_re = lambda s: re.sub(r'([.\-])', r'\\\1', s)
+    red = '\n'.join(f'RewriteRule ^{r["source"].lstrip("/")}$ https://{host}{r["destination"]} [R=301,L]' for r in vc['redirects'])
+    rw = '\n'.join(f'RewriteRule ^{re.sub(r":[a-z]+", "[^/]+", r["source"].lstrip("/"))}$ {r["destination"].lstrip("/")} [L]' for r in vc['rewrites'])
+    return f'''# The Republic: Apache configuration for the cPanel host.
+# Written by scripts/build.py from vercel.json; edit the build, not this file.
+
+Options -Indexes -MultiViews
+DirectoryIndex index.html
+DirectorySlash Off
+ErrorDocument 404 /404.html
+AddDefaultCharset utf-8
+AddType image/webp .webp
+AddType video/mp4 .mp4
+AddType text/plain .txt
+
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /
+
+# certificate checks (AutoSSL) and server paths pass straight through
+RewriteRule ^(\\.well-known|cgi-bin)(/|$) - [L]
+
+# one address for the site: https://{host}
+RewriteCond %{{HTTP_HOST}} ^{esc_re(bare)}$ [NC]
+RewriteRule ^ https://{host}%{{REQUEST_URI}} [R=301,L]
+RewriteCond %{{HTTP_HOST}} ^{esc_re(host)}$ [NC]
+RewriteCond %{{HTTPS}} !=on
+RewriteCond %{{HTTP:X-Forwarded-Proto}} !=https
+RewriteRule ^ https://{host}%{{REQUEST_URI}} [R=301,L]
+
+# clean addresses: /index.html -> /, /work.html -> /work, /work/ -> /work
+RewriteCond %{{THE_REQUEST}} \\s/+index\\.html[\\s?]
+RewriteRule ^ https://{host}/ [R=301,L]
+RewriteCond %{{THE_REQUEST}} \\s/+([^\\s?]+?)\\.html[\\s?]
+RewriteRule ^ https://{host}/%1 [R=301,L]
+RewriteCond %{{REQUEST_URI}} ^(/.+)/+$
+RewriteRule ^ https://{host}%1 [R=301,L]
+
+# redirects carried over from the old site
+{red}
+
+# rewrites (a person on the Studio page, e.g. /studio/daniel-emeka)
+{rw}
+
+# serve /work from work.html, /services/experiences from services/experiences.html
+RewriteCond $1 !^404$
+RewriteCond $1 !\\.html$
+RewriteCond %{{REQUEST_FILENAME}} !-f
+RewriteCond %{{REQUEST_FILENAME}}.html -f
+RewriteRule ^(.+)$ $1.html [L]
+</IfModule>
+
+<IfModule mod_headers.c>
+Header always set X-Content-Type-Options "nosniff"
+Header always set Referrer-Policy "strict-origin-when-cross-origin"
+Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+<FilesMatch "\\.(html|txt|xml)$">
+Header set Cache-Control "public, max-age=0, must-revalidate"
+</FilesMatch>
+<FilesMatch "\\.(webp|jpg|jpeg|png|mp4|ico|svg)$">
+Header set Cache-Control "public, max-age=604800, stale-while-revalidate=86400"
+</FilesMatch>
+<FilesMatch "\\.(css|js)$">
+Header set Cache-Control "public, max-age=31536000, immutable"
+</FilesMatch>
+</IfModule>
+
+<IfModule mod_deflate.c>
+AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml application/xml application/javascript text/javascript application/json image/svg+xml
+</IfModule>
+'''
+
+
 def main(check=False):
     js = open(os.path.join(PUB, 'assets', 'app.js')).read()
     css = open(os.path.join(PUB, 'assets', 'app.css')).read()
@@ -333,6 +412,8 @@ def main(check=False):
     urls = sorted(P.values(), key=lambda u: (u != '/', u))
     outputs['sitemap.xml'] = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join(
         f'  <url><loc>{DOMAIN}{u if u != "/" else "/"}</loc><lastmod>{TODAY}</lastmod></url>\n' for u in urls) + '</urlset>\n'
+
+    outputs['.htaccess'] = htaccess()
 
     # sanity: one h1 per page, unique titles and descriptions, sensible lengths
     titles, descs, warn = {}, {}, []
