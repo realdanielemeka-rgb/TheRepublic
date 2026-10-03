@@ -114,8 +114,9 @@ AddType text/plain .txt
 RewriteEngine On
 RewriteBase /
 
-# certificate checks (AutoSSL) and server paths pass straight through
+# certificate checks, Namecheap's SSL manager and server paths pass straight through
 RewriteRule ^(\\.well-known|cgi-bin)(/|$) - [L]
+RewriteRule ^ssl-manager\\.php$ - [L]
 
 # one address for the site: https://{host}
 RewriteCond %{{HTTP_HOST}} ^{esc_re(bare)}$ [NC]
