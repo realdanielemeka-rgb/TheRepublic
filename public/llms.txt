@@ -40,6 +40,6 @@ How we work: strategy first. Every brief starts with questions about people and 
 
 - [Studio and team](https://www.therepublic.agency/studio): who we are, our story and the clients we build for.
 - [Method](https://www.therepublic.agency/method): how a brief becomes work.
-- [Journal](https://www.therepublic.agency/journal): essays and case films.
+- [Journal](https://www.therepublic.agency/journal): articles and case films.
 - [Frequently asked questions](https://www.therepublic.agency/services): plain answers about the agency.
 - [Contact](https://www.therepublic.agency/contact)

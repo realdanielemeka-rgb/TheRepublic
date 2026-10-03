@@ -21,7 +21,7 @@ TITLES = {
     'work': 'Advertising & Creative Work in Nigeria | The Republic',
     'studio': 'About Our Lagos Creative Agency | The Republic',
     'method': 'How We Work: Strategy First | The Republic',
-    'journal': 'Journal: Essays and Case Films | The Republic',
+    'journal': 'Journal: Articles and Case Films | The Republic',
     'contact': 'Contact The Republic | Marketing Agency in Lagos',
     'privacy': 'Privacy Notice | The Republic',
     'lost': 'Page not found | The Republic',
@@ -41,7 +41,7 @@ DESCRIPTIONS = {
     'work': 'Advertising campaigns, films and digital work by The Republic for Promasidor, CHI, Prudential Zenith, Zenith Bank and Dulux. Every case, by district.',
     'studio': 'Meet The Republic, an independent creative and advertising agency at 10 Onisiwo Road, Ikoyi, Lagos: the team, our story and the clients we build for.',
     'method': 'How The Republic works: three commitments, six questions on every brief and five steps from problem to proof. Strategy first, and the work must prove it.',
-    'journal': 'Essays and case films from The Republic, a creative and marketing agency in Lagos. Read Write for the reply, and watch the work behind our campaigns.',
+    'journal': 'Articles and case films from The Republic, a creative and marketing agency in Lagos. Read Write for the reply, and watch the work behind our campaigns.',
     'contact': 'Start a conversation with The Republic, a creative and marketing agency in Ikoyi, Lagos. Email office@therepublic.agency or call +234 700 700 5252.',
     'privacy': 'How The Republic Studios Ltd collects, uses and protects personal data from this website, and the rights you have under the Nigeria Data Protection Act 2023.',
     'lost': 'This page does not exist or has moved. Explore the work of The Republic, an independent creative and marketing agency in Lagos.',
@@ -405,7 +405,7 @@ def main(check=False):
         '', '## About', '',
         f'- [Studio and team]({DOMAIN}/studio): who we are, our story and the clients we build for.',
         f'- [Method]({DOMAIN}/method): how a brief becomes work.',
-        f'- [Journal]({DOMAIN}/journal): essays and case films.',
+        f'- [Journal]({DOMAIN}/journal): articles and case films.',
         f'- [Frequently asked questions]({DOMAIN}/services): plain answers about the agency.',
         f'- [Contact]({DOMAIN}/contact)', '']) 
     outputs['robots.txt'] = 'User-agent: *\nAllow: /\n\n# AI assistants and AI search are welcome to read this site\n' + ''.join(

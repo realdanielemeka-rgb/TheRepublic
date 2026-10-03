@@ -213,7 +213,7 @@ const TEAM = [
   { d: 'creative', n: 'Caleb Ogiri', r: 'Art Director' },
   { d: 'creative', n: 'Nifemi Olotu', r: 'Art Director' },
   { d: 'lead', n: 'Ola Olowu', r: 'Chairman & Co-Founder' },
-  { d: 'lead', n: 'Daniel Emeka', r: 'Managing Director & Co-Founder', b: 'More than 13 years across brand strategy, creative direction, graphic design and filmmaking. He founded Blank White Sheet, a platform that brings young creatives together and teaches them marketing, and has spoken at industry events, including TEDx.' },
+  { d: 'lead', n: 'Daniel Emeka', r: 'Managing Director & Co-Founder' },
   { d: 'lead', n: 'Aderoju Adeniji', r: 'Head of Operations & Client Service' },
   { d: 'client', n: 'Mmesoma Obikobe', r: 'Brand Manager' },
   { d: 'content', n: 'Wuraola Bamidele', r: 'Content Creator' },
@@ -343,7 +343,7 @@ Object.keys(CASEFILES).forEach(k => { PLACE[k + '-case'] = 'Case · /' + CASEFIL
 const TITLES = {
   gate: 'Creative & Marketing Agency in Lagos | The Republic', work: 'Portfolio: Campaigns & Creative Work | The Republic',
   studio: 'About Our Lagos Creative Agency | The Republic', contact: 'Contact The Republic | Marketing Agency in Lagos',
-  method: 'How We Work: Strategy First | The Republic', journal: 'Journal: Essays, Case Films and News | The Republic', privacy: 'Privacy Notice | The Republic', lost: 'Page not found | The Republic',
+  method: 'How We Work: Strategy First | The Republic', journal: 'Journal: Articles, Case Films and News | The Republic', privacy: 'Privacy Notice | The Republic', lost: 'Page not found | The Republic',
   onga: 'Onga Taste of Home: Digital Campaign Case Study | The Republic', cowbell: 'Cowbell Ramadan Social Media Campaign | The Republic',
   spruce: 'Spruce by Dulux: Digital Campaign Case Study | The Republic', pzl: 'Prudential Zenith: Empowering Tomorrow | The Republic',
   zenith: 'Zenith Bank Homecoming Campaign | The Republic'
@@ -2098,13 +2098,10 @@ function dsFrame(now) {
 }
 function showPerson(i) {
   const n = PEOPLE.length; i = (i + n) % n; S.ds.i = i;
-  const p = PEOPLE[i], first = p.n.split(' ')[0], img = `url(img/tm-${slug(p.n)}.webp)`;
+  const p = PEOPLE[i], img = `url(img/tm-${slug(p.n)}.webp)`;
   $('.dsn', dossier).textContent = p.n;
   $('#ds-name').classList.toggle('long', Math.max(...p.n.split(' ').map(w => w.length)) >= 12); // e.g. Oluwadoyinsola
   $('#ds-role').textContent = p.r;
-  { const bio = $('#ds-bio'); bio.textContent = p.b || ''; bio.hidden = !p.b; }
-  const cta = $('#ds-cta'); cta.textContent = `Write to ${first}`;
-  cta.href = `mailto:office@therepublic.agency?subject=${encodeURIComponent('For ' + p.n)}`;
   dsPort.setAttribute('aria-label', `Portrait of ${p.n}, ${p.r}`);
   const nx = PEOPLE[(i + 1) % n]; $('#ds-next span').textContent = nx.n;
   try { history.replaceState(null, '', '/studio/' + slug(p.n)); } catch (e) {}
@@ -2388,7 +2385,7 @@ $$('[data-jf]').forEach(b => b.addEventListener('click', () => {
 $('#essay-open').addEventListener('click', () => {
   const e = $('#essay'), open = e.hidden;
   e.hidden = !open; $('#essay-open').setAttribute('aria-expanded', String(open)); e.closest('.jfeat').classList.toggle('open', open);
-  $('#essay-open').textContent = open ? 'Close the essay ↑' : 'Read the essay ↓';
+  $('#essay-open').textContent = open ? 'Close the article ↑' : 'Read the article ↓';
   measureStudio();
 });
 const pickTopic = v => { const i = $(`#cform input[name="topic"][value="${v}"]`); if (i) i.checked = true; };
@@ -2853,7 +2850,7 @@ document.addEventListener('click', e => { const im = e.target.closest('.case fig
 $('#lb-x').addEventListener('click', lbClose); lb.addEventListener('click', e => { if (e.target === lb) lbClose(); });
 $('#lb-prev').addEventListener('click', () => lbShow(lbI - 1)); $('#lb-next').addEventListener('click', () => lbShow(lbI + 1));
 document.addEventListener('keydown', e => { if (lb.hidden) return; if (e.key === 'Escape') lbClose(); else if (e.key === 'ArrowRight') lbShow(lbI + 1); else if (e.key === 'ArrowLeft') lbShow(lbI - 1); else if (e.key === 'Tab') { e.preventDefault(); const f = $$('button', lb).filter(b => !b.hidden); const k = f.indexOf(document.activeElement); f[(k + (e.shiftKey ? -1 : 1) + f.length) % f.length].focus(); } });
-// the essay: reading time and sharing
+// the article: reading time and sharing
 { const words = ($('#essay') ? $('#essay').textContent : '').trim().split(/\s+/).length; const et = $('#essay-time'); if (et) et.textContent = Math.max(1, Math.round(words / 220)) + ' min read'; }
 const essayUrl = () => location.origin + '/journal';
 $('#essay-share').addEventListener('click', async () => { if (navigator.share) { try { await navigator.share({ title: 'Write for the reply.', url: essayUrl() }); } catch (e) {} } else { try { await navigator.clipboard.writeText(essayUrl()); toast('Link copied.'); } catch (e) { toast(essayUrl()); } } });
