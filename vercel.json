@@ -7,113 +7,13 @@
   "trailingSlash": false,
   "redirects": [
     {
-      "source": "/chivita-12-days-of-christmas",
-      "destination": "/#chivita-12-days-of-christmas",
-      "permanent": true
-    },
-    {
-      "source": "/chivita-2-campaign",
-      "destination": "/#chivita-2-campaign",
-      "permanent": true
-    },
-    {
-      "source": "/chivita-hollandia-ramadan",
-      "destination": "/#chivita-hollandia-ramadan",
-      "permanent": true
-    },
-    {
-      "source": "/chivita-style-n-sips",
-      "destination": "/#chivita-style-n-sips",
-      "permanent": true
-    },
-    {
-      "source": "/contact",
-      "destination": "/#contact",
-      "permanent": true
-    },
-    {
-      "source": "/cowbell-ramadan-your-first-taste",
-      "destination": "/#cowbell-ramadan-your-first-taste",
-      "permanent": true
-    },
-    {
-      "source": "/heirs-insurance-launch",
-      "destination": "/#heirs-insurance-launch",
-      "permanent": true
-    },
-    {
       "source": "/home",
       "destination": "/",
       "permanent": true
     },
     {
-      "source": "/i-invest-secure-the-bag",
-      "destination": "/#i-invest-secure-the-bag",
-      "permanent": true
-    },
-    {
-      "source": "/onga-taste-of-home",
-      "destination": "/#onga-taste-of-home",
-      "permanent": true
-    },
-    {
       "source": "/portfolio",
-      "destination": "/#portfolio",
-      "permanent": true
-    },
-    {
-      "source": "/prudential-zenith-empowering-tomorrow",
-      "destination": "/#prudential-zenith-empowering-tomorrow",
-      "permanent": true
-    },
-    {
-      "source": "/prudential-zenith-social-content",
-      "destination": "/#prudential-zenith-social-content",
-      "permanent": true
-    },
-    {
-      "source": "/prudential-zenith-we-do-dreams",
-      "destination": "/#prudential-zenith-we-do-dreams",
-      "permanent": true
-    },
-    {
-      "source": "/prudential-zenith-you-matter",
-      "destination": "/#prudential-zenith-you-matter",
-      "permanent": true
-    },
-    {
-      "source": "/sanlam-allianz-live-with-confidence",
-      "destination": "/#sanlam-allianz-live-with-confidence",
-      "permanent": true
-    },
-    {
-      "source": "/spruce-dulux-digital-launch",
-      "destination": "/#spruce-dulux-digital-launch",
-      "permanent": true
-    },
-    {
-      "source": "/studio",
-      "destination": "/#studio",
-      "permanent": true
-    },
-    {
-      "source": "/torrista-see-for-yourself",
-      "destination": "/#torrista-see-for-yourself",
-      "permanent": true
-    },
-    {
-      "source": "/twisco-everyday-hero",
-      "destination": "/#twisco-everyday-hero",
-      "permanent": true
-    },
-    {
-      "source": "/zenith-bank-35th-anniversary",
-      "destination": "/#zenith-bank-35th-anniversary",
-      "permanent": true
-    },
-    {
-      "source": "/zenith-bank-homecoming",
-      "destination": "/#zenith-bank-homecoming",
+      "destination": "/work",
       "permanent": true
     }
   ],
@@ -132,10 +32,6 @@
         {
           "key": "Permissions-Policy",
           "value": "camera=(), microphone=(), geolocation=()"
-        },
-        {
-          "key": "X-Robots-Tag",
-          "value": "noindex"
         }
       ]
     },
@@ -147,6 +43,21 @@
           "value": "public, max-age=604800, stale-while-revalidate=86400"
         }
       ]
+    },
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/studio/:person",
+      "destination": "/studio.html"
     }
   ]
 }
