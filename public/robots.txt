@@ -1,3 +1,4 @@
 User-agent: *
-Disallow: /
-# Pre-launch: flip to "Allow: /" and add the sitemap when the site goes live on therepublic.agency.
+Allow: /
+
+Sitemap: https://www.therepublic.agency/sitemap.xml

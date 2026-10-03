@@ -40,10 +40,10 @@ This branch (`immersive-site`) supersedes the earlier Next.js rebuild, which rem
 ## Editorial rules (non-negotiable)
 
 - Write in British English, at boardroom quality.
-- No fabricated claims, metrics or credits. Results appear only with a source. Figures carried over from the old site keep the "As published on the current site" note until source records are attached.
-- Name talent and creators only with documented consent. Captions stay generic otherwise.
+- No fabricated claims, metrics or credits. Figures carried over from the old site are shown as published there; any new figure needs a source.
+- Name talent and creators only with documented consent. Captions stay generic otherwise. Credits list only confirmed roles; unconfirmed partner rows are left out, not marked "TBC".
 - Show client logos only for relationships the MD has confirmed.
-- Team portraits are AI placeholders and must stay labelled as such until real photography arrives.
+- Team portraits are AI-generated studio portraits. At launch (3 October 2026) the MD decided to show them without a label. New portraits: generate from the person's own photos in the same style (black backdrop, low-key light, all-black wardrobe, 3:4), and never use another team member's portrait as a pose reference, because the model borrows their face.
 - Add no awards, press or dates without a public proof link.
 - Ola Olowu, Daniel Emeka and Aderoju Adeniji lead the Studio page. Everyone else is listed alphabetically with no hierarchy.
 
@@ -64,16 +64,13 @@ The harness serves `public/index.html` locally and substitutes local copies of T
 
 Vercel's Git integration deploys every push. **`main` is production**; every other branch gets a preview URL (behind Vercel login). Work on `immersive-site` (or a feature branch), check the preview, then fast-forward `main` to ship. The site is static, so there is nothing to build.
 
-Pre-launch safeguards to remove at launch:
-- the `X-Robots-Tag: noindex` header in `vercel.json`;
-- `Disallow: /` in `public/robots.txt`;
-- the "Prototype · Design study" label (`.proto`).
+The site is public and indexable (`robots.txt` allows all, `sitemap.xml` lists the home page). The contact form, contact drawer and newsletter sign-up hand off to the visitor's email app (mailto) because the site has no backend.
 
-## Launch checklist
+## After launch
 
-1. Content sign-off: results sources, the privacy notice (legal), held-back logos, team roster.
-2. Contact form and newsletter delivery. Both use mailto fallbacks today; add a Vercel function (for example with Resend).
-3. Captions (WebVTT) for films with dialogue.
-4. Real-device performance pass on mid-range Android and iPhone.
-5. Remove the pre-launch safeguards above and point therepublic.agency at the Vercel project.
-6. Absolute share-image URLs per route. Only the home page's are absolute today; the rest are set client-side.
+1. Point therepublic.agency at the Vercel project. Change only the website records (apex and `www`); leave the MX and other email records untouched so office@therepublic.agency keeps working.
+2. Legal review of the privacy notice (retention wording, NDPC registration status).
+3. Optional: a form backend (Vercel function with an email service) to replace the mailto hand-off, and a real newsletter list.
+4. Captions (WebVTT) for films with dialogue.
+5. Real-device performance pass on mid-range Android and iPhone.
+6. Absolute share-image URLs per route. Only the home page's are absolute; the rest are set client-side.
