@@ -1,7 +1,7 @@
 import asyncio
 from harness import page, BASE
 from playwright.async_api import async_playwright
-R=['privacy','work','onga','cowbell','spruce','pzl','zenith','studio','method','journal','contact','onga-case','zenith-case','twisco-case','torrista-case','gate']
+R=['privacy','work','onga','cowbell','chivita','spruce','pzl','zenith','studio','method','journal','contact','onga-case','chivita-case','zenith-case','twisco-case','torrista-case','gate']
 async def run(w,h,tag,mobile=False):
     async with async_playwright() as p:
         b,pg,errs=await page(p,w,h,mobile)

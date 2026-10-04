@@ -7,11 +7,11 @@ and the five case pages). Keep titles to 60 characters and descriptions to 110-1
 HUB = {
     'path': '/services',
     'title': 'Creative & Advertising Agency Services | The Republic',
-    'description': 'Strategy, brand and creative, content and social, integrated campaigns, digital and experiences, from an independent advertising agency in Lagos, Nigeria.',
+    'description': 'Strategy, brand and creative, organic social, integrated campaigns, digital and experiences, from an independent advertising agency in Lagos, Nigeria.',
     'eyebrow': 'What we do · Services',
     'h1': 'A creative and advertising agency, end to end.',
     'lead': ('The Republic is an independent creative and advertising agency in Lagos, Nigeria, working with African and global brands '
-             'including Promasidor, Zenith Bank, Prudential Zenith Life, Sanlam Allianz and Dulux. Six disciplines, one team, one standard: '
+             'including Promasidor, Chivita, Zenith Bank, Prudential Zenith Life, Sanlam Allianz and Dulux. Six disciplines, one team, one standard: '
              'strategy first, and the work must prove it.'),
     'og': 'services',
 }
@@ -39,17 +39,19 @@ SERVICES = [
                  ('TV commercials and films', 'Ideas and scripts for TV commercials, launch films and online video.'),
                  ('Visual and brand identity', 'Campaign design and brand development built to hold up across every channel.')],
          cases=['twisco', 'ramadan', 'youmatter', 'iinvest', 'sanlam', 'torrista', 'zenith35', 'heirs'], img='cs-sanlam-2.webp'),
-    dict(key='svc-content', name='Content & Social', path='/services/content-and-social',
-         title='Social Media & Content Agency in Nigeria | The Republic',
-         description='Social media management, creator partnerships and content series from The Republic in Lagos, for brands that want conversation as well as reach.',
-         h1='Content and social media that people answer.',
-         lead=('Social media management, creator partnerships and always-on content for brands that want conversation, not just reach. '
-               'We write for the reply, and build content systems that keep a brand talking week after week. Our Chivita 2.0 campaign won '
-               'Best Use of Social Media at the Nigerian Marketing Awards 2024.'),
-         covers=[('Social media management', 'Platform-specific content, community management and a steady publishing rhythm.'),
-                 ('Creator and influencer partnerships', 'Creators chosen for fit and briefed to tell the story in their own voice.'),
-                 ('Series and formats', 'Repeatable formats, from YouTube series to live sessions, that give people a reason to come back.')],
-         cases=['chivita2', 'cowbell', 'onga', 'sips', 'chivita12', 'pzlsocial'], img='cs-sips-1.webp'),
+    dict(key='svc-content', name='Organic Social & Content', path='/services/organic-social',
+         title='Organic Social Media Agency in Nigeria | The Republic',
+         description='Organic social media from The Republic in Lagos: always-on content, creators, community and series people answer. Our Chivita work won Best Use of Social Media.',
+         h1='Organic social people answer, not scroll past.',
+         lead=('Organic social is where a brand earns attention it has not paid for. We plan it and make it: always-on content, creator '
+               'partnerships, community management and series people come back for, built around a question the audience actually wants '
+               'to answer. What’s Your Chivita?, a year of organic social for Chivita, won Best Use of Social Media at the Nigerian Marketing '
+               'Awards 2024. For Prudential Zenith Life, we turned an insurer’s feed into reels about salary week, office life and what a '
+               'plan actually covers.'),
+         covers=[('Always-on content', 'A publishing rhythm built around one idea, so every post adds to the last instead of starting again.'),
+                 ('Creators and community', 'Creators chosen for fit and briefed to answer in their own voice, and a community that gets a reply.'),
+                 ('Series and live formats', 'Repeatable formats, from YouTube series to Instagram Live, that give people a reason to come back.')],
+         cases=['chivita', 'pzlsocial', 'cowbell', 'onga', 'sips', 'chivita12'], img='ch-sns-2.webp'),
     dict(key='svc-integrated', name='Integrated Marketing', path='/services/integrated-marketing',
          title='Integrated Marketing & Advertising Campaigns | The Republic',
          description='Integrated advertising campaigns from The Republic, Lagos: one idea carried through film, outdoor, radio, digital, social and experiences to one next step.',
@@ -83,10 +85,11 @@ SERVICES = [
          cases=['zenith35', 'twisco', 'chivita12'], img='cs-zenith35-1.webp'),
 ]
 
-# the five flagship cases live on their own pages (CASEFILES covers the other thirteen)
+# the six flagship cases live on their own pages (CASEFILES covers the other twelve)
 FLAGSHIP = {
     'onga': ('Onga · Promasidor Nigeria', 'Taste of Home', 'A digital platform built from people’s answers to one question: what does home mean to you?'),
     'cowbell': ('Cowbell · Promasidor Nigeria', 'Your First Taste', 'Nigerian digital and social execution of a Ramadan campaign about who cares before the first taste.'),
+    'chivita': ('Chivita · CHI Limited', 'What’s Your Chivita?', 'A year of organic social built on one question, from creator stories to a YouTube series and Christmas live. Best Use of Social Media, NMA 2024.'),
     'spruce': ('Spruce by Dulux · CAP Plc', 'Show Your True Colours', 'Creators, social distribution and digital visualisation for a paint launch.'),
     'pzl': ('Prudential Zenith Life', 'Empowering Tomorrow', 'An integrated campaign that made the next 40 years personal and planning practical.'),
     'zenith': ('Zenith Bank', 'See Homecoming Differently', 'A strategy and creative platform for Nigerians coming home every December.'),
@@ -99,7 +102,9 @@ FAQ = [
     ('Which brands has The Republic worked with?',
      'Clients include Promasidor (Onga and Cowbell), CHI (Chivita and Hollandia), Prudential Zenith Life Insurance, Zenith Bank, Sanlam Allianz, CAP Plc (Spruce by Dulux), Twisco, Heirs Insurance, i-invest and Sterling Bank.'),
     ('What services does The Republic offer?',
-     'Communication strategy, brand and creative, content and social, integrated marketing, digital and performance, and experiences.'),
+     'Communication strategy, brand and creative, organic social and content, integrated marketing, digital and performance, and experiences.'),
+    ('Does The Republic do organic social media?',
+     'Yes. Organic social is one of our six disciplines: always-on content, creator partnerships, community management and series. What’s Your Chivita?, our year of organic social for Chivita, won Best Use of Social Media at the Nigerian Marketing Awards 2024.'),
     ('How does The Republic work?',
      'Strategy first. Every brief starts with questions about people, then moves through five steps: the problem, the human truth, the idea, the system and the evidence.'),
     ('How do I start a project with The Republic?',

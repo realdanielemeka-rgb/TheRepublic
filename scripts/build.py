@@ -30,11 +30,13 @@ TITLES = {
     'spruce': 'Spruce by Dulux True Colours: Interactive | The Republic',
     'pzl': 'Prudential Zenith Tomorrow: Interactive | The Republic',
     'zenith': 'Zenith Bank Homecoming: Interactive | The Republic',
+    'chivita': 'What’s Your Chivita? Interactive World | The Republic',
     'onga-case': 'Onga Taste of Home Campaign Case Study | The Republic',
     'cowbell-case': 'Cowbell Ramadan Social Media Campaign | The Republic',
     'spruce-case': 'Spruce by Dulux: Digital Launch Case Study | The Republic',
     'pzl-case': 'Prudential Zenith: Empowering Tomorrow | The Republic',
     'zenith-case': 'Zenith Bank Homecoming Strategy | The Republic',
+    'chivita-case': 'Chivita Organic Social Media Campaign | The Republic',
 }
 DESCRIPTIONS = {
     'gate': 'Independent creative and advertising agency in Lagos, Nigeria. Strategy-led campaigns, content, digital work and experiences for African and global brands.',
@@ -55,9 +57,11 @@ DESCRIPTIONS = {
     'spruce-case': 'Spruce by Dulux case study: how The Republic amplified the Show Your True Colours launch with creators, social distribution and digital visualisation.',
     'pzl-case': "Empowering Tomorrow case study: The Republic's integrated campaign that helped Prudential Zenith Life make the next 40 years personal and planning practical.",
     'zenith-case': "See Homecoming Differently: The Republic's strategy and creative platform for Zenith Bank, built for Nigerians in the diaspora coming home every December.",
+    'chivita': 'Step into What’s Your Chivita?, an interactive world from The Republic’s year of organic social for Chivita: creator stories, a series and Christmas live.',
+    'chivita-case': 'Chivita case study: The Republic’s year of organic social, from creator stories to Style N’ Sips and Christmas live. Winner, Best Use of Social Media, NMA 2024.',
 }
-CAPABILITIES = ['Communication Strategy', 'Brand & Creative', 'Content & Social', 'Integrated Marketing', 'Digital & Performance', 'Experiences']
-WORLDS = ['onga', 'cowbell', 'spruce', 'pzl', 'zenith']
+CAPABILITIES = ['Communication Strategy', 'Brand & Creative', 'Organic Social & Content', 'Integrated Marketing', 'Digital & Performance', 'Experiences']
+WORLDS = ['onga', 'cowbell', 'chivita', 'spruce', 'pzl', 'zenith']
 ESSAY = {'headline': 'Write for the reply.', 'description': 'Good brand work gives people a reason to bring their own lives into the story.', 'date': '2026-10-03'}
 
 
@@ -219,7 +223,7 @@ def main(check=False):
         'description': DESCRIPTIONS['gate'], 'email': 'office@therepublic.agency',
         'address': {'@type': 'PostalAddress', 'streetAddress': '10 Onisiwo Road', 'addressLocality': 'Ikoyi', 'addressRegion': 'Lagos', 'addressCountry': 'NG'},
         'founder': [{'@type': 'Person', 'name': 'Ola Olowu'}, {'@type': 'Person', 'name': 'Daniel Emeka'}],
-        'knowsAbout': CAPABILITIES + ['Advertising', 'Brand strategy', 'TV commercials', 'Social media marketing', 'Influencer marketing', 'Digital marketing', 'Experiential marketing'],
+        'knowsAbout': CAPABILITIES + ['Advertising', 'Brand strategy', 'TV commercials', 'Social media marketing', 'Organic social media', 'Social media content creation', 'Community management', 'Influencer marketing', 'Digital marketing', 'Experiential marketing'],
         'slogan': 'Creating Tomorrow', 'areaServed': {'@type': 'Country', 'name': 'Nigeria'},
         'hasOfferCatalog': {'@type': 'OfferCatalog', 'name': 'Services', 'itemListElement': [
             {'@type': 'Offer', 'itemOffered': {'@type': 'Service', 'name': sv['name'], 'url': DOMAIN + sv['path']}} for sv in SV.SERVICES]},
@@ -303,6 +307,8 @@ def main(check=False):
         if f.get('award'):
             aw = f['award']
             s = s.replace('<p class="cfaward" id="cf-award" hidden></p>', f'<p class="cfaward" id="cf-award"><a href="{esc(aw[2])}" target="_blank" rel="noopener"><span class="k">{esc(aw[0])}</span><b>{esc(aw[1])}</b><span class="src">Official results<span class="sr"> (opens in a new tab)</span> ↗</span></a></p>', 1)
+        if f.get('part'):
+            s = s.replace('<p class="cfpart" id="cf-part" hidden></p>', f'<p class="cfpart" id="cf-part"><a href="{P[f["part"][0] + "-case"]}">{esc(f["part"][1])} <span aria-hidden="true">→</span></a></p>', 1)
         fill('cf-facts', ''.join(f'<div><dt>{esc(a)}</dt><dd>{esc(b)}</dd></div>' for a, b in f['facts']))
         fill('cf-story-b', ''.join(f'<p class="big" style="font-size:clamp(28px,3.2vw,48px)">{esc(p)}</p>' if i == 0 else f'<p class="p">{esc(p)}</p>' for i, p in enumerate(f['story'])))
         fill('cf-steps', ''.join(f'<li><span><b>{esc(a)}.</b> {esc(b)}</span></li>' for a, b in f['steps']))
@@ -405,7 +411,7 @@ def main(check=False):
         fn = '404.html' if r == 'lost' else ('index.html' if P[r] == '/' else P[r].lstrip('/') + '.html')
         outputs[fn] = page(r)
     outputs['assets/routes.js'] = routes_js
-    flag = [('onga', 'Promasidor Nigeria')] + [(k, c) for k, c in [('cowbell', 'Promasidor Nigeria'), ('spruce', 'CAP Plc'), ('pzl', 'Prudential Zenith Life Insurance'), ('zenith', 'Zenith Bank')]]
+    flag = [('onga', 'Promasidor Nigeria')] + [(k, c) for k, c in [('cowbell', 'Promasidor Nigeria'), ('chivita', 'CHI Limited'), ('spruce', 'CAP Plc'), ('pzl', 'Prudential Zenith Life Insurance'), ('zenith', 'Zenith Bank')]]
     work_lines = [f"- [{SV.FLAGSHIP[k][1]}]({DOMAIN}{P[k + '-case']}): {SV.FLAGSHIP[k][0]}. {SV.FLAGSHIP[k][2]}" for k, _ in flag]
     work_lines += [f"- [{f['title']}]({DOMAIN}{P[k + '-case']}): {f['facts'][0][1]}. {f['line']}" for k, f in CF.items()]
     outputs['llms.txt'] = '\n'.join([
@@ -417,7 +423,7 @@ def main(check=False):
         '## Services', ''] + [f"- [{sv['name']}]({DOMAIN}{sv['path']}): {sv['description']}" for sv in SV.SERVICES] + [
         '', '## Selected work', ''] + work_lines + [
         '', '## Recognition', '',
-        '- Nigerian Marketing Awards 2024: Best Use of Social Media, winner, for the Chivita 2.0 campaign (https://www.nma-ng.com/2024-winners/).',
+        f'- Nigerian Marketing Awards 2024: Best Use of Social Media, winner, for the Chivita 2.0 campaign, What’s Your Chivita? ({DOMAIN}{P["chivita-case"]}; official results: https://www.nma-ng.com/2024-winners/).',
         '- Nigerian Marketing Awards 2025: Financial Institution of the Year, second place, The Republic, for You Matter with Prudential Zenith Life (https://www.nma-ng.com/winners/).',
         '', '## About', '',
         f'- [Studio and team]({DOMAIN}/studio): who we are, our story and the clients we build for.',

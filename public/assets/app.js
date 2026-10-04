@@ -23,15 +23,16 @@ const CASES = [
     line: "Wherever the taste feels like yours, that's home.", svc: 'Digital strategy · Social content · Creator engagement · Campaign amplification' },
   { id: 'cowbell', s: 'Cowbell · First Taste', t: 'Your First Taste', b: 'Cowbell', c: 'Promasidor Nigeria', d: 'food', f: 1, img: 't-cowbell-ramadan.webp', col: -6, row: 1, h: 11, line: 'Before the first taste, someone cared.' },
   { id: 'twisco', t: 'Everyday Hero', b: 'Twisco', c: 'Twisco', d: 'food', img: 't-twisco.webp', col: -5, row: 1, h: 6.6 },
-  { id: 'chivita12', t: '12 Days of Christmas', b: 'Chivita', c: 'CHI Limited', d: 'food', img: 't-chivita-12-days-of-christmas.webp', col: -4, row: 1, h: 5.4 },
-  { id: 'chivita2', t: "What's Your Chivita?", b: 'Chivita', c: 'CHI Limited', d: 'food', img: 't-chivita-2-campaign.webp', col: -7, row: 0, h: 4.2 },
+  { id: 'chivita', s: "Chivita · What's Your Chivita?", t: "What's Your Chivita?", b: 'Chivita', c: 'CHI Limited', d: 'food', f: 1, img: 't-chivita-2-campaign.webp', col: -4, row: 1, h: 11.6,
+    line: 'Everyone has a Chivita. What’s yours?', svc: 'Organic social strategy · Creator partnerships · Always-on content · A YouTube series · Live social' },
+  { id: 'chivita12', t: '12 Days of Christmas', b: 'Chivita', c: 'CHI Limited', d: 'food', img: 't-chivita-12-days-of-christmas.webp', col: -7, row: 0, h: 4.2 },
   { id: 'ramadan', t: 'Ramadan TVCs', b: 'Chivita & Hollandia', c: 'CHI Limited', d: 'food', img: 't-chivita-hollandia-ramadan.webp', col: -6, row: 0, h: 3.4 },
   { id: 'sips', t: "Style N' Sips", b: 'Chivita', c: 'CHI Limited', d: 'food', img: 't-chivita-style-n-sips.webp', col: -5, row: 0, h: 3.8 },
   { id: 'dreams', t: 'We Do Dreams', b: 'Prudential Zenith Life', c: 'Prudential Zenith Life', d: 'fin', img: null, col: -2, row: 1, h: 5.2 },
   { id: 'pzl', s: 'PZL · Empowering Tomorrow', t: 'Empowering Tomorrow', b: 'Prudential Zenith Life', c: 'Prudential Zenith Life', d: 'fin', f: 1, img: 't-pzl-empowering-tomorrow.webp', col: -1, row: 1, h: 11.8, line: 'Boss in 2026. Boss in 2066.' },
   { id: 'youmatter', t: 'You Matter', b: 'Prudential Zenith Life', c: 'Prudential Zenith Life', d: 'fin', img: 't-pzl-you-matter.webp', col: 0, row: 1, h: 6.4 },
   { id: 'sanlam', t: 'Live with Confidence', b: 'Sanlam Allianz', c: 'Sanlam Allianz', d: 'fin', img: 't-sanlam-allianz.webp', col: 1, row: 1, h: 5.8 },
-  { id: 'pzlsocial', t: 'Content & Social', b: 'Prudential Zenith Life', c: 'Prudential Zenith Life', d: 'fin', img: 't-pzl-social-content.webp', col: -2, row: 0, h: 3.6 },
+  { id: 'pzlsocial', t: 'Organic Social', b: 'Prudential Zenith Life', c: 'Prudential Zenith Life', d: 'fin', img: 't-pzl-social-content.webp', col: -2, row: 0, h: 3.6 },
   { id: 'heirs', t: 'Launch Video', b: 'Heirs Insurance', c: 'Heirs Insurance', d: 'fin', img: 't-heirs.webp', col: -1, row: 0, h: 3.3 },
   { id: 'iinvest', t: 'Secure the Bag', b: 'i-invest', c: 'i-invest', d: 'fin', img: 't-i-invest.webp', col: 1, row: 0, h: 3.9 },
   { id: 'zenith', s: 'Zenith · Homecoming', t: 'See Homecoming Differently', b: 'Zenith Bank', c: 'Zenith Bank', d: 'bank', f: 1, img: 't-zenith-bank-homecoming.webp', col: 3, row: 1, h: 11.2 },
@@ -56,7 +57,7 @@ byId.pzl.y = '2025–26';
 byId.spruce.svc = 'Digital strategy · Creator and clipper distribution · Pinterest room inspiration · Campaign amplification';
 byId.spruce.y = '2026';
 byId.spruce.c = 'CAP Plc';
-const WORLDS = { onga: { world: 'onga', kase: 'onga-case', col: '#0F3A27' }, cowbell: { world: 'cowbell', kase: 'cowbell-case', col: '#0B1033' }, spruce: { world: 'spruce', kase: 'spruce-case', col: '#E4E2DC' }, pzl: { world: 'pzl', kase: 'pzl-case', col: '#C8202A' }, zenith: { world: 'zenith', kase: 'zenith-case', col: '#0A0A0C' } };
+const WORLDS = { onga: { world: 'onga', kase: 'onga-case', col: '#0F3A27' }, cowbell: { world: 'cowbell', kase: 'cowbell-case', col: '#0B1033' }, chivita: { world: 'chivita', kase: 'chivita-case', col: '#E8730C' }, spruce: { world: 'spruce', kase: 'spruce-case', col: '#E4E2DC' }, pzl: { world: 'pzl', kase: 'pzl-case', col: '#C8202A' }, zenith: { world: 'zenith', kase: 'zenith-case', col: '#0A0A0C' } };
 // the ten Spruce colour personalities, in the order the room is painted (colours sampled from the character-film stills)
 const SPC = [
   { n: 'Steeze White', c: '#E4E2DC', img: 'sp-steeze.webp', a: 1.421 },
@@ -80,6 +81,7 @@ const NOTES = {
   zenith: [['01 · Business problem', 'Coming home comes with friction: cards that fail, unfamiliar payments, banking not ready on landing.'], ['02 · Human truth', 'They left to grow. They return to belong.'], ['03 · Idea', 'Own the first impression: before travel, at the airport and across the first days back in Lagos.'], ['04 · System', 'Diaspora account by QR before travel → airport screens → street screens for the Lagos season → the Homecoming film → social, each ending in the same step.'], ['05 · Evidence', 'A strategy and creative platform for the December homecoming season.', '']],
   pzl: [['01 · Business problem', 'Make protection feel relevant while life is still being built, and give people a clear place to start.'], ['02 · Human truth', 'The future is a difficult family conversation.'], ['03 · Idea', 'Make tomorrow personal. Make planning practical: a 40-year plan gave insurance a human horizon.'], ['04 · System', 'Family conversation → creator invitation → live CEO session and podcast → Tomorrow Pledge → future-self film, billboard creative and radio → Ready Test and planning tools.'], ['05 · Evidence', 'YouTube views on the 49-second hero film, observed 8 September 2026. A public counter, not unique people.', '136,810']],
   spruce: [['01 · Business problem', 'Liking a colour is only the first decision. People still ask: will it feel like me, will it work in my space, which shade?'], ['02 · Human truth', 'People recognise an attitude before they choose a shade.'], ['03 · Idea', 'Put the personalities into conversation, then into rooms people could picture as their own. (Platform concept: 1879 Tech Hub / UACN.)'], ['04 · System', 'Teasers → hero and character films → live creator debates → a ten-clipper network → AI room inspiration on Pinterest → the Spruce website: repaint, quiz, shop with the shade.'], ['05 · Evidence', 'Clipper posts in week one against a target of 25, per the campaign report. A delivery figure, not reach.', '115']],
+  chivita: [['01 · Business problem', 'Grow engagement and visibility for a familiar juice brand on social, and hold it for a year rather than a burst.'], ['02 · Human truth', 'Everyone has a Chivita story.'], ['03 · Idea', 'Ask one question and let people answer it: what’s your Chivita?'], ['04 · System', 'Creator stories → #WhatsYourChivita in the feed → creator content and promoted films → Style N’ Sips on YouTube → 12 Days of Christmas, live on Instagram.'], ['05 · Evidence', 'Instagram plays on one Style N’ Sips episode, per the campaign report. A platform counter, not unique people.', '886,561']],
   cowbell: [['01 · Business problem', 'Stay relevant for the whole of Ramadan, not only in launch week.'], ['02 · Human truth', 'Before the first taste, someone cared.'], ['03 · Idea', 'What if the first taste recognised the person who made it possible?'], ['04 · System', 'Prepare → make → share → recognise: stock-up content, five-minute Sahoor ideas, regional dishes, creator recipes, share invitations, a 30-action calendar and thank-you prompts.'], ['05 · Evidence', 'Meta views across 44 Nigeria Facebook and Instagram posts, observed 8 September 2026. Counters, not unique people.', '99,999,862']]
 };
 // The other thirteen cases, carried over from the current site's case pages (copy lightly edited; no new claims)
@@ -90,23 +92,17 @@ const CASEFILES = {
     steps: [['The insight', 'Everyday heroism: kids solving problems with what they have.'], ['The big idea', 'There’s a superhero in every home.'], ['The proposition', 'Nutritional empowerment for everyday superheroes, powered by the Enerfort vitamin-mineral blend.'], ['The role', 'Everyday Hero, Everyday Twisco: the drink behind those moments, signed off with Power your dream.'], ['The key visuals', 'Two expressions of one idea: an animated trio of young heroes with the Twisco mascot, and a real girl caught mid-thought and mid-sip.'], ['At the shelf', 'Every hero deserves Twisco: gondolas, shelf fins, wobblers, danglers and a sampling bar carry the line into the aisle, with a buy-and-win offer.'], ['Herovator City', 'An innovation challenge for students: buy Twisco to earn Hero Points, submit an innovation and compete at an exhibition. Recruitment posters, a Brain Box build kit, bus wraps, the stage, certificates and team kit all carry the hero.'], ['The system', 'One line across film, key visuals, retail, social and on-ground activation.']],
     gal: [['v:tw-film', 'The film', 1], ['cs-tw-kv-trio.webp', 'Key visual · Everyday Hero, Everyday Twisco', 1], ['cs-tw-kv-think.webp', 'Key visual'], ['cs-tw-kv-sip.webp', 'Key visual'], ['cs-twisco-2.webp', 'Activation'], ['cs-tw-gondola.webp', 'In store · gondola'], ['cs-tw-sampling.webp', 'Sampling bar'], ['cs-tw-wobbler.webp', 'Shelf wobbler'], ['cs-tw-hv-city.webp', 'Herovator City · the challenge', 1], ['cs-tw-hv-wanted.webp', 'Herovator · recruitment poster'], ['cs-tw-hv-box.webp', 'Herovator · the Brain Box kit'], ['cs-tw-hv-shirt.webp', 'Herovator · team kit'], ['cs-tw-hv-bus.webp', 'Herovator City · bus wrap', 1], ['cs-tw-hv-arch.webp', 'Herovator City · entrance arch'], ['cs-twisco-3.webp', 'Social'], ['v:tw-billboard', 'Billboard, Lagos']],
     stats: [['4.5M', 'Increase in Instagram views'], ['12.9M', 'Increase in Facebook views'], ['+585K', 'Meta reach']] },
-  chivita12: { seo: 'Chivita: 12 Days of Christmas | The Republic', slug: 'chivita-12-days-of-christmas', title: '12 Days of Christmas', line: 'A festive season of live shows, challenges and hampers.', hero: 't-chivita-12-days-of-christmas.webp', cap: 'Chivita · 12 Days of Christmas',
+  chivita12: { seo: 'Chivita: 12 Days of Christmas | The Republic', slug: 'chivita-12-days-of-christmas', title: '12 Days of Christmas', line: 'A festive season of live shows, challenges and hampers.', hero: 't-chivita-12-days-of-christmas.webp', cap: 'Chivita · 12 Days of Christmas', part: ['chivita', 'Chapter 04 of What’s Your Chivita?, a year of organic social for Chivita'],
     facts: [['Client', 'CHI Limited'], ['Brand', 'Chivita'], ['Sector', 'Food & Drink']],
     story: ['A festive campaign to boost Chivita’s engagement and awareness and to drive business during the holiday season.', 'Influencer-led Instagram Live sessions ran alongside a user-generated content challenge, deepening Chivita’s connection with its audience and putting the product in more hands.'],
     steps: [['Instagram Live Grotto Fiesta', 'Hosted by Jay On Air, with games, giveaways and lively conversation. Guest appearances from Elozonam, Eki, Emeneks, Akin Faminu and Noble Igwe widened the reach.'], ['Rewards', 'Early-bird viewers received product packs, and participants could win Christmas hampers, encouraging immediate trial.'], ['The Christmas Challenge', 'A user-generated content challenge invited the audience into the campaign.']],
     gal: [['cs-chivita12-1.webp', 'Christmas Challenge'], ['cs-chivita12-2.webp', 'Instagram Live']] },
-  chivita2: { seo: 'Chivita 2.0 Campaign | The Republic', slug: 'chivita-2-campaign', title: 'What’s Your Chivita?', line: 'Turn consumers into storytellers.', hero: 't-chivita-2-campaign.webp', cap: 'Chivita 2.0',
-    facts: [['Client', 'CHI Limited'], ['Brand', 'Chivita'], ['Sector', 'Food & Drink']],
-    story: ['“What’s Your Chivita?” gave consumers a voice, with a network of influencers to spark, anchor and amplify their stories about Chivita.'],
-    steps: [['Influencer-driven narratives', 'Dianne Russet, Elozonam and Teminikan built Chivita into their daily lives and invited followers to share their own moments with #WhatsYourChivita.'], ['User-generated content', 'Consumers shared their Chivita moments, building a broad body of stories.'], ['Momentum', 'Complementary content and social updates highlighted top stories and influencer interactions to keep the conversation going.'], ['Recognition', 'The Chivita 2.0 campaign won Best Use of Social Media at the Nigerian Marketing Awards 2024.']],
-    gal: [['cs-chivita2-1.webp', '#WhatsYourChivita'], ['cs-chivita2-2.webp', 'Consumer stories']],
-    award: ['Nigerian Marketing Awards 2024', 'Winner · Best Use of Social Media', 'https://www.nma-ng.com/2024-winners/'] },
   ramadan: { seo: 'Chivita & Hollandia Ramadan TVCs | The Republic', slug: 'chivita-hollandia-ramadan', title: 'Ramadan TVCs', line: 'Two commercials for a season of togetherness.', hero: 't-chivita-hollandia-ramadan.webp', cap: 'Chivita & Hollandia · Ramadan',
     facts: [['Client', 'CHI Limited'], ['Brands', 'Chivita & Hollandia'], ['Sector', 'Food & Drink']],
     story: ['For Ramadan, Chivita and Hollandia partnered with The Republic on two television commercials for Nigerian and African audiences during a spiritually significant season.', 'The films capture the essence of Ramadan, community and togetherness, and the role of Chivita and Hollandia in the season’s moments.'],
     steps: [['The theme', 'Rejuvenation and refreshment, from Iftar, the meal that breaks the fast, to Suhoor before dawn.'], ['The storytelling', 'Culturally relevant stories in familiar, traditional settings and scenarios.']],
     gal: [] },
-  sips: { seo: 'Chivita Style N’ Sips | The Republic', slug: 'chivita-style-n-sips', title: 'Style N’ Sips', line: 'A YouTube series of style, humour and real talk.', hero: 't-chivita-style-n-sips.webp', cap: 'Chivita · Style N’ Sips',
+  sips: { seo: 'Chivita Style N’ Sips | The Republic', slug: 'chivita-style-n-sips', title: 'Style N’ Sips', line: 'A YouTube series of style, humour and real talk.', hero: 't-chivita-style-n-sips.webp', cap: 'Chivita · Style N’ Sips', part: ['chivita', 'Chapter 03 of What’s Your Chivita?, a year of organic social for Chivita'],
     facts: [['Client', 'CHI Limited'], ['Brand', 'Chivita'], ['Format', 'YouTube series']],
     story: ['A series that celebrates the joy of Chivita’s drinks through stylish, light-hearted content, built to increase the brand’s visibility and engagement.', 'Everyday themes, local relevance and lively conversation position Chivita as a culturally attuned, fun-loving brand.'],
     steps: [['The episodes', 'Built around trending, relatable themes, from “Boys Will Be Boys” to “Classic Elegance”: a mix of style, humour and real talk.'], ['The hosts', 'Elozonam, Akin Faminu and Jay On Air, each bringing their own flair, as part of the story rather than just its reach.'], ['The rollout', 'Instagram, Facebook and YouTube, with paid promotion at peak times alongside organic growth.']],
@@ -128,11 +124,11 @@ const CASEFILES = {
     story: ['Prudential Zenith Life Insurance needed to break through the clutter and drive meaningful engagement in a market where insurance is often misunderstood.', 'A trusted voice, content that resonates and targeted performance marketing worked as one system.'],
     steps: [['Influencer partnership', 'Arese Ugwu, a celebrated voice in financial literacy, carried the message to a broad, discerning audience.'], ['Lead generation', 'A dedicated landing page with an interactive form designed to filter and capture qualified leads.'], ['Content', 'Creatives that blended direct campaign messaging with contextual content.'], ['Performance marketing', 'Targeted Google Ads drove visibility and traffic to the landing page.']],
     gal: [['cs-dreams-1.webp', 'The landing page']] },
-  pzlsocial: { seo: 'Prudential Zenith Social Media | The Republic', slug: 'prudential-zenith-social-content', title: 'Content & Social', line: 'Humour, relevance and relatability for an insurer.', hero: 't-pzl-social-content.webp', cap: 'Prudential Zenith Life · Social',
-    facts: [['Client', 'Prudential Zenith Life Insurance'], ['Sector', 'Insurance & Finance'], ['Work', 'Content and social media management']],
-    story: ['Content that blends humour, relevance and relatability to capture attention, reinforcing Prudential Zenith’s relevance in Nigerian and African markets.'],
-    steps: [['Reels', 'Short, engaging reels built on humour, everyday office scenarios and relatable moments, using trending formats for discovery.'], ['Staff as the faces', 'Team members and real office dynamics made the brand feel approachable and trustworthy.'], ['Consistency', 'Regular posting with a platform-specific strategy.']],
-    gal: [['cs-pzlsocial-1.webp', 'Reels'], ['cs-pzlsocial-2.webp', 'Reels'], ['cs-pzlsocial-3.webp', 'Reels']] },
+  pzlsocial: { seo: 'Prudential Zenith Life Organic Social Media | The Republic', slug: 'prudential-zenith-social-content', title: 'Organic Social', line: 'Humour, relevance and relatability for an insurer.', hero: 't-pzl-social-content.webp', cap: 'Prudential Zenith Life · Organic social',
+    facts: [['Client', 'Prudential Zenith Life Insurance'], ['Sector', 'Insurance & Finance'], ['Work', 'Organic social · Reels · Content and community management']],
+    story: ['Insurance rarely earns a second look in the feed. Prudential Zenith Life’s organic social had to earn one, with content that blends humour, relevance and relatability.', 'Salary week. Customers who come first, even before lunch. What a plan actually covers. Each post starts from a moment people recognise, then lets the brand make sense inside it.'],
+    steps: [['Reels', 'Short, engaging reels built on humour, everyday office scenarios and relatable moments, using trending formats for discovery.'], ['Staff as the faces', 'Team members and real office dynamics made the brand feel approachable and trustworthy, with leadership on camera too.'], ['Useful, in the same voice', 'Savings hacks, a monthly guide and plain answers on what a plan covers, so the feed gives people something to keep.'], ['Consistency', 'Regular posting with a platform-specific strategy.']],
+    gal: [['v:ps-salary', 'Salary week'], ['v:ps-first', 'Customers first'], ['v:ps-income', 'What a plan covers'], ['cs-pzlsocial-hacks.webp', 'This or that · savings hacks'], ['cs-pzlsocial-md.webp', 'Leadership, on camera'], ['cs-pzlsocial-faq.webp', 'The monthly guide'], ['cs-pzlsocial-1.webp', 'Reels'], ['cs-pzlsocial-2.webp', 'Reels'], ['cs-pzlsocial-3.webp', 'Reels']] },
   heirs: { seo: 'Heirs Insurance Launch Video | The Republic', slug: 'heirs-insurance-launch', title: 'Launch Video', line: 'A new insurer’s first impression.', hero: 't-heirs.webp', cap: 'Heirs Insurance · Launch video',
     facts: [['Client', 'Heirs Insurance'], ['Sector', 'Insurance & Finance'], ['Format', 'Launch film']],
     story: ['Heirs Insurance, a new entrant in the sector, partnered with The Republic on a launch video to establish a strong market presence in Nigeria.'],
@@ -163,13 +159,15 @@ function renderFile(id) {
   $('#cf-line').textContent = f.line;
   const aw = $('#cf-award'); aw.hidden = !f.award;
   if (f.award) aw.innerHTML = `<a href="${esc(f.award[2])}" target="_blank" rel="noopener"><span class="k">${esc(f.award[0])}</span><b>${esc(f.award[1])}</b><span class="src">Official results<span class="sr"> (opens in a new tab)</span> ↗</span></a>`;
+  const pt = $('#cf-part'); pt.hidden = !f.part;
+  if (f.part) pt.innerHTML = `<a href="${pathOf(f.part[0] + '-case')}">${esc(f.part[1])} <span aria-hidden="true">→</span></a>`;
   const hero = $('.cfhero'), img = $('#cf-img');
   hero.classList.toggle('noimg', !f.hero);
   if (f.hero) { img.src = 'img/' + f.hero; img.alt = f.cap; $('#cf-cap').textContent = f.cap; }
   $('#cf-facts').innerHTML = f.facts.map(x => `<div><dt>${esc(x[0])}</dt><dd>${esc(x[1])}</dd></div>`).join('');
   $('#cf-story-b').innerHTML = f.story.map((p, i) => i === 0 ? `<p class="big" style="font-size:clamp(28px,3.2vw,48px)">${esc(p)}</p>` : `<p class="p">${esc(p)}</p>`).join('');
   $('#cf-steps').innerHTML = f.steps.map(x => `<li><span><b>${esc(x[0])}.</b> ${esc(x[1])}</span></li>`).join('');
-  $('#cf-gal').innerHTML = f.gal.map(g => g[0].indexOf('v:') === 0 ? `<figure class="vid${g[2] ? ' wide' : ''}"><button type="button" class="vplay" data-film="${g[0].slice(2)}" aria-label="Play: ${esc(g[1])}"><img src="films/${g[0].slice(2)}.jpg" alt="" loading="lazy"><span class="vdur">▶ Film</span></button><figcaption>${esc(g[1])}</figcaption></figure>` : `<figure${g[2] ? ' class="wide"' : ''}><img src="img/${g[0]}" alt="${esc(f.title + ': ' + g[1])}" loading="lazy"><figcaption>${esc(g[1])}</figcaption></figure>`).join('');
+  $('#cf-gal').innerHTML = f.gal.map(g => g[0].indexOf('v:') === 0 ? `<figure class="vid${g[2] ? ' wide' : ''}${FILMS[g[0].slice(2)] && FILMS[g[0].slice(2)].tall ? ' tall' : ''}"><button type="button" class="vplay" data-film="${g[0].slice(2)}" aria-label="Play: ${esc(g[1])}"><img src="films/${g[0].slice(2)}.jpg" alt="" loading="lazy"><span class="vdur">▶ Film</span></button><figcaption>${esc(g[1])}</figcaption></figure>` : `<figure${g[2] ? ' class="wide"' : ''}><img src="img/${g[0]}" alt="${esc(f.title + ': ' + g[1])}" loading="lazy"><figcaption>${esc(g[1])}</figcaption></figure>`).join('');
   $('#cf-gal').hidden = !f.gal.length;
   const rs = $('#cf-results'); rs.hidden = !f.stats; $('#cf-tab-results').hidden = !f.stats;
   if (f.stats) { $('#cf-stats').innerHTML = f.stats.map(x => `<div class="stat"><span class="n">${esc(x[0])}</span><p>${esc(x[1])}</p></div>`).join(''); $('#cf-rnote').textContent = f.rnote || ''; $('#cf-rnote').hidden = !f.rnote; }
@@ -204,7 +202,7 @@ function fillNotes(k) {
   $('#notes .r').innerHTML = NOTES[k].slice(3).map(html).join('');
 }
 fillNotes('onga');
-const ORDER = ['onga', 'cowbell', 'spruce', 'pzl', 'zenith', 'twisco', 'chivita12', 'chivita2', 'ramadan', 'sips', 'youmatter', 'sanlam', 'dreams', 'pzlsocial', 'heirs', 'iinvest', 'zenith35', 'torrista'];
+const ORDER = ['onga', 'cowbell', 'chivita', 'spruce', 'pzl', 'zenith', 'twisco', 'sips', 'chivita12', 'ramadan', 'youmatter', 'sanlam', 'dreams', 'pzlsocial', 'heirs', 'iinvest', 'zenith35', 'torrista'];
 const COLLAGE = {
   onga: { p: [-8.2, 8.6, .6], w: 8.4, r: -.06 },
   spruce: { p: [.8, 9.4, -.6], w: 7.6, r: .05 },
@@ -341,8 +339,8 @@ tick(); setInterval(tick, 20000);
 // the service pages (keys and addresses come from scripts/services.py; the build checks this list matches)
 const SVC_PAGES = ['svc-strategy', 'svc-brand', 'svc-content', 'svc-integrated', 'svc-digital', 'svc-experiences'];
 const isSvc = r => r === 'services' || SVC_PAGES.includes(r);
-const ROUTES = ['gate', 'work', 'onga', 'onga-case', 'cowbell', 'cowbell-case', 'spruce', 'spruce-case', 'pzl', 'pzl-case', 'zenith', 'zenith-case', 'studio', 'services'].concat(SVC_PAGES, ['method', 'journal', 'contact', 'privacy', 'lost'], Object.keys(CASEFILES).map(k => k + '-case'));
-const PLACE = { gate: 'The Gate · Home', work: 'The City of Work · /work', onga: 'Onga world · Taste of Home', 'onga-case': 'Case · /onga-taste-of-home', cowbell: 'Cowbell world · Your First Taste', 'cowbell-case': 'Case · /cowbell-ramadan-your-first-taste', spruce: 'Spruce world · Show Your True Colours', 'spruce-case': 'Case · /spruce-dulux-digital-launch', pzl: 'Prudential Zenith world · Empowering Tomorrow', 'pzl-case': 'Case · /prudential-zenith-empowering-tomorrow', zenith: 'Zenith world · See Homecoming Differently', 'zenith-case': 'Case · /zenith-bank-homecoming', studio: 'The Capitol · /studio', services: 'What we do · /services', 'svc-strategy': 'Services · Communication Strategy', 'svc-brand': 'Services · Brand & Creative', 'svc-content': 'Services · Content & Social', 'svc-integrated': 'Services · Integrated Marketing', 'svc-digital': 'Services · Digital & Performance', 'svc-experiences': 'Services · Experiences', method: 'The Constitution · /method', journal: 'The Dispatch · /journal', contact: 'Your Turn · /contact', privacy: 'Your Rights · /privacy', lost: 'Unbuilt street · 404' };
+const ROUTES = ['gate', 'work', 'onga', 'onga-case', 'cowbell', 'cowbell-case', 'chivita', 'chivita-case', 'spruce', 'spruce-case', 'pzl', 'pzl-case', 'zenith', 'zenith-case', 'studio', 'services'].concat(SVC_PAGES, ['method', 'journal', 'contact', 'privacy', 'lost'], Object.keys(CASEFILES).map(k => k + '-case'));
+const PLACE = { gate: 'The Gate · Home', work: 'The City of Work · /work', onga: 'Onga world · Taste of Home', 'onga-case': 'Case · /onga-taste-of-home', cowbell: 'Cowbell world · Your First Taste', 'cowbell-case': 'Case · /cowbell-ramadan-your-first-taste', chivita: 'Chivita world · What’s Your Chivita?', 'chivita-case': 'Case · /chivita-2-campaign', spruce: 'Spruce world · Show Your True Colours', 'spruce-case': 'Case · /spruce-dulux-digital-launch', pzl: 'Prudential Zenith world · Empowering Tomorrow', 'pzl-case': 'Case · /prudential-zenith-empowering-tomorrow', zenith: 'Zenith world · See Homecoming Differently', 'zenith-case': 'Case · /zenith-bank-homecoming', studio: 'The Capitol · /studio', services: 'What we do · /services', 'svc-strategy': 'Services · Communication Strategy', 'svc-brand': 'Services · Brand & Creative', 'svc-content': 'Services · Organic Social & Content', 'svc-integrated': 'Services · Integrated Marketing', 'svc-digital': 'Services · Digital & Performance', 'svc-experiences': 'Services · Experiences', method: 'The Constitution · /method', journal: 'The Dispatch · /journal', contact: 'Your Turn · /contact', privacy: 'Your Rights · /privacy', lost: 'Unbuilt street · 404' };
 Object.keys(CASEFILES).forEach(k => { PLACE[k + '-case'] = 'Case · /' + CASEFILES[k].slug; });
 const TITLES = {
   gate: 'Creative & Marketing Agency in Lagos | The Republic', work: 'Portfolio: Campaigns & Creative Work | The Republic',
@@ -350,12 +348,12 @@ const TITLES = {
   method: 'How We Work: Strategy First | The Republic', journal: 'Journal: Articles, Case Films and News | The Republic', privacy: 'Privacy Notice | The Republic', lost: 'Page not found | The Republic',
   onga: 'Onga Taste of Home: Digital Campaign Case Study | The Republic', cowbell: 'Cowbell Ramadan Social Media Campaign | The Republic',
   spruce: 'Spruce by Dulux: Digital Campaign Case Study | The Republic', pzl: 'Prudential Zenith: Empowering Tomorrow | The Republic',
-  zenith: 'Zenith Bank Homecoming Campaign | The Republic'
+  zenith: 'Zenith Bank Homecoming Campaign | The Republic', chivita: 'What’s Your Chivita? Interactive World | The Republic'
 };
-['onga', 'cowbell', 'spruce', 'pzl', 'zenith'].forEach(k => { TITLES[k + '-case'] = TITLES[k]; });
+['onga', 'cowbell', 'chivita', 'spruce', 'pzl', 'zenith'].forEach(k => { TITLES[k + '-case'] = TITLES[k]; });
 // the current site's addresses still land in the right place; people have their own links
 const ALIAS = { portfolio: 'work', 'onga-taste-of-home': 'onga-case', 'cowbell-ramadan-your-first-taste': 'cowbell-case', 'spruce-dulux-digital-launch': 'spruce-case',
-  'prudential-zenith-empowering-tomorrow': 'pzl-case', 'zenith-bank-homecoming': 'zenith-case' };
+  'prudential-zenith-empowering-tomorrow': 'pzl-case', 'zenith-bank-homecoming': 'zenith-case', 'chivita-2-campaign': 'chivita-case', 'chivita2-case': 'chivita-case' };
 Object.keys(CASEFILES).forEach(k => { ALIAS[CASEFILES[k].slug] = k + '-case'; });
 // every page has a real address (written into each page by scripts/build.py); older #links still work and move to the clean address
 const PATHS = (window.SEO && SEO.paths) || {};
@@ -406,7 +404,7 @@ function setH1(r) {
   });
 }
 const spacer = $('#spacer');
-const BEATS = { gate: 6, onga: 3, cowbell: 4, spruce: 5, pzl: 5, zenith: 5 };
+const BEATS = { gate: 6, onga: 3, cowbell: 4, chivita: 6, spruce: 5, pzl: 5, zenith: 5 };
 function spacerSpan() { return window.innerHeight * 1.15; }
 function setSpacer() {
   const n = BEATS[S.route];
@@ -449,7 +447,7 @@ const B = []; // buildings
 const pickables = [];
 const tapes = [];
 const ongaLayers = [];
-let answer, answerTex, spice, spiceMat, capGroup, mural, beam, updateVox, spark, bgCol, bgTex, cbGroup, spGroup, pzGroup, zbGroup;
+let answer, answerTex, spice, spiceMat, capGroup, mural, beam, updateVox, spark, bgCol, bgTex, cbGroup, spGroup, pzGroup, zbGroup, chGroup;
 const COL = {};
 
 if (GL) {
@@ -483,9 +481,9 @@ if (GL) {
   const texCache = {};
   const maxAniso = Math.min(4, renderer.capabilities.getMaxAnisotropy());
   // world images wait until someone heads for that world (or, on a fast connection, until the home page has settled)
-  const LAZY = /^(sp-|zb-|pz-|cb-|onga|t-)/, pendTex = [], imgLoader = new THREE.ImageLoader();
+  const LAZY = /^(sp-|zb-|pz-|cb-|ch-|cs-chivita12|onga|t-)/, pendTex = [], imgLoader = new THREE.ImageLoader();
   S.texOpen = {};
-  const texGroup = n => /^t-/.test(n) ? 'city' : /^sp-/.test(n) ? 'spruce' : /^zb-/.test(n) ? 'zenith' : /^pz-/.test(n) ? 'pzl' : /^cb-/.test(n) ? 'cowbell' : 'onga';
+  const texGroup = n => /^t-/.test(n) ? 'city' : /^(ch-|cs-chivita12)/.test(n) ? 'chivita' : /^sp-/.test(n) ? 'spruce' : /^zb-/.test(n) ? 'zenith' : /^pz-/.test(n) ? 'pzl' : /^cb-/.test(n) ? 'cowbell' : 'onga';
   S.releaseTex = grp => {
     if (S.texOpen[grp]) return; S.texOpen[grp] = true;
     pendTex.filter(p => p.g === grp && !p.done).forEach(p => { p.done = true; imgLoader.load('img/' + p.name, im => { p.tx.image = im; p.tx.needsUpdate = true; if (p.onload) p.onload(p.tx); p.cbs.forEach(cb => cb(p.tx)); }); });
@@ -1958,6 +1956,148 @@ if (GL) {
   };
   S.zbApply(0, 0); S.zbDraw(99);
   if (document.fonts && document.fonts.load) Promise.all([document.fonts.load('700 64px "Schibsted Grotesk"'), document.fonts.load('600 66px Handjet')]).then(() => { S.zbDirty = true; }).catch(() => {});
+
+  /* ---------- the Chivita world: a year of the feed, wound round one question ---------- */
+  chGroup = new THREE.Group(); chGroup.visible = false; scene.add(chGroup);
+  S.chBg = new THREE.Color('#C2410C'); S.chDimTo = new THREE.Color('#C2410C');
+  const chU = { uTop: { value: new THREE.Color('#F9A825') }, uBot: { value: new THREE.Color('#C2410C') }, uLens: U.uLens, uInk: U.uInk, uBlue: U.uBlue, uTime: U.uTime };
+  S.chU = chU;
+  // the sky: a sphere that travels with the camera; the chapter sets its two colours
+  const chSky = new THREE.Mesh(new THREE.SphereGeometry(150, 32, 16), new THREE.ShaderMaterial({
+    uniforms: chU, side: THREE.BackSide, depthWrite: false,
+    vertexShader: `varying vec3 vD; void main(){ vD = normalize(position); gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
+    fragmentShader: `uniform vec3 uTop, uBot, uInk, uBlue; uniform float uLens, uTime; varying vec3 vD;
+      ${ditherGL}
+      void main(){
+        float y = vD.y;
+        vec3 c = mix(uBot, uTop, smoothstep(-0.45, 0.6, y));
+        c += vec3(1.0, 0.95, 0.82) * 0.12 * exp(-pow((y - 0.12) * 3.5, 2.0));
+        gl_FragColor = vec4(mix(c, lensOf(c) * 0.6, uLens), 1.0);
+      }`
+  }));
+  chSky.renderOrder = -3; chSky.frustumCulled = false; S.chSky = chSky; chGroup.add(chSky);
+  // the core: one question, written all the way up
+  const ccv = document.createElement('canvas'); ccv.width = 2048; ccv.height = 512;
+  const coreTex = new THREE.CanvasTexture(ccv); coreTex.wrapS = coreTex.wrapT = THREE.RepeatWrapping; coreTex.anisotropy = maxAniso;
+  S.chCoreDraw = () => {
+    const x = ccv.getContext('2d');
+    x.fillStyle = '#000'; x.fillRect(0, 0, 2048, 512);
+    x.fillStyle = '#fff'; x.textBaseline = 'middle';
+    x.font = '600 150px Handjet, "Arial Narrow", sans-serif';
+    // each row repeats a whole number of times across the canvas, so the words meet cleanly where the texture wraps
+    [['#WHATSYOURCHIVITA  ·  ', 128, 0], ['EVERYONE HAS A CHIVITA  ·  ', 384, .5]].forEach(([str, y, half]) => {
+      const w = x.measureText(str).width, n = Math.max(1, Math.round(2048 / w)), k = 2048 / (n * w);
+      x.save(); x.scale(k, 1); for (let i = -1; i <= n; i++) x.fillText(str, (i + half) * w, y); x.restore();
+    });
+    coreTex.needsUpdate = true;
+  };
+  S.chCoreDraw();
+  if (document.fonts && document.fonts.load) document.fonts.load('600 150px Handjet').then(() => S.chCoreDraw()).catch(() => {});
+  const core = new THREE.Mesh(new THREE.CylinderGeometry(5.3, 5.3, 44, 64, 1, true), new THREE.ShaderMaterial({
+    uniforms: Object.assign({ map: { value: coreTex }, uCore: { value: new THREE.Color('#D45F06') }, uOff: { value: 0 }, uRy: { value: 10 } }, chU),
+    vertexShader: `varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
+    fragmentShader: `uniform sampler2D map; uniform vec3 uCore, uInk, uBlue; uniform float uLens, uOff, uRy; varying vec2 vUv;
+      ${ditherGL}
+      void main(){
+        float m = texture2D(map, vec2(vUv.x * 2.0 + uOff, vUv.y * uRy)).r;
+        vec3 c = mix(uCore, vec3(1.0, 0.97, 0.9), m * 0.8);
+        c *= 0.86 + 0.14 * smoothstep(0.0, 1.0, abs(fract(vUv.x * 2.0) - 0.5) * 2.0);
+        gl_FragColor = vec4(mix(c, lensOf(c) * 0.8, uLens), 1.0);
+      }`
+  }));
+  core.position.y = 13; S.chCore = core; chGroup.add(core);
+  // the year, as a feed wound round the core: creator stories, always on, Style N' Sips, the season, your answer, the result
+  const CHPH = 540 / 1018;
+  const CHI = [
+    { img: 'ch-range.webp', a: 16 / 9, w: 7, ch: 0 },
+    { img: 'ch-p-temi.webp', ch: 1 }, { img: 'ch-p-elo.webp', ch: 1 }, { img: 'ch-p-chichi.webp', ch: 1 }, { img: 'ch-p-amala.webp', ch: 1 }, { img: 'ch-p-xee.webp', ch: 1 },
+    { img: 'ch-p-everyone.webp', ch: 2 }, { img: 'ch-ad-friends.webp', a: 16 / 9, ch: 2 }, { img: 'ch-p-jiggy.webp', ch: 2 }, { img: 'ch-ad-moms.webp', a: 16 / 9, ch: 2 },
+    { img: 'ch-p-lazy.webp', ch: 2 }, { img: 'ch-ad-hustle.webp', a: 16 / 9, ch: 2 }, { img: 'ch-ad-love.webp', a: 16 / 9, ch: 2 },
+    { img: 'ch-sns-1.webp', a: 1.77, ch: 3 }, { img: 'ch-p-sns1.webp', ch: 3 }, { img: 'ch-sns-2.webp', a: 1.77, ch: 3 }, { img: 'ch-p-sns2.webp', ch: 3 },
+    { img: 'ch-sns-4.webp', a: 1.77, ch: 3 }, { img: 'ch-p-sns3.webp', ch: 3 },
+    { img: 'ch-p-pyjamas.webp', ch: 4 }, { img: 'ch-p-live1.webp', ch: 4 }, { img: 'cs-chivita12-1.webp', a: 1, w: 3.3, ch: 4 }, { img: 'ch-p-live2.webp', ch: 4 },
+    { you: 1, ch: 5 },
+    { award: 1, a: 2, w: 6.6, ch: 6 }
+  ];
+  // your answer, drawn as a post
+  const ycv = document.createElement('canvas'); ycv.width = 540; ycv.height = 1018;
+  const youTex = new THREE.CanvasTexture(ycv); youTex.anisotropy = maxAniso;
+  S.chDraw = (txt) => {
+    const x = ycv.getContext('2d');
+    x.fillStyle = '#F7F4EE'; x.fillRect(0, 0, 540, 1018);
+    x.textBaseline = 'middle'; x.textAlign = 'left';
+    x.fillStyle = '#E8730C'; x.beginPath(); x.arc(64, 82, 26, 0, Math.PI * 2); x.fill();
+    x.fillStyle = '#0A0A0A'; x.font = '600 36px Handjet, "Arial Narrow", sans-serif'; x.fillText(txt ? 'YOU · JUST NOW' : 'YOUR POST', 106, 84);
+    x.fillStyle = '#E8730C'; x.fillRect(0, 140, 540, 560);
+    x.fillStyle = 'rgba(255,255,255,.85)'; x.font = '600 34px Handjet, "Arial Narrow", sans-serif'; x.fillText('WHAT’S YOUR CHIVITA?', 40, 190);
+    x.fillStyle = '#fff';
+    let fs = 70; x.font = `800 ${fs}px "Schibsted Grotesk", Arial, sans-serif`;
+    const say = txt ? txt + '.' : 'Your answer goes here.';
+    const wrap = () => { const words = say.split(' '), lines = []; let line = ''; words.forEach(wd => { const t2 = line ? line + ' ' + wd : wd; if (x.measureText(t2).width > 460 && line) { lines.push(line); line = wd; } else line = t2; }); lines.push(line); return lines; };
+    let lines = wrap();
+    while ((lines.length > 5 || lines.some(l => x.measureText(l).width > 460)) && fs > 36) { fs -= 6; x.font = `800 ${fs}px "Schibsted Grotesk", Arial, sans-serif`; lines = wrap(); }
+    const top = 430 - (lines.length - 1) * (fs * 1.08) / 2;
+    if (!txt) x.globalAlpha = .55;
+    lines.forEach((l, i) => x.fillText(l, 40, top + i * fs * 1.08));
+    x.globalAlpha = 1;
+    x.fillStyle = '#0A0A0A'; x.font = '700 30px "Schibsted Grotesk", Arial, sans-serif'; x.fillText('#WhatsYourChivita', 40, 760);
+    x.fillStyle = '#55555F'; x.font = '500 28px Handjet, "Arial Narrow", sans-serif';
+    x.fillText(txt ? 'POSTED TO THE FEED IN THIS TAB' : 'TYPE YOUR ANSWER TO POST IT', 40, 812);
+    x.fillStyle = '#D8D4CC'; x.fillRect(40, 880, 460, 2);
+    x.fillStyle = '#8A8A93'; x.fillText('STAYS IN THIS BROWSER TAB', 40, 930);
+    youTex.needsUpdate = true;
+  };
+  S.chDraw('');
+  // the result, as a plate at the top of the year
+  const acv = document.createElement('canvas'); acv.width = 1280; acv.height = 640;
+  const awTex = new THREE.CanvasTexture(acv); awTex.anisotropy = maxAniso;
+  S.chAward = () => {
+    const x = acv.getContext('2d');
+    x.fillStyle = '#0E1A3A'; x.fillRect(0, 0, 1280, 640);
+    x.strokeStyle = '#E9B949'; x.lineWidth = 6; x.strokeRect(28, 28, 1224, 584);
+    x.textAlign = 'center'; x.textBaseline = 'middle';
+    x.fillStyle = '#E9B949'; x.font = '600 54px Handjet, "Arial Narrow", sans-serif'; x.fillText('NIGERIAN MARKETING AWARDS 2024', 640, 128);
+    x.font = '900 150px "Schibsted Grotesk", Arial, sans-serif'; x.fillText('WINNER', 640, 280);
+    x.fillStyle = '#F7F4EE'; x.font = '800 70px "Schibsted Grotesk", Arial, sans-serif'; x.fillText('BEST USE OF SOCIAL MEDIA', 640, 412);
+    x.fillStyle = '#B9C3DE'; x.font = '500 40px Handjet, "Arial Narrow", sans-serif'; x.fillText('LISTED IN THE OFFICIAL RESULTS AS THE CHIVITA 2.0 CAMPAIGN', 640, 520);
+    awTex.needsUpdate = true;
+  };
+  S.chAward();
+  if (document.fonts && document.fonts.load) Promise.all([document.fonts.load('800 70px "Schibsted Grotesk"'), document.fonts.load('600 36px Handjet')]).then(() => { S.chDraw(S.chWord || ''); S.chAward(); }).catch(() => {});
+  const CHR = 8.1, bezM = new THREE.MeshBasicMaterial({ color: 0x141416 });
+  let th = 0, yy = -1.2, prev = null;
+  S.chItems = CHI.map((m, i) => {
+    const a = m.you ? CHPH : (m.a || CHPH), h = m.w ? m.w / a : (a < 1 ? 4.4 : 2.7), w = h * a;
+    if (prev) {
+      th += (prev.w / 2 + w / 2 + .75) / CHR + (prev.ch !== m.ch ? .34 : 0);
+      yy += .62 + (prev.ch !== m.ch ? 1.1 : 0);
+    }
+    const g = new THREE.Group();
+    const bez = new THREE.Mesh(new THREE.BoxGeometry(w + (a < 1 ? .26 : .18), h + (a < 1 ? .26 : .18), .16), m.award ? new THREE.MeshBasicMaterial({ color: 0xE9B949 }) : bezM); bez.position.z = -.1; g.add(bez);
+    const pm = tornMat({ map: m.you ? youTex : m.award ? awTex : tex(m.img), seed: 100 + i, torn: 0, lens: true, bg: S.chDimTo });
+    const pic = new THREE.Mesh(planeGeo, pm); pic.scale.set(w, h, 1); g.add(pic);
+    g.position.set(CHR * Math.sin(th), yy, CHR * Math.cos(th)); g.rotation.y = th;
+    chGroup.add(g);
+    const it = { g, pic, i, ch: m.ch, th, y: yy, w, h, you: !!m.you };
+    prev = it;
+    return it;
+  });
+  { const top = S.chItems[S.chItems.length - 1].y + 4.2, bot = -9; core.scale.y = (top - bot) / 44; core.position.y = (top + bot) / 2; core.material.uniforms.uRy.value = (top - bot) / 4.2; }
+  // fizz: bubbles rising round the tower
+  const FN = PHONE ? 180 : 360, fp = [], fo = [];
+  for (let i = 0; i < FN; i++) { const a = rnd() * Math.PI * 2, rr = 9.5 + rnd() * 16; fp.push(Math.sin(a) * rr, 0, Math.cos(a) * rr); fo.push(rnd() * 48); }
+  const fg = new THREE.BufferGeometry(); fg.setAttribute('position', new THREE.Float32BufferAttribute(fp, 3)); fg.setAttribute('aOff', new THREE.Float32BufferAttribute(fo, 1));
+  S.chFizzMat = new THREE.ShaderMaterial({
+    uniforms: { uTime: U.uTime, uScale: U.uScale, uPR: U.uPR, uLens: U.uLens, uBlue: U.uBlue, uRise: { value: RM ? 0 : 1 } },
+    vertexShader: `attribute float aOff; uniform float uTime, uScale, uPR, uRise; varying float vA;
+      void main(){ vec3 p = position; p.y = -8.0 + mod(aOff + uTime * 0.9 * uRise, 48.0); p.x += sin(uTime * 0.6 + aOff) * 0.3 * uRise;
+        vA = smoothstep(-8.0, -4.0, p.y) * (1.0 - smoothstep(34.0, 40.0, p.y));
+        vec4 mv = modelViewMatrix * vec4(p, 1.0); gl_Position = projectionMatrix * mv;
+        gl_PointSize = clamp((0.16 + 0.12 * fract(aOff * 7.13)) * uScale * uPR / -mv.z, 1.5, 28.0); }`,
+    fragmentShader: `uniform vec3 uBlue; uniform float uLens; varying float vA; void main(){ float d = length(gl_PointCoord - 0.5); float a = smoothstep(0.5, 0.36, d) * (0.35 + 0.65 * smoothstep(0.18, 0.42, d)); gl_FragColor = vec4(mix(vec3(1.0, 0.96, 0.86), uBlue * 1.4, uLens) * a * 0.55 * vA, 1.0); }`,
+    transparent: true, depthWrite: false, blending: THREE.AdditiveBlending
+  });
+  const fizz = new THREE.Points(fg, S.chFizzMat); fizz.frustumCulled = false; chGroup.add(fizz);
 }
 
 /* ---------------- labels ---------------- */
@@ -2227,7 +2367,7 @@ $('#card-enter').addEventListener('click', e => {
 
 /* ---------------- lens ---------------- */
 const lensBtn = $('#lensbtn'), notes = $('#notes');
-const isWorld = r => r === 'onga' || r === 'cowbell' || r === 'spruce' || r === 'pzl' || r === 'zenith', isCase = r => /-case$/.test(r);
+const isWorld = r => r === 'onga' || r === 'cowbell' || r === 'chivita' || r === 'spruce' || r === 'pzl' || r === 'zenith', isCase = r => /-case$/.test(r);
 function setLens(on) {
   const r = S.route;
   S.lens = on ? 1 : 0;
@@ -2379,6 +2519,17 @@ $('#zb-form').addEventListener('submit', e => {
   window.scrollTo({ top: beatY(5) + 2, behavior: RM ? 'auto' : 'smooth' });
 });
 
+// Chivita: your answer joins the feed
+$('#ch-form').addEventListener('submit', e => {
+  e.preventDefault();
+  const v = $('#ch-in').value.replace(/\s+/g, ' ').trim().replace(/[.!?…]+$/, '').slice(0, 40);
+  if (!v) { $('#ch-in').focus(); return; }
+  S.chWord = v; S.chPostT = t;
+  if (GL) S.chDraw(v);
+  $('#ch-msg').textContent = 'Posted. Your Chivita is in the feed. Keep scrolling for the result.';
+  $('#ch-in').blur();
+});
+
 // Method, Journal, Contact
 $$('[data-jf]').forEach(b => b.addEventListener('click', () => {
   const f = b.dataset.jf;
@@ -2493,7 +2644,8 @@ function applyRoute(r) {
     spGroup.visible = r === 'spruce';
     pzGroup.visible = r === 'pzl';
     zbGroup.visible = r === 'zenith';
-    scene.background = r === 'onga' ? bgCol : r === 'cowbell' ? S.cbBg : r === 'spruce' ? S.spBg : r === 'pzl' ? S.pzBg : r === 'zenith' ? S.zbBg : bgTex;
+    chGroup.visible = r === 'chivita';
+    scene.background = r === 'onga' ? bgCol : r === 'cowbell' ? S.cbBg : r === 'spruce' ? S.spBg : r === 'pzl' ? S.pzBg : r === 'zenith' ? S.zbBg : r === 'chivita' ? S.chBg : bgTex;
     if (r === 'studio') {
       S.capT = t; S.vox.done = false;
       if (!S.booted) { rig.pos.set(0, 30, 64); rig.look.set(0, 8, -14); }
@@ -2508,6 +2660,7 @@ function applyRoute(r) {
     if (r === 'spruce') { rig.pos.set(0, 6, 36); rig.look.set(0, 5.6, -8); }
     if (r === 'pzl') { rig.pos.set(0, 4, 52); rig.look.set(2, 4.5, -20); }
     if (r === 'zenith') { rig.pos.set(0, 8, 30); rig.look.set(1, 9, -18); }
+    if (r === 'chivita') { chCam(0, rig.pos, rig.look); rig.pos.multiplyScalar(1.5); rig.pos.y -= 6; }
     if (r === 'gate' && !S.booted) { rig.pos.set(0, 7, 34); rig.look.set(0, 7, 0); }
   }
   if (!GL && r === 'work') setList(true);
@@ -2515,7 +2668,7 @@ function applyRoute(r) {
   if (r === 'contact' && S.turnText != null) { const m = $('#c-msg'); if (m && S.turnText) m.value = S.turnText; S.turnText = null; setTimeout(() => $('#c-first').focus({ preventScroll: true }), 80); }
   if (r === 'contact' && S.goCareers) { S.goCareers = false; setTimeout(() => { const c = $('#careers-sec'); if (c) c.scrollIntoView({ behavior: 'auto', block: 'center' }); }, 60); }
   S.booted = true;
-  const h = { gate: '#gate-h', work: '#work-h', onga: '#onga-h', 'onga-case': '#case-h', cowbell: '#cb-h', 'cowbell-case': '#cbcase-h', spruce: '#sp-h', 'spruce-case': '#spcase-h', pzl: '#pz-h', 'pzl-case': '#pzcase-h', zenith: '#zb-h', 'zenith-case': '#zbcase-h', studio: '#studio-h', method: '#method-h', journal: '#journal-h', contact: '#contact-h' }[r] || (isFile(r) ? '#cf-h' : isSvc(r) ? '#' + r + '-h' : null);
+  const h = { gate: '#gate-h', work: '#work-h', onga: '#onga-h', 'onga-case': '#case-h', cowbell: '#cb-h', 'cowbell-case': '#cbcase-h', spruce: '#sp-h', 'spruce-case': '#spcase-h', pzl: '#pz-h', 'pzl-case': '#pzcase-h', zenith: '#zb-h', 'zenith-case': '#zbcase-h', chivita: '#ch-h', 'chivita-case': '#chcase-h', studio: '#studio-h', method: '#method-h', journal: '#journal-h', contact: '#contact-h' }[r] || (isFile(r) ? '#cf-h' : isSvc(r) ? '#' + r + '-h' : null);
   if (prev !== r && S.hadRoute && h) { const el = $(h); if (el) el.focus({ preventScroll: true }); }
   S.hadRoute = true;
 }
@@ -2662,6 +2815,25 @@ const KZBm = [
   { p: [0, 6, -80], l: [0, 8.2, -121] },
   { p: [0, 6, -92], l: [0, 8, -121] }
 ];
+// Chivita: the camera climbs the feed. Each beat frames a point on it (an index into the posts), with distance, lift and look height.
+const CHK = [{ c: 0, d: 25, up: 1.5, ly: 5.5 }, { c: 3, d: 10.5, up: .6, ly: .2 }, { c: 9, d: 12, up: .6, ly: .2 }, { c: 15.5, d: 12, up: .6, ly: .2 }, { c: 20.5, d: 10.5, up: .5, ly: .2 }, { c: 23, d: 8.6, up: .3, ly: .6 }, { c: 24, d: 21, up: 5, ly: -1.5 }];
+function chCam(q, outP, outL) {
+  const its = S.chItems; if (!its) return;
+  const i = clamp(Math.floor(q), 0, CHK.length - 1), j = Math.min(i + 1, CHK.length - 1), f = ease(sstep(.12, .88, q - i));
+  const A = CHK[i], Bk = CHK[j], c = lerp(A.c, Bk.c, f); S.chC = c;
+  const i0 = clamp(Math.floor(c), 0, its.length - 1), i1 = Math.min(i0 + 1, its.length - 1), cf = c - i0;
+  const th = lerp(its[i0].th, its[i1].th, cf), y = lerp(its[i0].y, its[i1].y, cf), R = 8.1;
+  const kk = PHONE ? 1.45 : camera.aspect < 1.35 ? 1.12 : 1;
+  const d = lerp(A.d, Bk.d, f) * kk, up = lerp(A.up, Bk.up, f), ly = lerp(A.ly, Bk.ly, f) - (PHONE ? 2.4 : 0);
+  const sn = Math.sin(th), cs = Math.cos(th), off = PHONE ? 0 : d * .21;
+  outL.set(R * sn - cs * off, y + ly, R * cs + sn * off);
+  outP.set((R + d) * sn, y + up, (R + d) * cs);
+  if (!RM && S.px != null) { outP.x += cs * S.px * 1.1; outP.z -= sn * S.px * 1.1; outP.y -= S.py * .6; }
+}
+// a colour for each chapter of the year
+const CHSKY = [['#F9A825', '#C2410C'], ['#EE5A24', '#8E1E0A'], ['#F5B400', '#C96A00'], ['#7B2133', '#26090F'], ['#16804B', '#05301B'], ['#F28C00', '#B4470A'], ['#1B3270', '#070D22']].map(k => [GL ? new THREE.Color(k[0]) : null, GL ? new THREE.Color(k[1]) : null]);
+function chSkyAt(q, top, bot) { const i = clamp(Math.floor(q), 0, 6), j = Math.min(i + 1, 6), f = sstep(.25, .75, q - i); top.copy(CHSKY[i][0]).lerp(CHSKY[j][0], f); bot.copy(CHSKY[i][1]).lerp(CHSKY[j][1], f); }
+const CHHUD = [['A year · four chapters', 'What’s Your Chivita?'], ['Chapter 01', 'Creator stories'], ['Chapter 02', 'Always on'], ['Chapter 03', 'Style N’ Sips'], ['Chapter 04', 'The season'], ['Your turn', '#WhatsYourChivita'], ['The result', 'NMA 2024']];
 const PZSKY = [[0, '#120D26', '#7A2E3C'], [.35, '#07081A', '#241A36'], [.62, '#05060F', '#171428'], [.84, '#16204A', '#B8543C'], [1, '#2C3F78', '#F0A25A']].map(k => [k[0], GL ? new THREE.Color(k[1]) : null, GL ? new THREE.Color(k[2]) : null]);
 const SKY = [[0, '#04071C', '#131B45'], [.16, '#10205A', '#D98A5B'], [.34, '#6F94C8', '#F2DDB8'], [.56, '#86A8D6', '#F5E6CC'], [.78, '#3A2B5C', '#EE8A45'], [1, '#0A0D2A', '#6E3440']].map(k => [k[0], GL ? new THREE.Color(k[1]) : null, GL ? new THREE.Color(k[2]) : null]);
 function skyAt(tt, top, hor) {
@@ -2705,6 +2877,7 @@ function keyAt(K, v, outP, outL, noK) {
 const gateBeats = $$('.beat', stageGate), ongaBeats = $$('.beat', stageOnga), cbBeats = $$('.beat', stageCb), spBeats = $$('.beat', $('.stage.sp'));
 const scrimSp = $('#scrim-sp'), spNameEl = $('#sp-name'), spIdxEl = $('#sp-idx');
 const zbBeats = $$('.beat', $('.stage.zb')), scrimZb = $('#scrim-zb');
+const chBeats = $$('.beat', $('.stage.ch')), scrimCh = $('#scrim-ch'), chHn = $('#ch-hn'), chHl = $('#ch-hl');
 const pzBeats = $$('.beat', $('.stage.pz')), scrimPz = $('#scrim-pz'), pzYear = $('#pz-year'), pzYl = $('#pz-yl');
 const scrimCb = $('#scrim-cb'), cbTime = $('#cb-time'), cbPhase = $('#cb-phase');
 const scrimGate = $('#scrim-gate'), scrimGateB = $('#scrim-gate-b'), scrimOnga = $('#scrim-onga');
@@ -2758,7 +2931,7 @@ $$('[data-logos]').forEach(box => {
 });
 $('#skip').addEventListener('click', e => { e.preventDefault(); const h = $(`[data-for="${S.route}"] h1`) || $(`[data-for="${isFile(S.route) ? 'file' : S.route}"] h1`) || $('main h1'); if (h) { h.setAttribute('tabindex', '-1'); h.focus(); } });
 /* ---------- getting around: crumbs, progress, chapters, menu, transitions, cursor ---------- */
-const FLAG = ['onga', 'cowbell', 'spruce', 'pzl', 'zenith'];
+const FLAG = ['onga', 'cowbell', 'chivita', 'spruce', 'pzl', 'zenith'];
 const routeOf = id => WORLDS[id] ? id : id + '-case';
 function setCrumbs(r) {
   const cr = $('#crumb'), nx = $('#nextw');
@@ -2862,7 +3035,7 @@ $('#essay-copy').addEventListener('click', async () => { try { await navigator.c
 if (!navigator.share) $('#essay-share').hidden = true;
 // what each case shows of what we do, from the case records
 const SVC = { onga: ['strategy', 'content', 'digital'], cowbell: ['strategy', 'content', 'digital'], spruce: ['strategy', 'content', 'digital'], pzl: ['strategy', 'content', 'integrated'],
-  zenith: ['strategy', 'brand', 'integrated'], twisco: ['strategy', 'brand', 'content', 'integrated', 'experiences'], chivita12: ['content', 'experiences'], chivita2: ['content'], ramadan: ['brand'], sips: ['content'],
+  zenith: ['strategy', 'brand', 'integrated'], twisco: ['strategy', 'brand', 'content', 'integrated', 'experiences'], chivita12: ['content', 'experiences'], chivita: ['strategy', 'content'], ramadan: ['brand'], sips: ['content'],
   youmatter: ['strategy', 'brand', 'integrated', 'digital'], sanlam: ['strategy', 'brand'], dreams: ['digital', 'content'], pzlsocial: ['content'], heirs: ['brand'], iinvest: ['brand'], zenith35: ['experiences', 'brand'], torrista: ['brand'] };
 CASES.forEach(c => { c.sv = SVC[c.id] || []; });
 S.svc = '';
@@ -2899,7 +3072,16 @@ const FILMS = { onga: { src: 'films/onga.mp4', poster: 'films/onga-poster.jpg', 
   'ym-report': { src: 'films/ym-report.mp4', poster: 'films/ym-report.jpg', t: 'The campaign in market' },
   'tw-billboard': { src: 'films/tw-billboard.mp4', poster: 'films/tw-billboard.jpg', t: 'Billboard, Lagos', tall: 1 },
   'tw-film': { src: 'films/tw-film.mp4', poster: 'films/tw-film.jpg', t: 'Everyday Hero, Everyday Twisco · the film' },
-  'ym-tvc': { src: 'films/ym-tvc.mp4', poster: 'films/ym-tvc.jpg', t: 'You Matter · the TVC' } };
+  'ym-tvc': { src: 'films/ym-tvc.mp4', poster: 'films/ym-tvc.jpg', t: 'You Matter · the TVC' },
+  chivita: { src: 'films/chivita.mp4', poster: 'films/chivita-poster.jpg', t: 'Chivita · What’s Your Chivita? · Case film' },
+  'ch-question': { src: 'films/ch-question.mp4', poster: 'films/ch-question.jpg', t: 'Creator story · the question', tall: 1 },
+  'ch-amala': { src: 'films/ch-amala.mp4', poster: 'films/ch-amala.jpg', t: 'Creator content · always on', tall: 1 },
+  'ch-everyone': { src: 'films/ch-everyone.mp4', poster: 'films/ch-everyone.jpg', t: '#WhatsYourChivita · in the feed', tall: 1 },
+  'ch-sns': { src: 'films/ch-sns.mp4', poster: 'films/ch-sns.jpg', t: 'Style N’ Sips · cut for Instagram', tall: 1 },
+  'ch-xmas': { src: 'films/ch-xmas.mp4', poster: 'films/ch-xmas.jpg', t: '12 Days of Christmas · live on Instagram', tall: 1 },
+  'ps-salary': { src: 'films/ps-salary.mp4', poster: 'films/ps-salary.jpg', t: 'Prudential Zenith Life · salary week', tall: 1 },
+  'ps-first': { src: 'films/ps-first.mp4', poster: 'films/ps-first.jpg', t: 'Prudential Zenith Life · customers first', tall: 1 },
+  'ps-income': { src: 'films/ps-income.mp4', poster: 'films/ps-income.jpg', t: 'Prudential Zenith Life · what a plan covers', tall: 1 } };
 const filmx = $('#filmx'), filmV = $('#film-v');
 let filmBack = null;
 function openFilm(k, from) {
@@ -3041,6 +3223,14 @@ function update(dt) {
     body.style.setProperty('--lensv', S.lensS.toFixed(3));
     scrimZb.style.opacity = ((1 - S.lensS) * .95).toFixed(3);
   } else scrimZb.style.opacity = 0;
+  if (r === 'chivita') {
+    const q = S.qE;
+    applyBeats(chBeats, q);
+    body.style.setProperty('--lensv', S.lensS.toFixed(3));
+    scrimCh.style.opacity = ((1 - S.lensS) * .95).toFixed(3);
+    const k = clamp(Math.round(q), 0, 6);
+    if (S.chHud !== k) { S.chHud = k; chHn.textContent = CHHUD[k][0]; chHl.textContent = CHHUD[k][1]; }
+  } else { scrimCh.style.opacity = 0; S.chHud = null; }
 
   if (!GL) return;
   U.uTime.value = t;
@@ -3056,6 +3246,8 @@ function update(dt) {
   } else if (r === 'zenith') {
     if (PHONE) keyAt(KZBm, S.qE, dPos, dLook, true); else keyAt(KZB, S.qE, dPos, dLook);
     if (!RM) { dPos.x += S.px * 1.2; dPos.y -= S.py * .6; }
+  } else if (r === 'chivita') {
+    chCam(S.qE, dPos, dLook);
   } else if (r === 'pzl') {
     keyAt(KPZ, S.qE, dPos, dLook);
     if (PHONE) { dLook.y -= 2.6; dPos.y -= .6; dPos.x = dLook.x * .6; }
@@ -3290,6 +3482,22 @@ function update(dt) {
     S.zbScreens.forEach(g => {
       const m = g.userData.m, a = RM ? 1 : sstep(-m.z / 16 - 1.1, -m.z / 16 - .7, q);
       g.userData.pic.material.uniforms.uOpacity.value = a; g.userData.pic.material.uniforms.uBright.value = .55 + .45 * a;
+    });
+  }
+
+  /* chivita */
+  if (r === 'chivita') {
+    const q = S.qE, u = S.chU;
+    chSkyAt(q, u.uTop.value, u.uBot.value);
+    S.chSky.position.copy(camera.position);
+    S.chBg.copy(u.uBot.value).lerp(COL.lens, S.lensS);
+    S.chDimTo.copy(u.uBot.value).lerp(u.uTop.value, .35);
+    S.chCore.material.uniforms.uCore.value.copy(u.uTop.value).multiplyScalar(.8);
+    S.chCore.material.uniforms.uOff.value = RM ? 0 : (t * .004) % 1;
+    const c = S.chC || 0;
+    S.chItems.forEach(it => {
+      it.pic.material.uniforms.uDim.value = .58 * sstep(2.2, 5.5, Math.abs(it.i - c));
+      if (it.you) { const a = S.chPostT != null ? clamp((t - S.chPostT) / .7, 0, 1) : 1; it.g.scale.setScalar(RM || a >= 1 ? 1 : .88 + .12 * backOut(a)); }
     });
   }
 

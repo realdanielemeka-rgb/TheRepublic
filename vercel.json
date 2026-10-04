@@ -37,6 +37,11 @@
       "permanent": true
     },
     {
+      "source": "/services/content-and-social",
+      "destination": "/services/organic-social",
+      "permanent": true
+    },
+    {
       "source": "/our-works",
       "destination": "/work",
       "permanent": true

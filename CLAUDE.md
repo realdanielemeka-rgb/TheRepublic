@@ -18,7 +18,7 @@ This branch (`immersive-site`) supersedes the earlier Next.js rebuild, which rem
 
 - Three.js r128 from cdnjs drives one WebGL canvas behind DOM overlays. Fonts are Handjet (`--sign`) and Schibsted Grotesk (`--display`) from Google Fonts.
 - Every page has a real address. `scripts/routes.py` maps route keys to paths; case pages keep their old Wix slugs (e.g. `/onga-taste-of-home`) so existing rankings carry over. The build writes the map, titles, descriptions and share images into `public/assets/routes.js` as `window.SEO`; the app's router (`parseRoute()`, `routeFromPath()`, `go()`, `pathOf()`) uses the History API, and old `#route` links are converted to clean paths on load. `/studio/<slug>` opens a person.
-- Each built page shows its own section in the raw HTML, carries its own title, description, canonical link, Open Graph and Twitter tags and JSON-LD (ProfessionalService, WebSite, WebPage with breadcrumbs, plus CreativeWork, BlogPosting or the team list where relevant), and has exactly one `h1`. Page headings carry `data-ph`; `setH1(route)` keeps one `h1` in the live DOM as visitors move around. The 13 case files are pre-filled from `CASEFILES` so crawlers see their text.
+- Each built page shows its own section in the raw HTML, carries its own title, description, canonical link, Open Graph and Twitter tags and JSON-LD (ProfessionalService, WebSite, WebPage with breadcrumbs, plus CreativeWork, BlogPosting or the team list where relevant), and has exactly one `h1`. Page headings carry `data-ph`; `setH1(route)` keeps one `h1` in the live DOM as visitors move around. The 12 case files are pre-filled from `CASEFILES` so crawlers see their text. Six flagship worlds (Onga, Cowbell, Chivita, Spruce, Prudential Zenith, Zenith Bank) each have a world route and a hand-written case article in `src/site.html`; `FLAG` sets their order.
 - `<base href="/">` is set, so asset paths (`img/...`, `films/...`) resolve from the root on nested addresses. Use root-relative URLs in CSS.
 - Global state lives in `S`, and the frame loop is `update(dt)`. Scroll position maps to `S.p` on the home page and `S.q` inside worlds and pages. `BEATS` sets each route's scroll length.
 - Home ("the Gate"), `BEATS.gate = 6`:
@@ -29,7 +29,7 @@ This branch (`immersive-site`) supersedes the earlier Next.js rebuild, which rem
   - 6: the City of Work.
   - Camera: `KG` covers beats 0–3 and `KGS` (keyed by `at`) covers 3–6.
 - Data:
-  - Case studies and worlds: `CASEFILES`, `WORLDS`.
+  - Case studies and worlds: `CASEFILES`, `WORLDS`. A case file can name the flagship it belongs to with `part` (Style N' Sips and 12 Days of Christmas are chapters of What's Your Chivita?).
   - Films: `FILMS`, with `[data-film]` and `openFilm()`.
   - People: `TEAM` and `LEAD`, which feed `PEOPLE`.
   - Clients: `CLIENTS` (logo marquee).

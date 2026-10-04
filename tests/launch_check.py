@@ -3,7 +3,7 @@ import asyncio, re
 from harness import page, BASE
 from playwright.async_api import async_playwright
 BAD = re.compile(r'prototype|design study|not the live site|placeholder|draft|before launch|at launch|to be confirmed|once verified|as published|not yet in force|legal review', re.I)
-ROUTES = ['', 'work', 'studio', 'studio/daniel-emeka', 'method', 'journal', 'contact', 'privacy', 'onga-case', 'zenith-case', 'twisco-case', 'youmatter-case', 'cowbell-case', 'spruce-case', 'pzl-case',
+ROUTES = ['', 'work', 'studio', 'studio/daniel-emeka', 'method', 'journal', 'contact', 'privacy', 'onga-case', 'chivita', 'chivita-case', 'pzlsocial-case', 'zenith-case', 'twisco-case', 'youmatter-case', 'cowbell-case', 'spruce-case', 'pzl-case',
           'services', 'svc-strategy', 'svc-brand', 'svc-content', 'svc-integrated', 'svc-digital', 'svc-experiences']
 async def main():
     async with async_playwright() as p:

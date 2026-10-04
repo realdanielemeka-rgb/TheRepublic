@@ -30,7 +30,7 @@ for f in pages:
     for img in re.findall(r'<img(?![^>]*\balt=)[^>]*>', s): problems.append((name, 'img without alt'))
     for href in set(re.findall(r'<a [^>]*href="(/[^"#?]*)"', s)):
         h = href.rstrip('/') or '/'
-        if h not in built and h not in redirects and not h.startswith('/studio/'): problems.append((name, 'internal link to nowhere', href))
+        if h not in built and h not in redirects and not h.startswith('/studio/') and not os.path.isfile(os.path.join(PUB, h.lstrip('/'))): problems.append((name, 'internal link to nowhere', href))
 for t, fs in titles.items():
     if len(fs) > 1: problems.append(('duplicate title', t, fs))
 for d, fs in descs.items():
@@ -52,7 +52,7 @@ async def live():
                 return { n: h.length, vis: h[0] ? !h[0].closest('[hidden]') : false, txt: h[0] ? h[0].textContent.trim().slice(0, 40) : '', can: c && c.href, path: location.pathname }; }""")
             if r['n'] != 1 or not r['vis'] or not r['txt']: bad.append((path, r))
         # move around inside the app
-        for hop in ('/studio', '/prudential-zenith-you-matter', '/method', '/services', '/services/content-and-social'):
+        for hop in ('/studio', '/prudential-zenith-you-matter', '/method', '/services', '/services/organic-social'):
             await pg.evaluate(f"document.querySelector('a[href=\"{hop}\"]') ? document.querySelector('a[href=\"{hop}\"]').click() : history.pushState(null,'','{hop}') || dispatchEvent(new PopStateEvent('popstate'))"); await pg.wait_for_timeout(1400)
             r = await pg.evaluate("""() => ({ path: location.pathname, t: document.title, can: document.querySelector('link[rel=canonical]').href, n: document.querySelectorAll('h1').length, vis: !document.querySelector('h1').closest('[hidden]') })""")
             if r['path'] != hop or r['can'] != DOMAIN + hop or r['n'] != 1 or not r['vis']: bad.append((hop, r))
