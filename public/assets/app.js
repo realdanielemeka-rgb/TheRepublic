@@ -110,12 +110,12 @@ const CASEFILES = {
     story: ['A series that celebrates the joy of Chivita’s drinks through stylish, light-hearted content, built to increase the brand’s visibility and engagement.', 'Everyday themes, local relevance and lively conversation position Chivita as a culturally attuned, fun-loving brand.'],
     steps: [['The episodes', 'Built around trending, relatable themes, from “Boys Will Be Boys” to “Classic Elegance”: a mix of style, humour and real talk.'], ['The hosts', 'Elozonam, Akin Faminu and Jay On Air, each bringing their own flair, as part of the story rather than just its reach.'], ['The rollout', 'Instagram, Facebook and YouTube, with paid promotion at peak times alongside organic growth.']],
     gal: [['cs-sips-1.webp', 'Episodes'], ['cs-sips-2.webp', 'Episodes']] },
-  youmatter: { seo: 'You Matter — Prudential Zenith | The Republic', slug: 'prudential-zenith-you-matter', title: 'You Matter', line: 'A strategy campaign to make insurance feel human again.', hero: 't-pzl-you-matter.webp', cap: 'Prudential Zenith Life · You Matter',
-    facts: [['Client', 'Prudential Zenith Life Insurance'], ['Sector', 'Insurance & Finance']],
-    story: ['Insurance is supposed to be personal, but in Nigeria it rarely feels that way. People don’t wake up thinking about cover. They think about school fees, rent and the future they haven’t fully figured out.', 'The challenge: remind people that planning ahead is an act of love, and make a financial product feel like an emotional decision.'],
-    steps: [['A strategic reset, not just a campaign', 'This was about relevance, not visibility.'], ['A perspective, not a product', 'You Matter: not a tagline, but a truth that cuts across media, culture and behaviour.']],
-    gal: [['v:ym-tvc', 'The TVC', 1], ['v:ym-report', 'The campaign in market'], ['cs-youmatter-1.webp', 'Social']],
-    stats: [['2M', 'Increase in website traffic'], ['507K', 'Boost in social media followers'], ['+3K%', 'Uplift in product sales']] },
+  youmatter: { seo: 'You Matter — Prudential Zenith | The Republic', slug: 'prudential-zenith-you-matter', title: 'You Matter', line: 'A strategy campaign to make insurance feel human again.', hero: 'cs-ym-hero.webp', cap: 'Prudential Zenith Life · You Matter · the TVC',
+    facts: [['Client', 'Prudential Zenith Life Insurance'], ['Sector', 'Insurance & Finance'], ['Work', 'Strategy · TVC · Out of home · Radio · Social · Search']],
+    story: ['Insurance is supposed to be personal, but in Nigeria it rarely feels that way. People don’t wake up thinking about cover. They think about school fees, rent and the future they haven’t fully figured out.', 'The brief was to relaunch Prudential Zenith with a renewed identity and message, and to build awareness, reach and qualified leads. The challenge: remind people that planning ahead is an act of love, and make a financial product feel like an emotional decision.'],
+    steps: [['A strategic reset, not just a campaign', 'This was about relevance, not visibility.'], ['A perspective, not a product', 'You Matter: Prudential Zenith’s promise to put its customers’ well-being first. Not a tagline, but a truth that cuts across media, culture and behaviour.'], ['The film', 'A TV commercial we took from pre-production to post: one family through the milestones they build together, from a dinner for two to a traditional wedding, a baby shower and a daughter’s birthday.'], ['Out of home', 'Supporting the life you’re building together: the family and the line on large-format billboards.'], ['Radio, social and search', 'A radio spot written and produced for national airwaves, customer testimonial content on social, and Google search and display ads that turned attention into visits and leads.']],
+    gal: [['v:ym-tvc', 'The TVC', 1], ['cs-ym-ooh.webp', 'Out of home', 1], ['cs-ym-kv.webp', 'Key visual'], ['cs-ym-display.webp', 'Search and display'], ['cs-youmatter-1.webp', 'Social']],
+    stats: [['2.05M', 'Search and display impressions'], ['507K', 'YouTube views'], ['370', 'Leads generated']], rnote: 'From the campaign report. Counters measure views and impressions, not unique people.' },
   sanlam: { seo: 'Sanlam Allianz: Live with Confidence | The Republic', slug: 'sanlam-allianz-live-with-confidence', title: 'Live with Confidence', line: 'Insurance, reframed around what people want.', hero: 'cs-sanlam-2.webp', cap: 'Outdoor creative',
     facts: [['Client', 'Sanlam Allianz'], ['Sector', 'Insurance & Finance'], ['Work', 'Strategy · Visual design']],
     story: ['A strategy-first communication platform that reframes insurance around what people truly want: the confidence to live, work and plan without fear.', 'Live with Confidence unifies brand storytelling and activation across touchpoints, making the promise tangible in everyday moments.'],
@@ -168,7 +168,7 @@ function renderFile(id) {
   $('#cf-gal').innerHTML = f.gal.map(g => g[0].indexOf('v:') === 0 ? `<figure class="vid${g[2] ? ' wide' : ''}"><button type="button" class="vplay" data-film="${g[0].slice(2)}" aria-label="Play: ${esc(g[1])}"><img src="films/${g[0].slice(2)}.jpg" alt="" loading="lazy"><span class="vdur">▶ Film</span></button><figcaption>${esc(g[1])}</figcaption></figure>` : `<figure${g[2] ? ' class="wide"' : ''}><img src="img/${g[0]}" alt="${esc(f.title + ': ' + g[1])}" loading="lazy"><figcaption>${esc(g[1])}</figcaption></figure>`).join('');
   $('#cf-gal').hidden = !f.gal.length;
   const rs = $('#cf-results'); rs.hidden = !f.stats; $('#cf-tab-results').hidden = !f.stats;
-  if (f.stats) { $('#cf-stats').innerHTML = f.stats.map(x => `<div class="stat"><span class="n">${esc(x[0])}</span><p>${esc(x[1])}</p></div>`).join(''); $('#cf-rnote').hidden = true; }
+  if (f.stats) { $('#cf-stats').innerHTML = f.stats.map(x => `<div class="stat"><span class="n">${esc(x[0])}</span><p>${esc(x[1])}</p></div>`).join(''); $('#cf-rnote').textContent = f.rnote || ''; $('#cf-rnote').hidden = !f.rnote; }
   $('#cf-ck').textContent = (f.stats ? '04' : '03') + ' · Credits';
   const cred = [['Client', f.facts[0][1]]];
   const brand = (c.b || '').split(' · ')[0];
@@ -2859,7 +2859,7 @@ if (!navigator.share) $('#essay-share').hidden = true;
 // what each case shows of what we do, from the case records
 const SVC = { onga: ['strategy', 'content', 'digital'], cowbell: ['strategy', 'content', 'digital'], spruce: ['strategy', 'content', 'digital'], pzl: ['strategy', 'content', 'integrated'],
   zenith: ['strategy', 'brand', 'integrated'], twisco: ['strategy', 'brand', 'content', 'integrated', 'experiences'], chivita12: ['content', 'experiences'], chivita2: ['content'], ramadan: ['brand'], sips: ['content'],
-  youmatter: ['strategy', 'integrated'], sanlam: ['strategy', 'brand'], dreams: ['digital', 'content'], pzlsocial: ['content'], heirs: ['brand'], iinvest: ['brand'], zenith35: ['experiences', 'brand'], torrista: ['brand'] };
+  youmatter: ['strategy', 'brand', 'integrated', 'digital'], sanlam: ['strategy', 'brand'], dreams: ['digital', 'content'], pzlsocial: ['content'], heirs: ['brand'], iinvest: ['brand'], zenith35: ['experiences', 'brand'], torrista: ['brand'] };
 CASES.forEach(c => { c.sv = SVC[c.id] || []; });
 S.svc = '';
 $('#svc').addEventListener('change', e => {

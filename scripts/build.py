@@ -296,6 +296,8 @@ def main(check=False):
         fill('cf-steps', ''.join(f'<li><span><b>{esc(a)}.</b> {esc(b)}</span></li>' for a, b in f['steps']))
         if f.get('stats'):
             fill('cf-stats', ''.join(f'<div class="stat"><span class="n">{esc(a)}</span><p>{esc(b)}</p></div>' for a, b in f['stats']))
+            if f.get('rnote'):
+                fill('cf-rnote', esc(f['rnote']))
         if f.get('hero'):
             s = re.sub(r'(<img[^>]*\bid="cf-img")', lambda mm: mm.group(1) + f' src="img/{esc(f["hero"])}" alt="{esc(f.get("cap", f["title"]))}"', s, count=1)
         return s
