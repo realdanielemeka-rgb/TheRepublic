@@ -2153,7 +2153,8 @@ PEOPLE.forEach((p, i) => {
   b.setAttribute('aria-label', `${p.n}, ${p.r}. Open their page.`);
   b.innerHTML = `<img src="img/tm-${slug(p.n)}.webp" alt="" loading="lazy"><span class="lnl"><b>${p.n}</b><span>${p.r}</span></span>`;
   const on = () => { lineup.classList.add('hov'); $$('.ln', lineup).forEach(o => { const t = o === b; o.classList.toggle('on', t); o.parentNode.classList.toggle('on', t); }); grow(b); };
-  b.addEventListener('mouseenter', on); b.addEventListener('focus', on);
+  const fineP = matchMedia('(hover:hover) and (pointer:fine)').matches;
+  if (fineP) { b.addEventListener('mouseenter', on); b.addEventListener('focus', on); }
   b.addEventListener('click', () => openPerson(i));
   const li = document.createElement('div'); li.setAttribute('role', 'listitem'); li.className = 'lnw'; li.appendChild(b);
   LGRP.find(G => i >= G.a && i < G.z).row.appendChild(li);

@@ -905,9 +905,12 @@ body[data-route="chivita"]{background:#B4470A}
 @media (max-width:760px){
   .phead .lead{font-size:16px}
   .lineup{flex:none;height:64vh;min-height:400px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;margin-right:calc(-1*var(--g));gap:12px}
-  .lgrp{flex:none!important}
-  .lnw{flex:0 0 42vw;scroll-snap-align:start}
-  .lnw.on{flex-grow:0}
+  .lgrp{flex:none!important;width:max-content}
+  .lgrow{display:grid;grid-auto-flow:column;grid-auto-columns:42vw;gap:3px;flex:1;min-height:0}
+  .lnw,.lnw.on{display:block;width:42vw;height:100%;flex:none;scroll-snap-align:start}
+  .lnw>.ln{display:block;width:100%;height:100%}
+  .ln{contain:paint;transition:none}
+  .ln img,.lineup .ln.on img{transform:none}
   .ln img,.lineup.hov .ln img{filter:grayscale(1) contrast(1.08) brightness(.95)}
   .lnl{opacity:1;transform:none}
   .lnl b{font-size:14px}
