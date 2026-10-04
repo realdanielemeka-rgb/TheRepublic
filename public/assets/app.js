@@ -279,7 +279,7 @@ $$('[data-foot]').forEach((el, i) => {
     <p class="eyebrow">Your turn</p>
     <p class="sfbig">Let's talk.</p>
     ${full ? `<form data-turn class="sfturn"><label class="sr" for="turn-${i}">What are you trying to change?</label><input id="turn-${i}" name="change" type="text" placeholder="What are you trying to change?" autocomplete="off"><button class="send" type="submit">Start →</button></form>` : `<a class="btn primary" href="/contact">Start a conversation →</a>`}
-    <p class="sfdirect"><a href="mailto:office@therepublic.agency">office@therepublic.agency</a><a href="tel:+2347007005252">+234 700 700 5252</a>${WHATSAPP ? `<a href="${waLink()}" target="_blank" rel="noopener">WhatsApp</a>` : ''}</p>
+    <p class="sfdirect"><a href="mailto:office@therepublic.agency">office@therepublic.agency</a>${WHATSAPP ? `<a href="${waLink()}" target="_blank" rel="noopener">WhatsApp</a>` : ''}</p>
   </div>
   <div class="sfgrid">
     <nav class="sfcol" aria-label="Footer"><p class="k">Explore</p><a href="/work">Work</a><a href="/services">Services</a><a href="/studio">Studio</a><a href="/method">Method</a><a href="/journal">Journal</a><a href="/contact" data-careers>Careers</a><a href="/contact">Contact</a></nav>

@@ -101,5 +101,5 @@ FAQ = [
     ('How does The Republic work?',
      'Strategy first. Every brief starts with questions about people, then moves through five steps: the problem, the human truth, the idea, the system and the evidence.'),
     ('How do I start a project with The Republic?',
-     'Write to office@therepublic.agency, call +234 700 700 5252 or use the contact form, and tell us what you are trying to change.'),
+     'Write to office@therepublic.agency or use the contact form, and tell us what you are trying to change.'),
 ]

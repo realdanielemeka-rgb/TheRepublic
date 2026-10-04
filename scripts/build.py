@@ -42,7 +42,7 @@ DESCRIPTIONS = {
     'studio': 'Meet The Republic, an independent creative and advertising agency at 10 Onisiwo Road, Ikoyi, Lagos: the team, our story and the clients we build for.',
     'method': 'How The Republic works: three commitments, six questions on every brief and five steps from problem to proof. Strategy first, and the work must prove it.',
     'journal': 'Articles and case films from The Republic, a creative and marketing agency in Lagos. Read Write for the reply, and watch the work behind our campaigns.',
-    'contact': 'Start a conversation with The Republic, a creative and marketing agency in Ikoyi, Lagos. Email office@therepublic.agency or call +234 700 700 5252.',
+    'contact': 'Start a conversation with The Republic, a creative and marketing agency in Ikoyi, Lagos. Email office@therepublic.agency and tell us what you want to change.',
     'privacy': 'How The Republic Studios Ltd collects, uses and protects personal data from this website, and the rights you have under the Nigeria Data Protection Act 2023.',
     'lost': 'This page does not exist or has moved. Explore the work of The Republic, an independent creative and marketing agency in Lagos.',
     'onga': "Step into Onga Taste of Home: an interactive world built on the question behind The Republic's campaign for Promasidor Nigeria: what does home mean to you?",
@@ -208,7 +208,7 @@ def main(check=False):
     org = {
         '@type': 'ProfessionalService', '@id': DOMAIN + '/#org', 'name': 'The Republic', 'legalName': 'The Republic Studios Ltd',
         'url': DOMAIN + '/', 'logo': {'@type': 'ImageObject', 'url': DOMAIN + '/img/logo.png'}, 'image': DOMAIN + '/og/og-home.jpg',
-        'description': DESCRIPTIONS['gate'], 'email': 'office@therepublic.agency', 'telephone': '+234 700 700 5252',
+        'description': DESCRIPTIONS['gate'], 'email': 'office@therepublic.agency',
         'address': {'@type': 'PostalAddress', 'streetAddress': '10 Onisiwo Road', 'addressLocality': 'Ikoyi', 'addressRegion': 'Lagos', 'addressCountry': 'NG'},
         'founder': [{'@type': 'Person', 'name': 'Ola Olowu'}, {'@type': 'Person', 'name': 'Daniel Emeka'}],
         'knowsAbout': CAPABILITIES + ['Advertising', 'Brand strategy', 'TV commercials', 'Social media marketing', 'Influencer marketing', 'Digital marketing', 'Experiential marketing'],
@@ -397,7 +397,7 @@ def main(check=False):
     outputs['llms.txt'] = '\n'.join([
         '# The Republic', '',
         '> Independent creative and advertising agency in Lagos, Nigeria (The Republic Studios Ltd, RC 7371417). Strategy-led campaigns, content, digital work and brand experiences for African and global brands, including Promasidor, CHI, Prudential Zenith Life Insurance, Zenith Bank, Sanlam Allianz and CAP Plc (Spruce by Dulux).', '',
-        'Address: 10 Onisiwo Road, Ikoyi, Lagos, Nigeria. Email: office@therepublic.agency. Telephone: +234 700 700 5252.',
+        'Address: 10 Onisiwo Road, Ikoyi, Lagos, Nigeria. Email: office@therepublic.agency.',
         'Leadership: Ola Olowu (Chairman & Co-Founder), Daniel Emeka (Managing Director & Co-Founder), Aderoju Adeniji (Head of Operations & Client Service).',
         'How we work: strategy first. Every brief starts with questions about people and moves through five steps: the problem, the human truth, the idea, the system and the evidence.', '',
         '## Services', ''] + [f"- [{sv['name']}]({DOMAIN}{sv['path']}): {sv['description']}" for sv in SV.SERVICES] + [
