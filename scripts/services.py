@@ -51,7 +51,7 @@ SERVICES = [
          covers=[('Always-on content', 'A publishing rhythm built around one idea, so every post adds to the last instead of starting again.'),
                  ('Creators and community', 'Creators chosen for fit and briefed to answer in their own voice, and a community that gets a reply.'),
                  ('Series and live formats', 'Repeatable formats, from YouTube series to Instagram Live, that give people a reason to come back.')],
-         cases=['chivita', 'pzlsocial', 'cowbell', 'onga', 'sips', 'chivita12'], img='ch-sns-2.webp'),
+         cases=['chivita', 'pzlsocial', 'cowbell', 'onga', 'spruce'], img='ch-sns-2.webp'),
     dict(key='svc-integrated', name='Integrated Marketing', path='/services/integrated-marketing',
          title='Integrated Marketing & Advertising Campaigns | The Republic',
          description='Integrated advertising campaigns from The Republic, Lagos: one idea carried through film, outdoor, radio, digital, social and experiences to one next step.',
@@ -72,7 +72,7 @@ SERVICES = [
          covers=[('Digital strategy and amplification', 'Plans that decide where a campaign lives online and how it travels.'),
                  ('Paid social and search', 'Paid media, including Google Ads, aimed at the people most likely to act.'),
                  ('Landing pages and lead capture', 'Journeys that turn interest into sign-ups, planned around the campaign.')],
-         cases=['onga', 'cowbell', 'spruce', 'youmatter', 'dreams'], img='sp-green.webp'),
+         cases=['onga', 'cowbell', 'spruce', 'youmatter'], img='sp-green.webp'),
     dict(key='svc-experiences', name='Experiences', path='/services/experiences',
          title='Experiential Marketing Agency in Lagos | The Republic',
          description='Brand experiences, installations and activations from The Republic in Lagos, such as the Zenith Bank 35th anniversary Tunnel of Time and the Twisco activation.',
@@ -82,10 +82,10 @@ SERVICES = [
          covers=[('Installations and exhibitions', 'Spaces that tell a brand’s story, like the Tunnel of Time for Zenith Bank’s 35th anniversary.'),
                  ('Activations', 'On-the-ground moments that put the product in people’s hands.'),
                  ('Live and seasonal moments', 'Live shows, challenges and seasonal campaigns people join in with.')],
-         cases=['zenith35', 'twisco', 'chivita12'], img='cs-zenith35-1.webp'),
+         cases=['zenith35', 'twisco', 'chivita'], img='cs-zenith35-1.webp'),
 ]
 
-# the six flagship cases live on their own pages (CASEFILES covers the other twelve)
+# the six flagship cases live on their own pages (CASEFILES covers the other nine)
 FLAGSHIP = {
     'onga': ('Onga · Promasidor Nigeria', 'Taste of Home', 'A digital platform built from people’s answers to one question: what does home mean to you?'),
     'cowbell': ('Cowbell · Promasidor Nigeria', 'Your First Taste', 'Nigerian digital and social execution of a Ramadan campaign about who cares before the first taste.'),

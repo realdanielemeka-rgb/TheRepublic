@@ -14,7 +14,7 @@ BASE = {
 
 
 def casefiles(js=None):
-    """The thirteen case files, read from the app's CASEFILES table: key, address slug, page title, title, one-line summary, client."""
+    """The case files, read from the app's CASEFILES table: key, address slug, page title, title, one-line summary, client."""
     js = js or open(os.path.join(ROOT, 'public/assets/app.js')).read()
     out = {}
     for m in re.finditer(r"\n  (\w+): \{ seo: '((?:[^'\\]|\\.)*)', slug: '([^']*)', title: '((?:[^'\\]|\\.)*)',(?: eyebrowNote: '[^']*',)? line: '((?:[^'\\]|\\.)*)'.*?facts: \[\['Client', '([^']*)'\]", js, re.S):

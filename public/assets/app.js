@@ -13,8 +13,8 @@ const backOut = t => { const c1 = 1.5, c3 = c1 + 1; return 1 + c3 * Math.pow(t -
 /* ---------------- data ---------------- */
 const G = 4.5;
 const DISTRICTS = {
-  food: { name: 'Food & Drink', n: 7, x: -22.5 },
-  fin: { name: 'Insurance & Finance', n: 7, x: 0 },
+  food: { name: 'Food & Drink', n: 5, x: -22.5 },
+  fin: { name: 'Insurance & Finance', n: 6, x: 0 },
   bank: { name: 'Banking & Travel', n: 3, x: 18 },
   home: { name: 'Home', n: 1, x: 29.25 }
 };
@@ -25,14 +25,11 @@ const CASES = [
   { id: 'twisco', t: 'Everyday Hero', b: 'Twisco', c: 'Twisco', d: 'food', img: 't-twisco.webp', col: -5, row: 1, h: 6.6 },
   { id: 'chivita', s: "Chivita · What's Your Chivita?", t: "What's Your Chivita?", b: 'Chivita', c: 'CHI Limited', d: 'food', f: 1, img: 't-chivita-2-campaign.webp', col: -4, row: 1, h: 11.6,
     line: 'Everyone has a Chivita. What’s yours?', svc: 'Organic social strategy · Creator partnerships · Always-on content · A YouTube series · Live social' },
-  { id: 'chivita12', t: '12 Days of Christmas', b: 'Chivita', c: 'CHI Limited', d: 'food', img: 't-chivita-12-days-of-christmas.webp', col: -7, row: 0, h: 4.2 },
   { id: 'ramadan', t: 'Ramadan TVCs', b: 'Chivita & Hollandia', c: 'CHI Limited', d: 'food', img: 't-chivita-hollandia-ramadan.webp', col: -6, row: 0, h: 3.4 },
-  { id: 'sips', t: "Style N' Sips", b: 'Chivita', c: 'CHI Limited', d: 'food', img: 't-chivita-style-n-sips.webp', col: -5, row: 0, h: 3.8 },
-  { id: 'dreams', t: 'We Do Dreams', b: 'Prudential Zenith Life', c: 'Prudential Zenith Life', d: 'fin', img: null, col: -2, row: 1, h: 5.2 },
   { id: 'pzl', s: 'PZL · Empowering Tomorrow', t: 'Empowering Tomorrow', b: 'Prudential Zenith Life', c: 'Prudential Zenith Life', d: 'fin', f: 1, img: 't-pzl-empowering-tomorrow.webp', col: -1, row: 1, h: 11.8, line: 'Boss in 2026. Boss in 2066.' },
   { id: 'youmatter', t: 'You Matter', b: 'Prudential Zenith Life', c: 'Prudential Zenith Life', d: 'fin', img: 't-pzl-you-matter.webp', col: 0, row: 1, h: 6.4 },
   { id: 'sanlam', t: 'Live with Confidence', b: 'Sanlam Allianz', c: 'Sanlam Allianz', d: 'fin', img: 't-sanlam-allianz.webp', col: 1, row: 1, h: 5.8 },
-  { id: 'pzlsocial', t: 'Organic Social', b: 'Prudential Zenith Life', c: 'Prudential Zenith Life', d: 'fin', img: 't-pzl-social-content.webp', col: -2, row: 0, h: 3.6 },
+  { id: 'pzlsocial', t: 'Organic Social', b: 'Prudential Zenith Life', c: 'Prudential Zenith Life', d: 'fin', img: 't-pzl-social-content.webp', col: -2, row: 1, h: 3.6 },
   { id: 'heirs', t: 'Launch Video', b: 'Heirs Insurance', c: 'Heirs Insurance', d: 'fin', img: 't-heirs.webp', col: -1, row: 0, h: 3.3 },
   { id: 'iinvest', t: 'Secure the Bag', b: 'i-invest', c: 'i-invest', d: 'fin', img: 't-i-invest.webp', col: 1, row: 0, h: 3.9 },
   { id: 'zenith', s: 'Zenith · Homecoming', t: 'See Homecoming Differently', b: 'Zenith Bank', c: 'Zenith Bank', d: 'bank', f: 1, img: 't-zenith-bank-homecoming.webp', col: 3, row: 1, h: 11.2 },
@@ -84,7 +81,7 @@ const NOTES = {
   chivita: [['01 · Business problem', 'Grow engagement and visibility for a familiar juice brand on social, and hold it for a year rather than a burst.'], ['02 · Human truth', 'Everyone has a Chivita story.'], ['03 · Idea', 'Ask one question and let people answer it: what’s your Chivita?'], ['04 · System', 'Creator stories → #WhatsYourChivita in the feed → creator content and promoted films → Style N’ Sips on YouTube → 12 Days of Christmas, live on Instagram.'], ['05 · Evidence', 'Instagram plays on one Style N’ Sips episode, per the campaign report. A platform counter, not unique people.', '886,561']],
   cowbell: [['01 · Business problem', 'Stay relevant for the whole of Ramadan, not only in launch week.'], ['02 · Human truth', 'Before the first taste, someone cared.'], ['03 · Idea', 'What if the first taste recognised the person who made it possible?'], ['04 · System', 'Prepare → make → share → recognise: stock-up content, five-minute Sahoor ideas, regional dishes, creator recipes, share invitations, a 30-action calendar and thank-you prompts.'], ['05 · Evidence', 'Meta views across 44 Nigeria Facebook and Instagram posts, observed 8 September 2026. Counters, not unique people.', '99,999,862']]
 };
-// The other thirteen cases, carried over from the current site's case pages (copy lightly edited; no new claims)
+// The other nine cases, carried over from the current site's case pages (copy lightly edited; no new claims)
 const CASEFILES = {
   twisco: { seo: 'Everyday Hero, Everyday Twisco | The Republic', slug: 'twisco-everyday-hero', title: 'Everyday Hero, Everyday Twisco', line: 'Give a cocoa drink a real role in family life.', hero: 'cs-twisco-1.webp', cap: 'Twisco activation',
     facts: [['Client', 'Twisco'], ['Sector', 'Food & Drink'], ['Work', 'Strategy · Brand platform · Film · Key visuals · Retail · Activation · Social']],
@@ -92,21 +89,11 @@ const CASEFILES = {
     steps: [['The insight', 'Everyday heroism: kids solving problems with what they have.'], ['The big idea', 'There’s a superhero in every home.'], ['The proposition', 'Nutritional empowerment for everyday superheroes, powered by the Enerfort vitamin-mineral blend.'], ['The role', 'Everyday Hero, Everyday Twisco: the drink behind those moments, signed off with Power your dream.'], ['The key visuals', 'Two expressions of one idea: an animated trio of young heroes with the Twisco mascot, and a real girl caught mid-thought and mid-sip.'], ['At the shelf', 'Every hero deserves Twisco: gondolas, shelf fins, wobblers, danglers and a sampling bar carry the line into the aisle, with a buy-and-win offer.'], ['Herovator City', 'An innovation challenge for students: buy Twisco to earn Hero Points, submit an innovation and compete at an exhibition. Recruitment posters, a Brain Box build kit, bus wraps, the stage, certificates and team kit all carry the hero.'], ['The system', 'One line across film, key visuals, retail, social and on-ground activation.']],
     gal: [['v:tw-film', 'The film', 1], ['cs-tw-kv-trio.webp', 'Key visual · Everyday Hero, Everyday Twisco', 1], ['cs-tw-kv-think.webp', 'Key visual'], ['cs-tw-kv-sip.webp', 'Key visual'], ['cs-twisco-2.webp', 'Activation'], ['cs-tw-gondola.webp', 'In store · gondola'], ['cs-tw-sampling.webp', 'Sampling bar'], ['cs-tw-wobbler.webp', 'Shelf wobbler'], ['cs-tw-hv-city.webp', 'Herovator City · the challenge', 1], ['cs-tw-hv-wanted.webp', 'Herovator · recruitment poster'], ['cs-tw-hv-box.webp', 'Herovator · the Brain Box kit'], ['cs-tw-hv-shirt.webp', 'Herovator · team kit'], ['cs-tw-hv-bus.webp', 'Herovator City · bus wrap', 1], ['cs-tw-hv-arch.webp', 'Herovator City · entrance arch'], ['cs-twisco-3.webp', 'Social'], ['v:tw-billboard', 'Billboard, Lagos']],
     stats: [['4.5M', 'Increase in Instagram views'], ['12.9M', 'Increase in Facebook views'], ['+585K', 'Meta reach']] },
-  chivita12: { seo: 'Chivita: 12 Days of Christmas | The Republic', slug: 'chivita-12-days-of-christmas', title: '12 Days of Christmas', line: 'A festive season of live shows, challenges and hampers.', hero: 't-chivita-12-days-of-christmas.webp', cap: 'Chivita · 12 Days of Christmas', part: ['chivita', 'Chapter 04 of What’s Your Chivita?, a year of organic social for Chivita'],
-    facts: [['Client', 'CHI Limited'], ['Brand', 'Chivita'], ['Sector', 'Food & Drink']],
-    story: ['A festive campaign to boost Chivita’s engagement and awareness and to drive business during the holiday season.', 'Influencer-led Instagram Live sessions ran alongside a user-generated content challenge, deepening Chivita’s connection with its audience and putting the product in more hands.'],
-    steps: [['Instagram Live Grotto Fiesta', 'Hosted by Jay On Air, with games, giveaways and lively conversation. Guest appearances from Elozonam, Eki, Emeneks, Akin Faminu and Noble Igwe widened the reach.'], ['Rewards', 'Early-bird viewers received product packs, and participants could win Christmas hampers, encouraging immediate trial.'], ['The Christmas Challenge', 'A user-generated content challenge invited the audience into the campaign.']],
-    gal: [['cs-chivita12-1.webp', 'Christmas Challenge'], ['cs-chivita12-2.webp', 'Instagram Live']] },
   ramadan: { seo: 'Chivita & Hollandia Ramadan TVCs | The Republic', slug: 'chivita-hollandia-ramadan', title: 'Ramadan TVCs', line: 'Two commercials for a season of togetherness.', hero: 't-chivita-hollandia-ramadan.webp', cap: 'Chivita & Hollandia · Ramadan',
     facts: [['Client', 'CHI Limited'], ['Brands', 'Chivita & Hollandia'], ['Sector', 'Food & Drink']],
     story: ['For Ramadan, Chivita and Hollandia partnered with The Republic on two television commercials for Nigerian and African audiences during a spiritually significant season.', 'The films capture the essence of Ramadan, community and togetherness, and the role of Chivita and Hollandia in the season’s moments.'],
     steps: [['The theme', 'Rejuvenation and refreshment, from Iftar, the meal that breaks the fast, to Suhoor before dawn.'], ['The storytelling', 'Culturally relevant stories in familiar, traditional settings and scenarios.']],
     gal: [] },
-  sips: { seo: 'Chivita Style N’ Sips | The Republic', slug: 'chivita-style-n-sips', title: 'Style N’ Sips', line: 'A YouTube series of style, humour and real talk.', hero: 't-chivita-style-n-sips.webp', cap: 'Chivita · Style N’ Sips', part: ['chivita', 'Chapter 03 of What’s Your Chivita?, a year of organic social for Chivita'],
-    facts: [['Client', 'CHI Limited'], ['Brand', 'Chivita'], ['Format', 'YouTube series']],
-    story: ['A series that celebrates the joy of Chivita’s drinks through stylish, light-hearted content, built to increase the brand’s visibility and engagement.', 'Everyday themes, local relevance and lively conversation position Chivita as a culturally attuned, fun-loving brand.'],
-    steps: [['The episodes', 'Built around trending, relatable themes, from “Boys Will Be Boys” to “Classic Elegance”: a mix of style, humour and real talk.'], ['The hosts', 'Elozonam, Akin Faminu and Jay On Air, each bringing their own flair, as part of the story rather than just its reach.'], ['The rollout', 'Instagram, Facebook and YouTube, with paid promotion at peak times alongside organic growth.']],
-    gal: [['cs-sips-1.webp', 'Episodes'], ['cs-sips-2.webp', 'Episodes']] },
   youmatter: { seo: 'You Matter — Prudential Zenith | The Republic', slug: 'prudential-zenith-you-matter', title: 'You Matter', line: 'A strategy campaign to make insurance feel human again.', hero: 'cs-ym-hero.webp', cap: 'Prudential Zenith Life · You Matter · the TVC',
     facts: [['Client', 'Prudential Zenith Life Insurance'], ['Sector', 'Insurance & Finance'], ['Work', 'Strategy · TVC · Out of home · Radio · Social · Search']],
     story: ['Insurance is supposed to be personal, but in Nigeria it rarely feels that way. People don’t wake up thinking about cover. They think about school fees, rent and the future they haven’t fully figured out.', 'The brief was to relaunch Prudential Zenith with a renewed identity and message, and to build awareness, reach and qualified leads. The challenge: remind people that planning ahead is an act of love, and make a financial product feel like an emotional decision.'],
@@ -119,11 +106,6 @@ const CASEFILES = {
     story: ['A strategy-first communication platform that reframes insurance around what people truly want: the confidence to live, work and plan without fear.', 'Live with Confidence unifies brand storytelling and activation across touchpoints, making the promise tangible in everyday moments.'],
     steps: [['The platform', 'Confidence as the benefit, not cover as the product.'], ['Visual design', 'Outdoor, radio and brand storytelling carrying one promise.']],
     gal: [['v:sanlam-radio', 'Launch radio · Confidence is our right'], ['v:sanlam-time', 'Radio · time check'], ['cs-sanlam-1.webp', 'A new era of confidence'], ['cs-sanlam-3.webp', 'Sanlam and Allianz, together'], ['cs-sanlam-4.webp', 'Outdoor creative in Igbo'], ['cs-sanlam-5.webp', 'Launch radio']] },
-  dreams: { seo: 'Prudential Zenith: We Do Dreams | The Republic', slug: 'prudential-zenith-we-do-dreams', title: 'We Do Dreams', line: 'Break through where insurance is misunderstood.', hero: 'cs-dreams-2.webp', cap: 'We Do Dreams · with Arese Ugwu',
-    facts: [['Client', 'Prudential Zenith Life Insurance'], ['Sector', 'Insurance & Finance'], ['Work', 'Influencer partnership · Lead generation · Performance marketing']],
-    story: ['Prudential Zenith Life Insurance needed to break through the clutter and drive meaningful engagement in a market where insurance is often misunderstood.', 'A trusted voice, content that resonates and targeted performance marketing worked as one system.'],
-    steps: [['Influencer partnership', 'Arese Ugwu, a celebrated voice in financial literacy, carried the message to a broad, discerning audience.'], ['Lead generation', 'A dedicated landing page with an interactive form designed to filter and capture qualified leads.'], ['Content', 'Creatives that blended direct campaign messaging with contextual content.'], ['Performance marketing', 'Targeted Google Ads drove visibility and traffic to the landing page.']],
-    gal: [['cs-dreams-1.webp', 'The landing page']] },
   pzlsocial: { seo: 'Prudential Zenith Life Organic Social Media | The Republic', slug: 'prudential-zenith-social-content', title: 'Organic Social', line: 'Humour, relevance and relatability for an insurer.', hero: 't-pzl-social-content.webp', cap: 'Prudential Zenith Life · Organic social',
     facts: [['Client', 'Prudential Zenith Life Insurance'], ['Sector', 'Insurance & Finance'], ['Work', 'Organic social · Reels · Content and community management']],
     story: ['Insurance rarely earns a second look in the feed. Prudential Zenith Life’s organic social had to earn one, with content that blends humour, relevance and relatability.', 'Salary week. Customers who come first, even before lunch. What a plan actually covers. Each post starts from a moment people recognise, then lets the brand make sense inside it.'],
@@ -202,7 +184,7 @@ function fillNotes(k) {
   $('#notes .r').innerHTML = NOTES[k].slice(3).map(html).join('');
 }
 fillNotes('onga');
-const ORDER = ['onga', 'cowbell', 'chivita', 'spruce', 'pzl', 'zenith', 'twisco', 'sips', 'chivita12', 'ramadan', 'youmatter', 'sanlam', 'dreams', 'pzlsocial', 'heirs', 'iinvest', 'zenith35', 'torrista'];
+const ORDER = ['onga', 'cowbell', 'chivita', 'spruce', 'pzl', 'zenith', 'twisco', 'ramadan', 'youmatter', 'sanlam', 'pzlsocial', 'heirs', 'iinvest', 'zenith35', 'torrista'];
 const COLLAGE = {
   onga: { p: [-8.2, 8.6, .6], w: 8.4, r: -.06 },
   spruce: { p: [.8, 9.4, -.6], w: 7.6, r: .05 },
@@ -353,7 +335,9 @@ const TITLES = {
 ['onga', 'cowbell', 'chivita', 'spruce', 'pzl', 'zenith'].forEach(k => { TITLES[k + '-case'] = TITLES[k]; });
 // the current site's addresses still land in the right place; people have their own links
 const ALIAS = { portfolio: 'work', 'onga-taste-of-home': 'onga-case', 'cowbell-ramadan-your-first-taste': 'cowbell-case', 'spruce-dulux-digital-launch': 'spruce-case',
-  'prudential-zenith-empowering-tomorrow': 'pzl-case', 'zenith-bank-homecoming': 'zenith-case', 'chivita-2-campaign': 'chivita-case', 'chivita2-case': 'chivita-case' };
+  'prudential-zenith-empowering-tomorrow': 'pzl-case', 'zenith-bank-homecoming': 'zenith-case', 'chivita-2-campaign': 'chivita-case', 'chivita2-case': 'chivita-case',
+  // folded into What's Your Chivita? as chapters, or retired from the portfolio
+  'chivita-style-n-sips': 'chivita-case', 'sips-case': 'chivita-case', 'chivita-12-days-of-christmas': 'chivita-case', 'chivita12-case': 'chivita-case', 'prudential-zenith-we-do-dreams': 'work', 'dreams-case': 'work' };
 Object.keys(CASEFILES).forEach(k => { ALIAS[CASEFILES[k].slug] = k + '-case'; });
 // every page has a real address (written into each page by scripts/build.py); older #links still work and move to the clean address
 const PATHS = (window.SEO && SEO.paths) || {};
@@ -3035,8 +3019,8 @@ $('#essay-copy').addEventListener('click', async () => { try { await navigator.c
 if (!navigator.share) $('#essay-share').hidden = true;
 // what each case shows of what we do, from the case records
 const SVC = { onga: ['strategy', 'content', 'digital'], cowbell: ['strategy', 'content', 'digital'], spruce: ['strategy', 'content', 'digital'], pzl: ['strategy', 'content', 'integrated'],
-  zenith: ['strategy', 'brand', 'integrated'], twisco: ['strategy', 'brand', 'content', 'integrated', 'experiences'], chivita12: ['content', 'experiences'], chivita: ['strategy', 'content'], ramadan: ['brand'], sips: ['content'],
-  youmatter: ['strategy', 'brand', 'integrated', 'digital'], sanlam: ['strategy', 'brand'], dreams: ['digital', 'content'], pzlsocial: ['content'], heirs: ['brand'], iinvest: ['brand'], zenith35: ['experiences', 'brand'], torrista: ['brand'] };
+  zenith: ['strategy', 'brand', 'integrated'], twisco: ['strategy', 'brand', 'content', 'integrated', 'experiences'], chivita: ['strategy', 'content', 'experiences'], ramadan: ['brand'],
+  youmatter: ['strategy', 'brand', 'integrated', 'digital'], sanlam: ['strategy', 'brand'], pzlsocial: ['content'], heirs: ['brand'], iinvest: ['brand'], zenith35: ['experiences', 'brand'], torrista: ['brand'] };
 CASES.forEach(c => { c.sv = SVC[c.id] || []; });
 S.svc = '';
 $('#svc').addEventListener('change', e => {

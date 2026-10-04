@@ -23,12 +23,12 @@
     },
     {
       "source": "/our-works/chivita-12-days-of-christmas-campaign",
-      "destination": "/chivita-12-days-of-christmas",
+      "destination": "/chivita-2-campaign",
       "permanent": true
     },
     {
       "source": "/our-works/chivita-style-n-sips-youtube-series",
-      "destination": "/chivita-style-n-sips",
+      "destination": "/chivita-2-campaign",
       "permanent": true
     },
     {
@@ -39,6 +39,21 @@
     {
       "source": "/services/content-and-social",
       "destination": "/services/organic-social",
+      "permanent": true
+    },
+    {
+      "source": "/chivita-style-n-sips",
+      "destination": "/chivita-2-campaign",
+      "permanent": true
+    },
+    {
+      "source": "/chivita-12-days-of-christmas",
+      "destination": "/chivita-2-campaign",
+      "permanent": true
+    },
+    {
+      "source": "/prudential-zenith-we-do-dreams",
+      "destination": "/work",
       "permanent": true
     },
     {
