@@ -88,7 +88,7 @@ const CASEFILES = {
     facts: [['Client', 'Twisco'], ['Sector', 'Food & Drink']],
     story: ['Nigerian parents quietly celebrate the small, everyday hero moments when kids hack their way out of problems with limited resources. Yet no cocoa brand was speaking to that, or actively enabling it.', 'Twisco had a strong micronutrient blend, Enerfort, but no clear emotional role. To mums, it was just one more brown drink. To kids, it wasn’t yet the exciting choice.', 'The job: give Twisco a distinct, memorable role in Nigerian family life, and make it a brand kids would actually ask for.'],
     steps: [['The insight', 'Everyday heroism: kids solving problems with what they have.'], ['The role', 'Everyday Hero, Everyday Twisco: the drink behind those moments.']],
-    gal: [['cs-twisco-2.webp', 'Activation'], ['cs-twisco-3.webp', 'Social'], ['v:tw-billboard', 'Billboard, Lagos']],
+    gal: [['v:tw-film', 'The film', 1], ['cs-twisco-2.webp', 'Activation'], ['cs-twisco-3.webp', 'Social'], ['v:tw-billboard', 'Billboard, Lagos']],
     stats: [['4.5M', 'Increase in Instagram views'], ['12.9M', 'Increase in Facebook views'], ['+585K', 'Meta reach']] },
   chivita12: { seo: 'Chivita: 12 Days of Christmas | The Republic', slug: 'chivita-12-days-of-christmas', title: '12 Days of Christmas', line: 'A festive season of live shows, challenges and hampers.', hero: 't-chivita-12-days-of-christmas.webp', cap: 'Chivita · 12 Days of Christmas',
     facts: [['Client', 'CHI Limited'], ['Brand', 'Chivita'], ['Sector', 'Food & Drink']],
@@ -2893,7 +2893,8 @@ const FILMS = { onga: { src: 'films/onga.mp4', poster: 'films/onga-poster.jpg', 
   'sanlam-radio': { src: 'films/sanlam-radio.mp4', poster: 'films/sanlam-radio.jpg', t: 'Launch radio · Confidence is our right' },
   'sanlam-time': { src: 'films/sanlam-time.mp4', poster: 'films/sanlam-time.jpg', t: 'Radio · time check' },
   'ym-report': { src: 'films/ym-report.mp4', poster: 'films/ym-report.jpg', t: 'The campaign in market' },
-  'tw-billboard': { src: 'films/tw-billboard.mp4', poster: 'films/tw-billboard.jpg', t: 'Billboard, Lagos', tall: 1 } };
+  'tw-billboard': { src: 'films/tw-billboard.mp4', poster: 'films/tw-billboard.jpg', t: 'Billboard, Lagos', tall: 1 },
+  'tw-film': { src: 'films/tw-film.mp4', poster: 'films/tw-film.jpg', t: 'Everyday Hero, Everyday Twisco · the film' } };
 const filmx = $('#filmx'), filmV = $('#film-v');
 let filmBack = null;
 function openFilm(k, from) {
