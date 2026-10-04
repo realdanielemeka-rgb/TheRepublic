@@ -173,6 +173,13 @@ def main(check=False):
     js = open(os.path.join(PUB, 'assets', 'app.js')).read()
     css = open(os.path.join(PUB, 'assets', 'app.css')).read()
     tpl = open(os.path.join(ROOT, 'src', 'site.html')).read()
+    # the downloadable credentials: one file at a stable address; its size is written into the pages that offer it
+    CRED = '/the-republic-credentials-2026.pdf'
+    cred_file = os.path.join(PUB, CRED.lstrip('/'))
+    assert os.path.exists(cred_file), 'public' + CRED + ' is missing'
+    cred_size = f"{os.path.getsize(cred_file) / 1048576:.1f} MB"
+    assert '%%CRED_SIZE%%' in tpl, 'src/site.html is missing %%CRED_SIZE%%'
+    tpl = tpl.replace('%%CRED_SIZE%%', cred_size)
     CF, CASES, TEAM = js_value(js, 'CASEFILES'), js_value(js, 'CASES'), js_value(js, 'TEAM')
     byId = {c['id']: c for c in CASES}
     P = paths(js)
@@ -409,6 +416,7 @@ def main(check=False):
         f'- [Method]({DOMAIN}/method): how a brief becomes work.',
         f'- [Journal]({DOMAIN}/journal): articles and case films.',
         f'- [Frequently asked questions]({DOMAIN}/services): plain answers about the agency.',
+        f'- [Credentials 2026 (PDF, {cred_size})]({DOMAIN}{CRED}): the agency in 22 pages, from how we think to selected work, clients and the founders.',
         f'- [Contact]({DOMAIN}/contact)', '']) 
     outputs['robots.txt'] = 'User-agent: *\nAllow: /\n\n# AI assistants and AI search are welcome to read this site\n' + ''.join(
         f'User-agent: {b}\nAllow: /\n\n' for b in ['GPTBot', 'OAI-SearchBot', 'ChatGPT-User', 'ClaudeBot', 'Claude-SearchBot', 'PerplexityBot', 'Google-Extended', 'Applebot-Extended', 'CCBot']) + f'Sitemap: {DOMAIN}/sitemap.xml\n'
