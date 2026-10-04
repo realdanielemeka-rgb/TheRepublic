@@ -85,10 +85,10 @@ const NOTES = {
 // The other thirteen cases, carried over from the current site's case pages (copy lightly edited; no new claims)
 const CASEFILES = {
   twisco: { seo: 'Everyday Hero, Everyday Twisco | The Republic', slug: 'twisco-everyday-hero', title: 'Everyday Hero, Everyday Twisco', line: 'Give a cocoa drink a real role in family life.', hero: 'cs-twisco-1.webp', cap: 'Twisco activation',
-    facts: [['Client', 'Twisco'], ['Sector', 'Food & Drink']],
+    facts: [['Client', 'Twisco'], ['Sector', 'Food & Drink'], ['Work', 'Strategy · Brand platform · Film · Activation · Social']],
     story: ['Nigerian parents quietly celebrate the small, everyday hero moments when kids hack their way out of problems with limited resources. Yet no cocoa brand was speaking to that, or actively enabling it.', 'Twisco had a strong micronutrient blend, Enerfort, but no clear emotional role. To mums, it was just one more brown drink. To kids, it wasn’t yet the exciting choice.', 'The job: give Twisco a distinct, memorable role in Nigerian family life, and make it a brand kids would actually ask for.'],
-    steps: [['The insight', 'Everyday heroism: kids solving problems with what they have.'], ['The role', 'Everyday Hero, Everyday Twisco: the drink behind those moments.']],
-    gal: [['v:tw-film', 'The film', 1], ['cs-twisco-2.webp', 'Activation'], ['cs-twisco-3.webp', 'Social'], ['v:tw-billboard', 'Billboard, Lagos']],
+    steps: [['The insight', 'Everyday heroism: kids solving problems with what they have.'], ['The big idea', 'There’s a superhero in every home.'], ['The proposition', 'Nutritional empowerment for everyday superheroes, powered by the Enerfort vitamin-mineral blend.'], ['The role', 'Everyday Hero, Everyday Twisco: the drink behind those moments.'], ['The system', 'One line across film, key visuals, social and on-ground activation.']],
+    gal: [['v:tw-film', 'The film', 1], ['cs-tw-kv-heroes.webp', 'Key visual', 1], ['cs-tw-kv-study.webp', 'Key visual'], ['cs-tw-kv-blend.webp', 'Key visual'], ['cs-tw-kv-blend-2.webp', 'Key visual'], ['cs-twisco-2.webp', 'Activation'], ['cs-twisco-3.webp', 'Social'], ['v:tw-billboard', 'Billboard, Lagos']],
     stats: [['4.5M', 'Increase in Instagram views'], ['12.9M', 'Increase in Facebook views'], ['+585K', 'Meta reach']] },
   chivita12: { seo: 'Chivita: 12 Days of Christmas | The Republic', slug: 'chivita-12-days-of-christmas', title: '12 Days of Christmas', line: 'A festive season of live shows, challenges and hampers.', hero: 't-chivita-12-days-of-christmas.webp', cap: 'Chivita · 12 Days of Christmas',
     facts: [['Client', 'CHI Limited'], ['Brand', 'Chivita'], ['Sector', 'Food & Drink']],
@@ -114,7 +114,7 @@ const CASEFILES = {
     facts: [['Client', 'Prudential Zenith Life Insurance'], ['Sector', 'Insurance & Finance']],
     story: ['Insurance is supposed to be personal, but in Nigeria it rarely feels that way. People don’t wake up thinking about cover. They think about school fees, rent and the future they haven’t fully figured out.', 'The challenge: remind people that planning ahead is an act of love, and make a financial product feel like an emotional decision.'],
     steps: [['A strategic reset, not just a campaign', 'This was about relevance, not visibility.'], ['A perspective, not a product', 'You Matter: not a tagline, but a truth that cuts across media, culture and behaviour.']],
-    gal: [['v:ym-report', 'The campaign in market'], ['cs-youmatter-1.webp', 'Social']],
+    gal: [['v:ym-tvc', 'The TVC', 1], ['v:ym-report', 'The campaign in market'], ['cs-youmatter-1.webp', 'Social']],
     stats: [['2M', 'Increase in website traffic'], ['507K', 'Boost in social media followers'], ['+3K%', 'Uplift in product sales']] },
   sanlam: { seo: 'Sanlam Allianz: Live with Confidence | The Republic', slug: 'sanlam-allianz-live-with-confidence', title: 'Live with Confidence', line: 'Insurance, reframed around what people want.', hero: 'cs-sanlam-2.webp', cap: 'Outdoor creative',
     facts: [['Client', 'Sanlam Allianz'], ['Sector', 'Insurance & Finance'], ['Work', 'Strategy · Visual design']],
@@ -2858,7 +2858,7 @@ $('#essay-copy').addEventListener('click', async () => { try { await navigator.c
 if (!navigator.share) $('#essay-share').hidden = true;
 // what each case shows of what we do, from the case records
 const SVC = { onga: ['strategy', 'content', 'digital'], cowbell: ['strategy', 'content', 'digital'], spruce: ['strategy', 'content', 'digital'], pzl: ['strategy', 'content', 'integrated'],
-  zenith: ['strategy', 'brand', 'integrated'], twisco: ['strategy', 'content', 'experiences'], chivita12: ['content', 'experiences'], chivita2: ['content'], ramadan: ['brand'], sips: ['content'],
+  zenith: ['strategy', 'brand', 'integrated'], twisco: ['strategy', 'brand', 'content', 'integrated', 'experiences'], chivita12: ['content', 'experiences'], chivita2: ['content'], ramadan: ['brand'], sips: ['content'],
   youmatter: ['strategy', 'integrated'], sanlam: ['strategy', 'brand'], dreams: ['digital', 'content'], pzlsocial: ['content'], heirs: ['brand'], iinvest: ['brand'], zenith35: ['experiences', 'brand'], torrista: ['brand'] };
 CASES.forEach(c => { c.sv = SVC[c.id] || []; });
 S.svc = '';
@@ -2894,7 +2894,8 @@ const FILMS = { onga: { src: 'films/onga.mp4', poster: 'films/onga-poster.jpg', 
   'sanlam-time': { src: 'films/sanlam-time.mp4', poster: 'films/sanlam-time.jpg', t: 'Radio · time check' },
   'ym-report': { src: 'films/ym-report.mp4', poster: 'films/ym-report.jpg', t: 'The campaign in market' },
   'tw-billboard': { src: 'films/tw-billboard.mp4', poster: 'films/tw-billboard.jpg', t: 'Billboard, Lagos', tall: 1 },
-  'tw-film': { src: 'films/tw-film.mp4', poster: 'films/tw-film.jpg', t: 'Everyday Hero, Everyday Twisco · the film' } };
+  'tw-film': { src: 'films/tw-film.mp4', poster: 'films/tw-film.jpg', t: 'Everyday Hero, Everyday Twisco · the film' },
+  'ym-tvc': { src: 'films/ym-tvc.mp4', poster: 'films/ym-tvc.jpg', t: 'You Matter · the TVC' } };
 const filmx = $('#filmx'), filmV = $('#film-v');
 let filmBack = null;
 function openFilm(k, from) {
