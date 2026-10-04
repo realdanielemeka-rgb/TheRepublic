@@ -37,6 +37,12 @@ RewriteRule ^ https://www.therepublic.agency%1 [R=301,L]
 # redirects carried over from the old site
 RewriteRule ^home$ https://www.therepublic.agency/ [R=301,L]
 RewriteRule ^portfolio$ https://www.therepublic.agency/work [R=301,L]
+RewriteRule ^our-works/chivita-2-0-content-marketing-campaign$ https://www.therepublic.agency/chivita-2-campaign [R=301,L]
+RewriteRule ^our-works/chivita-12-days-of-christmas-campaign$ https://www.therepublic.agency/chivita-12-days-of-christmas [R=301,L]
+RewriteRule ^our-works/chivita-style-n-sips-youtube-series$ https://www.therepublic.agency/chivita-style-n-sips [R=301,L]
+RewriteRule ^our-works/torrista-see-for-yourself$ https://www.therepublic.agency/torrista-see-for-yourself [R=301,L]
+RewriteRule ^our-works$ https://www.therepublic.agency/work [R=301,L]
+RewriteRule ^our-works(?:/.*)?$ https://www.therepublic.agency/work [R=301,L]
 
 # rewrites (a person on the Studio page, e.g. /studio/daniel-emeka)
 RewriteRule ^studio/[^/]+$ studio.html [L]

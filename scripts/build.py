@@ -96,7 +96,8 @@ def htaccess():
     host = DOMAIN.split('://', 1)[1]                      # www.therepublic.agency
     bare = host[4:] if host.startswith('www.') else host
     esc_re = lambda s: re.sub(r'([.\-])', r'\\\1', s)
-    red = '\n'.join(f'RewriteRule ^{r["source"].lstrip("/")}$ https://{host}{r["destination"]} [R=301,L]' for r in vc['redirects'])
+    pat = lambda src: re.sub(r":[a-z]+", "[^/]+", re.sub(r"/:[a-z]+\*", "(?:/.*)?", src.lstrip("/")))
+    red = '\n'.join(f'RewriteRule ^{pat(r["source"])}$ https://{host}{r["destination"]} [R=301,L]' for r in vc['redirects'])
     rw = '\n'.join(f'RewriteRule ^{re.sub(r":[a-z]+", "[^/]+", r["source"].lstrip("/"))}$ {r["destination"].lstrip("/")} [L]' for r in vc['rewrites'])
     return f'''# The Republic: Apache configuration for the cPanel host.
 # Written by scripts/build.py from vercel.json; edit the build, not this file.
@@ -250,6 +251,7 @@ def main(check=False):
             work = {'@type': 'CreativeWork', '@id': url + '#work', 'name': name, 'description': m['d'], 'url': url, 'image': DOMAIN + m['o'],
                     'creator': {'@id': DOMAIN + '/#org'}, 'inLanguage': 'en-GB'}
             if client: work['sourceOrganization'] = {'@type': 'Organization', 'name': client}
+            if k in CF and CF[k].get('award'): work['award'] = f"{CF[k]['award'][1].replace(' · ', ', ')}, {CF[k]['award'][0]}"
             page['mainEntity'] = {'@id': url + '#work'}
             g.append(work)
         if r.startswith('svc-'):
@@ -298,6 +300,9 @@ def main(check=False):
         fill('cf-k', esc(c.get('b') or f['facts'][0][1]))
         fill('cf-h', esc(f['title']))
         fill('cf-line', esc(f['line']))
+        if f.get('award'):
+            aw = f['award']
+            s = s.replace('<p class="cfaward" id="cf-award" hidden></p>', f'<p class="cfaward" id="cf-award"><a href="{esc(aw[2])}" target="_blank" rel="noopener"><span class="k">{esc(aw[0])}</span><b>{esc(aw[1])}</b><span class="src">Official results<span class="sr"> (opens in a new tab)</span> ↗</span></a></p>', 1)
         fill('cf-facts', ''.join(f'<div><dt>{esc(a)}</dt><dd>{esc(b)}</dd></div>' for a, b in f['facts']))
         fill('cf-story-b', ''.join(f'<p class="big" style="font-size:clamp(28px,3.2vw,48px)">{esc(p)}</p>' if i == 0 else f'<p class="p">{esc(p)}</p>' for i, p in enumerate(f['story'])))
         fill('cf-steps', ''.join(f'<li><span><b>{esc(a)}.</b> {esc(b)}</span></li>' for a, b in f['steps']))
@@ -411,6 +416,9 @@ def main(check=False):
         'How we work: strategy first. Every brief starts with questions about people and moves through five steps: the problem, the human truth, the idea, the system and the evidence.', '',
         '## Services', ''] + [f"- [{sv['name']}]({DOMAIN}{sv['path']}): {sv['description']}" for sv in SV.SERVICES] + [
         '', '## Selected work', ''] + work_lines + [
+        '', '## Recognition', '',
+        '- Nigerian Marketing Awards 2024: Best Use of Social Media, winner, for the Chivita 2.0 campaign (https://www.nma-ng.com/2024-winners/).',
+        '- Nigerian Marketing Awards 2025: Financial Institution of the Year, second place, The Republic, for You Matter with Prudential Zenith Life (https://www.nma-ng.com/winners/).',
         '', '## About', '',
         f'- [Studio and team]({DOMAIN}/studio): who we are, our story and the clients we build for.',
         f'- [Method]({DOMAIN}/method): how a brief becomes work.',

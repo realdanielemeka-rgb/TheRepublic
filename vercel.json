@@ -15,6 +15,36 @@
       "source": "/portfolio",
       "destination": "/work",
       "permanent": true
+    },
+    {
+      "source": "/our-works/chivita-2-0-content-marketing-campaign",
+      "destination": "/chivita-2-campaign",
+      "permanent": true
+    },
+    {
+      "source": "/our-works/chivita-12-days-of-christmas-campaign",
+      "destination": "/chivita-12-days-of-christmas",
+      "permanent": true
+    },
+    {
+      "source": "/our-works/chivita-style-n-sips-youtube-series",
+      "destination": "/chivita-style-n-sips",
+      "permanent": true
+    },
+    {
+      "source": "/our-works/torrista-see-for-yourself",
+      "destination": "/torrista-see-for-yourself",
+      "permanent": true
+    },
+    {
+      "source": "/our-works",
+      "destination": "/work",
+      "permanent": true
+    },
+    {
+      "source": "/our-works/:path*",
+      "destination": "/work",
+      "permanent": true
     }
   ],
   "headers": [

@@ -972,3 +972,11 @@ body[data-route="gate"] .proto.hideable{opacity:var(--protoop,1)}
   body[data-route="studio"] .nav{background:var(--ink)}
   .subnav{padding-bottom:10px}
 }
+
+.cfaward{margin:22px 0 0}
+.cfaward a{display:inline-flex;flex-direction:column;gap:6px;padding:14px 18px;border:1px solid var(--blue-soft);text-decoration:none;max-width:100%}
+.cfaward a:hover{background:var(--blue);border-color:var(--blue)}
+.cfaward .k{font:500 13px/1.2 var(--sign);letter-spacing:.08em;text-transform:uppercase;color:var(--blue-soft)}
+.cfaward a:hover .k{color:var(--paper)}
+.cfaward b{font-size:clamp(17px,1.5vw,20px);line-height:1.2;font-weight:750}
+.cfaward .src{font:500 12px/1 var(--sign);letter-spacing:.08em;text-transform:uppercase;opacity:.75}
