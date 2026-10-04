@@ -1,0 +1,79 @@
+# The Republic: Apache configuration for the cPanel host.
+# Written by scripts/build.py from vercel.json; edit the build, not this file.
+
+Options -Indexes -MultiViews
+DirectoryIndex index.html
+DirectorySlash Off
+ErrorDocument 404 /404.html
+AddDefaultCharset utf-8
+AddType image/webp .webp
+AddType video/mp4 .mp4
+AddType text/plain .txt
+
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /
+
+# certificate checks, Namecheap's SSL manager and server paths pass straight through
+RewriteRule ^(\.well-known|cgi-bin)(/|$) - [L]
+RewriteRule ^ssl-manager\.php$ - [L]
+
+# one address for the site: https://www.therepublic.agency
+RewriteCond %{HTTP_HOST} ^therepublic\.agency$ [NC]
+RewriteRule ^ https://www.therepublic.agency%{REQUEST_URI} [R=301,L]
+RewriteCond %{HTTP_HOST} ^www\.therepublic\.agency$ [NC]
+RewriteCond %{HTTPS} !=on
+RewriteCond %{HTTP:X-Forwarded-Proto} !=https
+RewriteRule ^ https://www.therepublic.agency%{REQUEST_URI} [R=301,L]
+
+# clean addresses: /index.html -> /, /work.html -> /work, /work/ -> /work
+RewriteCond %{THE_REQUEST} \s/+index\.html[\s?]
+RewriteRule ^ https://www.therepublic.agency/ [R=301,L]
+RewriteCond %{THE_REQUEST} \s/+([^\s?]+?)\.html[\s?]
+RewriteRule ^ https://www.therepublic.agency/%1 [R=301,L]
+RewriteCond %{REQUEST_URI} ^(/.+)/+$
+RewriteRule ^ https://www.therepublic.agency%1 [R=301,L]
+
+# redirects carried over from the old site
+RewriteRule ^home$ https://www.therepublic.agency/ [R=301,L]
+RewriteRule ^portfolio$ https://www.therepublic.agency/work [R=301,L]
+RewriteRule ^our-works/chivita-2-0-content-marketing-campaign$ https://www.therepublic.agency/chivita-2-campaign [R=301,L]
+RewriteRule ^our-works/chivita-12-days-of-christmas-campaign$ https://www.therepublic.agency/chivita-2-campaign [R=301,L]
+RewriteRule ^our-works/chivita-style-n-sips-youtube-series$ https://www.therepublic.agency/chivita-2-campaign [R=301,L]
+RewriteRule ^our-works/torrista-see-for-yourself$ https://www.therepublic.agency/torrista-see-for-yourself [R=301,L]
+RewriteRule ^services/content-and-social$ https://www.therepublic.agency/services/organic-social [R=301,L]
+RewriteRule ^chivita-style-n-sips$ https://www.therepublic.agency/chivita-2-campaign [R=301,L]
+RewriteRule ^chivita-12-days-of-christmas$ https://www.therepublic.agency/chivita-2-campaign [R=301,L]
+RewriteRule ^prudential-zenith-we-do-dreams$ https://www.therepublic.agency/work [R=301,L]
+RewriteRule ^our-works$ https://www.therepublic.agency/work [R=301,L]
+RewriteRule ^our-works(?:/.*)?$ https://www.therepublic.agency/work [R=301,L]
+
+# rewrites (a person on the Studio page, e.g. /studio/daniel-emeka)
+RewriteRule ^studio/[^/]+$ studio.html [L]
+
+# serve /work from work.html, /services/experiences from services/experiences.html
+RewriteCond $1 !^404$
+RewriteCond $1 !\.html$
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME}.html -f
+RewriteRule ^(.+)$ $1.html [L]
+</IfModule>
+
+<IfModule mod_headers.c>
+Header always set X-Content-Type-Options "nosniff"
+Header always set Referrer-Policy "strict-origin-when-cross-origin"
+Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+<FilesMatch "\.(html|txt|xml)$">
+Header set Cache-Control "public, max-age=0, must-revalidate"
+</FilesMatch>
+<FilesMatch "\.(webp|jpg|jpeg|png|mp4|ico|svg)$">
+Header set Cache-Control "public, max-age=604800, stale-while-revalidate=86400"
+</FilesMatch>
+<FilesMatch "\.(css|js)$">
+Header set Cache-Control "public, max-age=31536000, immutable"
+</FilesMatch>
+</IfModule>
+
+<IfModule mod_deflate.c>
+AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml application/xml application/javascript text/javascript application/json image/svg+xml
+</IfModule>
