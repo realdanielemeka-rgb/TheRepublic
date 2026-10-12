@@ -82,16 +82,17 @@ SERVICES = [
          covers=[('Installations and exhibitions', 'Spaces that tell a brand’s story, like the Tunnel of Time for Zenith Bank’s 35th anniversary.'),
                  ('Activations', 'On-the-ground moments that put the product in people’s hands.'),
                  ('Live and seasonal moments', 'Live shows, challenges and seasonal campaigns people join in with.')],
-         cases=['zenith35', 'twisco', 'chivita'], img='cs-zenith35-1.webp'),
+         cases=['extramile', 'zenith35', 'twisco', 'chivita'], img='cs-zenith35-1.webp'),
 ]
 
-# the six flagship cases live on their own pages (CASEFILES covers the other nine)
+# the seven flagship cases live on their own pages (CASEFILES covers the other nine)
 FLAGSHIP = {
     'onga': ('Onga · Promasidor Nigeria', 'Taste of Home', 'A digital platform built from people’s answers to one question: what does home mean to you?'),
     'cowbell': ('Cowbell · Promasidor Nigeria', 'Your First Taste', 'Nigerian digital and social execution of a Ramadan campaign about who cares before the first taste.'),
     'chivita': ('Chivita · CHI Limited', 'What’s Your Chivita?', 'A year of organic social built on one question, from creator stories to a YouTube series and Christmas live. Best Use of Social Media, NMA 2024.'),
     'spruce': ('Spruce by Dulux · CAP Plc', 'Show Your True Colours', 'Creators, social distribution and digital visualisation for a paint launch.'),
     'pzl': ('Prudential Zenith Life', 'Empowering Tomorrow', 'An integrated campaign that made the next 40 years personal and planning practical.'),
+    'extramile': ('Prudential Zenith Life', 'The Extra Mile Games', 'Customer Service Week as an office-wide contest: customer care captained every team through four games.'),
     'zenith': ('Zenith Bank', 'See Homecoming Differently', 'A strategy and creative platform for Nigerians coming home every December.'),
 }
 

@@ -14,7 +14,7 @@ const backOut = t => { const c1 = 1.5, c3 = c1 + 1; return 1 + c3 * Math.pow(t -
 const G = 4.5;
 const DISTRICTS = {
   food: { name: 'Food & Drink', n: 5, x: -22.5 },
-  fin: { name: 'Insurance & Finance', n: 6, x: 0 },
+  fin: { name: 'Insurance & Finance', n: 7, x: 0 },
   bank: { name: 'Banking & Travel', n: 3, x: 18 },
   home: { name: 'Home', n: 1, x: 29.25 }
 };
@@ -26,6 +26,8 @@ const CASES = [
   { id: 'chivita', s: "Chivita · What's Your Chivita?", t: "What's Your Chivita?", b: 'Chivita', c: 'CHI Limited', d: 'food', f: 1, img: 't-chivita-2-campaign.webp', col: -4, row: 1, h: 11.6,
     line: 'Everyone has a Chivita. What’s yours?', svc: 'Organic social strategy · Creator partnerships · Always-on content · A YouTube series · Live social' },
   { id: 'ramadan', t: 'Ramadan TVCs', b: 'Chivita & Hollandia', c: 'CHI Limited', d: 'food', img: 't-chivita-hollandia-ramadan.webp', col: -6, row: 0, h: 3.4 },
+  { id: 'extramile', s: 'PZL · The Extra Mile Games', t: 'The Extra Mile Games', b: 'Prudential Zenith Life', c: 'Prudential Zenith Life', d: 'fin', f: 1, img: 't-pzl-extra-mile.webp', col: -2, row: 0, h: 10.4,
+    line: 'For one week, customer care led the company.', svc: 'Internal communications · Campaign concept · Staff games · Content and live coverage', y: '2026' },
   { id: 'pzl', s: 'PZL · Empowering Tomorrow', t: 'Empowering Tomorrow', b: 'Prudential Zenith Life', c: 'Prudential Zenith Life', d: 'fin', f: 1, img: 't-pzl-empowering-tomorrow.webp', col: -1, row: 1, h: 11.8, line: 'Boss in 2026. Boss in 2066.' },
   { id: 'youmatter', t: 'You Matter', b: 'Prudential Zenith Life', c: 'Prudential Zenith Life', d: 'fin', img: 't-pzl-you-matter.webp', col: 0, row: 1, h: 6.4 },
   { id: 'sanlam', t: 'Live with Confidence', b: 'Sanlam Allianz', c: 'Sanlam Allianz', d: 'fin', img: 't-sanlam-allianz.webp', col: 1, row: 1, h: 5.8 },
@@ -54,7 +56,7 @@ byId.pzl.y = '2025–26';
 byId.spruce.svc = 'Digital strategy · Creator and clipper distribution · Pinterest room inspiration · Campaign amplification';
 byId.spruce.y = '2026';
 byId.spruce.c = 'CAP Plc';
-const WORLDS = { onga: { world: 'onga', kase: 'onga-case', col: '#0F3A27' }, cowbell: { world: 'cowbell', kase: 'cowbell-case', col: '#0B1033' }, chivita: { world: 'chivita', kase: 'chivita-case', col: '#E8730C' }, spruce: { world: 'spruce', kase: 'spruce-case', col: '#E4E2DC' }, pzl: { world: 'pzl', kase: 'pzl-case', col: '#C8202A' }, zenith: { world: 'zenith', kase: 'zenith-case', col: '#0A0A0C' } };
+const WORLDS = { onga: { world: 'onga', kase: 'onga-case', col: '#0F3A27' }, cowbell: { world: 'cowbell', kase: 'cowbell-case', col: '#0B1033' }, chivita: { world: 'chivita', kase: 'chivita-case', col: '#E8730C' }, spruce: { world: 'spruce', kase: 'spruce-case', col: '#E4E2DC' }, pzl: { world: 'pzl', kase: 'pzl-case', col: '#C8202A' }, extramile: { world: 'extramile', kase: 'extramile-case', col: '#9E1018' }, zenith: { world: 'zenith', kase: 'zenith-case', col: '#0A0A0C' } };
 // the ten Spruce colour personalities, in the order the room is painted (colours sampled from the character-film stills)
 const SPC = [
   { n: 'Steeze White', c: '#E4E2DC', img: 'sp-steeze.webp', a: 1.421 },
@@ -78,6 +80,7 @@ const NOTES = {
   zenith: [['01 · Business problem', 'Coming home comes with friction: cards that fail, unfamiliar payments, banking not ready on landing.'], ['02 · Human truth', 'They left to grow. They return to belong.'], ['03 · Idea', 'Own the first impression: before travel, at the airport and across the first days back in Lagos.'], ['04 · System', 'Diaspora account by QR before travel → airport screens → street screens for the Lagos season → the Homecoming film → social, each ending in the same step.'], ['05 · Evidence', 'A strategy and creative platform for the December homecoming season.', '']],
   pzl: [['01 · Business problem', 'Make protection feel relevant while life is still being built, and give people a clear place to start.'], ['02 · Human truth', 'The future is a difficult family conversation.'], ['03 · Idea', 'Make tomorrow personal. Make planning practical: a 40-year plan gave insurance a human horizon.'], ['04 · System', 'Family conversation → creator invitation → live CEO session and podcast → Tomorrow Pledge → future-self film, billboard creative and radio → Ready Test and planning tools.'], ['05 · Evidence', 'YouTube views on the 49-second hero film, observed 8 September 2026. A public counter, not unique people.', '136,810']],
   spruce: [['01 · Business problem', 'Liking a colour is only the first decision. People still ask: will it feel like me, will it work in my space, which shade?'], ['02 · Human truth', 'People recognise an attitude before they choose a shade.'], ['03 · Idea', 'Put the personalities into conversation, then into rooms people could picture as their own. (Platform concept: 1879 Tech Hub / UACN.)'], ['04 · System', 'Teasers → hero and character films → live creator debates → a ten-clipper network → AI room inspiration on Pinterest → the Spruce website: repaint, quiz, shop with the shade.'], ['05 · Evidence', 'Clipper posts in week one against a target of 25, per the campaign report. A delivery figure, not reach.', '115']],
+  extramile: [['01 · Business problem', 'Customer Service Week comes round every year. The theme had to be lived by the whole office, not just put on a banner.'], ['02 · Human truth', 'The people who know customers best are rarely the ones in charge.'], ['03 · Idea', 'The Crew Takes Over: for one week, customer care leads the company.'], ['04 · System', 'Team draw online → captains from customer care → hosts on camera → four Extra Mile Games, one a day → game cards, recaps and a live table → one trophy.'], ['05 · Evidence', 'Games played across Customer Service Week, each turned into its own recap film.', '4']],
   chivita: [['01 · Business problem', 'Grow engagement and visibility for a familiar juice brand on social, and hold it for a year rather than a burst.'], ['02 · Human truth', 'Everyone has a Chivita story.'], ['03 · Idea', 'Ask one question and let people answer it: what’s your Chivita?'], ['04 · System', 'Creator stories → #WhatsYourChivita in the feed → creator content and promoted films → Style N’ Sips on YouTube → 12 Days of Christmas, live on Instagram.'], ['05 · Evidence', 'Instagram plays on one Style N’ Sips episode, per the campaign report. A platform counter, not unique people.', '886,561']],
   cowbell: [['01 · Business problem', 'Stay relevant for the whole of Ramadan, not only in launch week.'], ['02 · Human truth', 'Before the first taste, someone cared.'], ['03 · Idea', 'What if the first taste recognised the person who made it possible?'], ['04 · System', 'Prepare → make → share → recognise: stock-up content, five-minute Sahoor ideas, regional dishes, creator recipes, share invitations, a 30-action calendar and thank-you prompts.'], ['05 · Evidence', 'Meta views across 44 Nigeria Facebook and Instagram posts, observed 8 September 2026. Counters, not unique people.', '99,999,862']]
 };
@@ -184,7 +187,7 @@ function fillNotes(k) {
   $('#notes .r').innerHTML = NOTES[k].slice(3).map(html).join('');
 }
 fillNotes('onga');
-const ORDER = ['onga', 'cowbell', 'chivita', 'spruce', 'pzl', 'zenith', 'twisco', 'ramadan', 'youmatter', 'sanlam', 'pzlsocial', 'heirs', 'iinvest', 'zenith35', 'torrista'];
+const ORDER = ['onga', 'cowbell', 'chivita', 'spruce', 'pzl', 'extramile', 'zenith', 'twisco', 'ramadan', 'youmatter', 'sanlam', 'pzlsocial', 'heirs', 'iinvest', 'zenith35', 'torrista'];
 const COLLAGE = {
   onga: { p: [-8.2, 8.6, .6], w: 8.4, r: -.06 },
   spruce: { p: [.8, 9.4, -.6], w: 7.6, r: .05 },
@@ -321,8 +324,8 @@ tick(); setInterval(tick, 20000);
 // the service pages (keys and addresses come from scripts/services.py; the build checks this list matches)
 const SVC_PAGES = ['svc-strategy', 'svc-brand', 'svc-content', 'svc-integrated', 'svc-digital', 'svc-experiences'];
 const isSvc = r => r === 'services' || SVC_PAGES.includes(r);
-const ROUTES = ['gate', 'work', 'onga', 'onga-case', 'cowbell', 'cowbell-case', 'chivita', 'chivita-case', 'spruce', 'spruce-case', 'pzl', 'pzl-case', 'zenith', 'zenith-case', 'studio', 'services'].concat(SVC_PAGES, ['method', 'journal', 'contact', 'privacy', 'lost'], Object.keys(CASEFILES).map(k => k + '-case'));
-const PLACE = { gate: 'The Gate · Home', work: 'The City of Work · /work', onga: 'Onga world · Taste of Home', 'onga-case': 'Case · /onga-taste-of-home', cowbell: 'Cowbell world · Your First Taste', 'cowbell-case': 'Case · /cowbell-ramadan-your-first-taste', chivita: 'Chivita world · What’s Your Chivita?', 'chivita-case': 'Case · /chivita-2-campaign', spruce: 'Spruce world · Show Your True Colours', 'spruce-case': 'Case · /spruce-dulux-digital-launch', pzl: 'Prudential Zenith world · Empowering Tomorrow', 'pzl-case': 'Case · /prudential-zenith-empowering-tomorrow', zenith: 'Zenith world · See Homecoming Differently', 'zenith-case': 'Case · /zenith-bank-homecoming', studio: 'The Capitol · /studio', services: 'What we do · /services', 'svc-strategy': 'Services · Communication Strategy', 'svc-brand': 'Services · Brand & Creative', 'svc-content': 'Services · Organic Social & Content', 'svc-integrated': 'Services · Integrated Marketing', 'svc-digital': 'Services · Digital & Performance', 'svc-experiences': 'Services · Experiences', method: 'The Constitution · /method', journal: 'The Dispatch · /journal', contact: 'Your Turn · /contact', privacy: 'Your Rights · /privacy', lost: 'Unbuilt street · 404' };
+const ROUTES = ['gate', 'work', 'onga', 'onga-case', 'cowbell', 'cowbell-case', 'chivita', 'chivita-case', 'spruce', 'spruce-case', 'pzl', 'pzl-case', 'extramile', 'extramile-case', 'zenith', 'zenith-case', 'studio', 'services'].concat(SVC_PAGES, ['method', 'journal', 'contact', 'privacy', 'lost'], Object.keys(CASEFILES).map(k => k + '-case'));
+const PLACE = { gate: 'The Gate · Home', work: 'The City of Work · /work', onga: 'Onga world · Taste of Home', 'onga-case': 'Case · /onga-taste-of-home', cowbell: 'Cowbell world · Your First Taste', 'cowbell-case': 'Case · /cowbell-ramadan-your-first-taste', chivita: 'Chivita world · What’s Your Chivita?', 'chivita-case': 'Case · /chivita-2-campaign', spruce: 'Spruce world · Show Your True Colours', 'spruce-case': 'Case · /spruce-dulux-digital-launch', pzl: 'Prudential Zenith world · Empowering Tomorrow', 'pzl-case': 'Case · /prudential-zenith-empowering-tomorrow', extramile: 'Prudential Zenith world · The Extra Mile Games', 'extramile-case': 'Case · /prudential-zenith-customer-service-week', zenith: 'Zenith world · See Homecoming Differently', 'zenith-case': 'Case · /zenith-bank-homecoming', studio: 'The Capitol · /studio', services: 'What we do · /services', 'svc-strategy': 'Services · Communication Strategy', 'svc-brand': 'Services · Brand & Creative', 'svc-content': 'Services · Organic Social & Content', 'svc-integrated': 'Services · Integrated Marketing', 'svc-digital': 'Services · Digital & Performance', 'svc-experiences': 'Services · Experiences', method: 'The Constitution · /method', journal: 'The Dispatch · /journal', contact: 'Your Turn · /contact', privacy: 'Your Rights · /privacy', lost: 'Unbuilt street · 404' };
 Object.keys(CASEFILES).forEach(k => { PLACE[k + '-case'] = 'Case · /' + CASEFILES[k].slug; });
 const TITLES = {
   gate: 'Creative & Marketing Agency in Lagos | The Republic', work: 'Portfolio: Campaigns & Creative Work | The Republic',
@@ -330,12 +333,12 @@ const TITLES = {
   method: 'How We Work: Strategy First | The Republic', journal: 'Journal: Articles, Case Films and News | The Republic', privacy: 'Privacy Notice | The Republic', lost: 'Page not found | The Republic',
   onga: 'Onga Taste of Home: Digital Campaign Case Study | The Republic', cowbell: 'Cowbell Ramadan Social Media Campaign | The Republic',
   spruce: 'Spruce by Dulux: Digital Campaign Case Study | The Republic', pzl: 'Prudential Zenith: Empowering Tomorrow | The Republic',
-  zenith: 'Zenith Bank Homecoming Campaign | The Republic', chivita: 'What’s Your Chivita? Interactive World | The Republic'
+  zenith: 'Zenith Bank Homecoming Campaign | The Republic', chivita: 'What’s Your Chivita? Interactive World | The Republic', extramile: 'The Extra Mile Games: Interactive World | The Republic'
 };
-['onga', 'cowbell', 'chivita', 'spruce', 'pzl', 'zenith'].forEach(k => { TITLES[k + '-case'] = TITLES[k]; });
+['onga', 'cowbell', 'chivita', 'spruce', 'pzl', 'extramile', 'zenith'].forEach(k => { TITLES[k + '-case'] = TITLES[k]; });
 // the current site's addresses still land in the right place; people have their own links
 const ALIAS = { portfolio: 'work', 'onga-taste-of-home': 'onga-case', 'cowbell-ramadan-your-first-taste': 'cowbell-case', 'spruce-dulux-digital-launch': 'spruce-case',
-  'prudential-zenith-empowering-tomorrow': 'pzl-case', 'zenith-bank-homecoming': 'zenith-case', 'chivita-2-campaign': 'chivita-case', 'chivita2-case': 'chivita-case',
+  'prudential-zenith-empowering-tomorrow': 'pzl-case', 'zenith-bank-homecoming': 'zenith-case', 'chivita-2-campaign': 'chivita-case', 'chivita2-case': 'chivita-case', 'prudential-zenith-customer-service-week': 'extramile-case',
   // folded into What's Your Chivita? as chapters, or retired from the portfolio
   'chivita-style-n-sips': 'chivita-case', 'sips-case': 'chivita-case', 'chivita-12-days-of-christmas': 'chivita-case', 'chivita12-case': 'chivita-case', 'prudential-zenith-we-do-dreams': 'work', 'dreams-case': 'work' };
 Object.keys(CASEFILES).forEach(k => { ALIAS[CASEFILES[k].slug] = k + '-case'; });
@@ -388,7 +391,7 @@ function setH1(r) {
   });
 }
 const spacer = $('#spacer');
-const BEATS = { gate: 6, onga: 3, cowbell: 4, chivita: 6, spruce: 5, pzl: 5, zenith: 5 };
+const BEATS = { gate: 6, onga: 3, cowbell: 4, chivita: 6, spruce: 5, pzl: 5, extramile: 6, zenith: 5 };
 function spacerSpan() { return window.innerHeight * 1.15; }
 function setSpacer() {
   const n = BEATS[S.route];
@@ -431,7 +434,7 @@ const B = []; // buildings
 const pickables = [];
 const tapes = [];
 const ongaLayers = [];
-let answer, answerTex, spice, spiceMat, capGroup, mural, beam, updateVox, spark, bgCol, bgTex, cbGroup, spGroup, pzGroup, zbGroup, chGroup;
+let answer, answerTex, spice, spiceMat, capGroup, mural, beam, updateVox, spark, bgCol, bgTex, cbGroup, spGroup, pzGroup, zbGroup, chGroup, emGroup;
 const COL = {};
 
 if (GL) {
@@ -465,9 +468,9 @@ if (GL) {
   const texCache = {};
   const maxAniso = Math.min(4, renderer.capabilities.getMaxAnisotropy());
   // world images wait until someone heads for that world (or, on a fast connection, until the home page has settled)
-  const LAZY = /^(sp-|zb-|pz-|cb-|ch-|cs-chivita12|onga|t-)/, pendTex = [], imgLoader = new THREE.ImageLoader();
+  const LAZY = /^(sp-|zb-|pz-|cb-|ch-|em-|cs-chivita12|onga|t-)/, pendTex = [], imgLoader = new THREE.ImageLoader();
   S.texOpen = {};
-  const texGroup = n => /^t-/.test(n) ? 'city' : /^(ch-|cs-chivita12)/.test(n) ? 'chivita' : /^sp-/.test(n) ? 'spruce' : /^zb-/.test(n) ? 'zenith' : /^pz-/.test(n) ? 'pzl' : /^cb-/.test(n) ? 'cowbell' : 'onga';
+  const texGroup = n => /^t-/.test(n) ? 'city' : /^(ch-|cs-chivita12)/.test(n) ? 'chivita' : /^em-/.test(n) ? 'extramile' : /^sp-/.test(n) ? 'spruce' : /^zb-/.test(n) ? 'zenith' : /^pz-/.test(n) ? 'pzl' : /^cb-/.test(n) ? 'cowbell' : 'onga';
   S.releaseTex = grp => {
     if (S.texOpen[grp]) return; S.texOpen[grp] = true;
     pendTex.filter(p => p.g === grp && !p.done).forEach(p => { p.done = true; imgLoader.load('img/' + p.name, im => { p.tx.image = im; p.tx.needsUpdate = true; if (p.onload) p.onload(p.tx); p.cbs.forEach(cb => cb(p.tx)); }); });
@@ -2082,6 +2085,109 @@ if (GL) {
     transparent: true, depthWrite: false, blending: THREE.AdditiveBlending
   });
   const fizz = new THREE.Points(fg, S.chFizzMat); fizz.frustumCulled = false; chGroup.add(fizz);
+
+  /* ---------- the Extra Mile world: a running track through the office, four lanes, four games ---------- */
+  emGroup = new THREE.Group(); emGroup.visible = false; scene.add(emGroup);
+  S.emBg = new THREE.Color('#0A0506');
+  const EMM = 30, EMLANE = 2.4, EMTEAMS = [['Red', '#E3262D'], ['Yellow', '#F5C21B'], ['White', '#F2F0EA'], ['Grey', '#8C8C94']];
+  S.emTeams = EMTEAMS;
+  const emU = { uLens: U.uLens, uInk: U.uInk, uBlue: U.uBlue, uTime: U.uTime, uCam: { value: new THREE.Vector3() }, uGlow: { value: 0 } };
+  S.emU = emU;
+  const emVS = `varying vec3 vW; void main(){ vec4 w = modelMatrix * vec4(position, 1.0); vW = w.xyz; gl_Position = projectionMatrix * viewMatrix * w; }`;
+  const emFS = (body) => `uniform vec3 uInk, uBlue, uCam; uniform float uLens, uTime, uGlow; varying vec3 vW;
+    ${ditherGL}
+    void main(){ vec3 c; ${body}
+      float dist = distance(vW, uCam); c = mix(c, vec3(0.03, 0.015, 0.018), smoothstep(45.0, 150.0, dist));
+      gl_FragColor = vec4(mix(c, lensOf(c) * 0.8, uLens), 1.0); }`;
+  // the floor: the red track down the middle, four lanes, mile lines; dark office floor either side
+  const emFloor = new THREE.Mesh(new THREE.PlaneGeometry(90, 260), new THREE.ShaderMaterial({ uniforms: emU, vertexShader: emVS, fragmentShader: emFS(`
+      float ax = abs(vW.x), z = vW.z;
+      c = vec3(0.045, 0.04, 0.045) * (0.85 + 0.3 * hh(floor(vW.xz * 0.5)));
+      if (ax < 5.2) {
+        c = vec3(0.55, 0.07, 0.08) * (0.86 + 0.16 * hh(floor(vW.xz * 9.0)));
+        float lane = abs(fract((vW.x + 4.8) / 2.4 + 0.5) - 0.5) * 2.4;
+        c = mix(c, vec3(0.92), (1.0 - smoothstep(0.04, 0.08, lane)) * step(ax, 4.85));
+        c = mix(c, vec3(0.92), 1.0 - smoothstep(0.05, 0.1, abs(ax - 5.0)));
+        for (int k = 0; k <= 4; k++) { float d = abs(z + float(k) * 30.0); c = mix(c, vec3(0.95), (1.0 - smoothstep(0.12, 0.2, d)) * (k == 4 ? 0.0 : 1.0)); }
+        float fz = z + 120.0; if (abs(fz) < 0.9) { float ch = mod(floor(vW.x * 1.25) + floor(fz * 1.25 + 0.6), 2.0); c = mix(vec3(0.95), vec3(0.06), ch); }
+        c += vec3(1.0, 0.75, 0.6) * 0.05 * (0.5 + 0.5 * sin(z * 0.21));
+      } else {
+        float desk = step(0.55, fract(z / 7.0)) * step(7.0, ax) * step(ax, 13.0);
+        c = mix(c, vec3(0.085, 0.08, 0.085), desk);
+      }
+      float pool = exp(-pow(fract((z + 7.5) / 15.0) - 0.5, 2.0) * 40.0) * exp(-ax * ax / 60.0);
+      c += vec3(1.0, 0.9, 0.8) * pool * 0.12;`) }));
+  emFloor.rotation.x = -Math.PI / 2; emFloor.position.set(0, 0, -60);
+  emGroup.add(emFloor);
+  // the far wall: a Lagos skyline through the windows behind the finish
+  const emSky = new THREE.Mesh(new THREE.PlaneGeometry(140, 46), new THREE.ShaderMaterial({ uniforms: emU, vertexShader: `varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
+    fragmentShader: `uniform vec3 uInk, uBlue; uniform float uLens, uGlow; varying vec2 vUv;
+      ${ditherGL}
+      void main(){
+        vec3 c = mix(vec3(0.32, 0.12, 0.1), vec3(0.04, 0.03, 0.08), smoothstep(0.0, 0.8, vUv.y));
+        float x = vUv.x * 140.0, col = floor(x / 3.2), hgt = 0.12 + 0.42 * pow(hh(vec2(col, 2.0)), 1.8);
+        if (vUv.y < hgt) { c = vec3(0.05, 0.04, 0.06); float lit = step(0.7, hh(vec2(floor(x / 0.6), floor(vUv.y * 70.0)) + col)); c += vec3(1.0, 0.8, 0.5) * lit * 0.35; }
+        float mull = step(0.94, fract(vUv.x * 14.0)); c = mix(c, vec3(0.02), mull * 0.9);
+        c += vec3(1.0, 0.85, 0.55) * uGlow * 0.18 * (1.0 - vUv.y);
+        gl_FragColor = vec4(mix(c, lensOf(c) * 0.6, uLens), 1.0);
+      }` }));
+  emSky.position.set(0, 18, -175); emGroup.add(emSky);
+  // four team banners over the finish, one per lane
+  S.emBanners = EMTEAMS.map(([, col], i) => {
+    const m = new THREE.Mesh(new THREE.PlaneGeometry(1.9, 9), new THREE.MeshBasicMaterial({ color: new THREE.Color(col) }));
+    m.position.set((i - 1.5) * EMLANE, 9.5, -131); emGroup.add(m); m.userData.col = new THREE.Color(col); return m;
+  });
+  // ceiling lights down both sides
+  const lp2 = []; for (let z = 30; z > -170; z -= 7.5) [-8, 8].forEach(x => lp2.push(x, 8.5, z));
+  const lg2 = new THREE.BufferGeometry(); lg2.setAttribute('position', new THREE.Float32BufferAttribute(lp2, 3));
+  S.emLampMat = new THREE.ShaderMaterial({ uniforms: { uScale: U.uScale, uPR: U.uPR, uLens: U.uLens, uBlue: U.uBlue },
+    vertexShader: `uniform float uScale, uPR; void main(){ vec4 mv = modelViewMatrix * vec4(position, 1.0); gl_Position = projectionMatrix * mv; gl_PointSize = clamp(0.9 * uScale * uPR / -mv.z, 2.0, 70.0); }`,
+    fragmentShader: `uniform vec3 uBlue; uniform float uLens; void main(){ float d = length(gl_PointCoord - 0.5); float a = exp(-d * d * 24.0) + 0.5 * smoothstep(0.12, 0.0, d); gl_FragColor = vec4(mix(vec3(1.0, 0.95, 0.88), uBlue * 1.4, uLens) * a, 1.0); }`,
+    transparent: true, depthWrite: false, blending: THREE.AdditiveBlending });
+  const emLamps = new THREE.Points(lg2, S.emLampMat); emLamps.frustumCulled = false; emGroup.add(emLamps);
+  // screens beside each mile: the game-day card on one side, the table after the game on the other
+  const EMS = [['em-day1.webp', 'em-result1.webp'], ['em-day2.webp', 'em-table2.webp'], ['em-day3.webp', 'em-table3.webp'], ['em-day4.webp', 'em-table-final.webp']];
+  S.emScreens = [];
+  EMS.forEach((pair, k) => pair.forEach((img, j) => {
+    const g = new THREE.Group(), h = 7.2, w = h * 9 / 16, side = j ? 1 : -1;
+    const bez = new THREE.Mesh(new THREE.BoxGeometry(w + .3, h + .3, .25), new THREE.MeshBasicMaterial({ color: 0x0b0b0d })); bez.position.z = -.16; g.add(bez);
+    const pic = new THREE.Mesh(planeGeo, tornMat({ map: tex(img), seed: 120 + k * 2 + j, torn: 0, lens: true })); pic.scale.set(w, h, 1); g.add(pic);
+    g.position.set(side * 8.4, 4.4, -(k + 1) * EMM + 6); g.rotation.y = -side * .5;
+    g.userData = { pic, k }; emGroup.add(g); S.emScreens.push(g);
+  }));
+  // mile gates: an arch at each mile with its number
+  const gateM = new THREE.MeshBasicMaterial({ color: 0x1a1a1e });
+  for (let k = 1; k <= 4; k++) {
+    const cv = document.createElement('canvas'); cv.width = 512; cv.height = 128; const x = cv.getContext('2d');
+    x.fillStyle = '#E3262D'; x.fillRect(0, 0, 512, 128); x.fillStyle = '#fff'; x.textAlign = 'center'; x.textBaseline = 'middle';
+    x.font = '800 70px "Schibsted Grotesk", Arial, sans-serif'; x.fillText(k === 4 ? 'MILE 4 · FINISH' : 'MILE ' + k, 256, 68);
+    const tx = new THREE.CanvasTexture(cv); S['emGateTex' + k] = { cv, tx, k };
+    [-5.6, 5.6].forEach(px => { const post = new THREE.Mesh(new THREE.BoxGeometry(.3, 11, .3), gateM); post.position.set(px, 5.5, -k * EMM); emGroup.add(post); });
+    const sign = new THREE.Mesh(planeGeo, tornMat({ map: tx, seed: 140 + k, torn: 0, lens: true })); sign.scale.set(8, 2, 1); sign.position.set(0, 10.4, -k * EMM); emGroup.add(sign);
+  }
+  S.emGateDraw = () => { for (let k = 1; k <= 4; k++) { const o = S['emGateTex' + k], x = o.cv.getContext('2d'); x.fillStyle = '#E3262D'; x.fillRect(0, 0, 512, 128); x.fillStyle = '#fff'; x.font = '800 70px "Schibsted Grotesk", Arial, sans-serif'; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText(k === 4 ? 'MILE 4 · FINISH' : 'MILE ' + k, 256, 68); o.tx.needsUpdate = true; } };
+  if (document.fonts && document.fonts.load) document.fonts.load('800 70px "Schibsted Grotesk"').then(() => S.emGateDraw()).catch(() => {});
+  // the four teams: a glowing marker in each lane that moves with its points
+  S.emTokens = EMTEAMS.map(([, col], i) => {
+    const g = new THREE.Group(), c = new THREE.Color(col);
+    const puck = new THREE.Mesh(new THREE.CylinderGeometry(.75, .75, .32, 32), new THREE.MeshBasicMaterial({ color: c })); puck.position.y = .16; g.add(puck);
+    const beam = new THREE.Mesh(new THREE.CylinderGeometry(.06, .06, 6, 8, 1, true), new THREE.MeshBasicMaterial({ color: c, transparent: true, opacity: .5, depthWrite: false })); beam.position.y = 3; g.add(beam);
+    const halo = new THREE.Mesh(new THREE.RingGeometry(1.0, 1.25, 40), new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0, side: THREE.DoubleSide, depthWrite: false })); halo.rotation.x = -Math.PI / 2; halo.position.y = .05; g.add(halo);
+    g.position.set((i - 1.5) * EMLANE, 0, 0); emGroup.add(g);
+    g.userData = { puck, beam, halo, c }; return g;
+  });
+  // confetti at the finish
+  const CN2 = PHONE ? 220 : 420, cpp = [], cco = [], cof = [];
+  const cc = EMTEAMS.map(t => new THREE.Color(t[1]));
+  for (let i = 0; i < CN2; i++) { cpp.push((rnd() - .5) * 16, 0, -120 - rnd() * 18); cof.push(rnd() * 14); const k = i % 4 === 2 ? 1 : i % 2; const col = cc[[0, 1, 3, 1][i % 4]]; cco.push(col.r, col.g, col.b); }
+  const cgg = new THREE.BufferGeometry(); cgg.setAttribute('position', new THREE.Float32BufferAttribute(cpp, 3)); cgg.setAttribute('aOff', new THREE.Float32BufferAttribute(cof, 1)); cgg.setAttribute('aCol', new THREE.Float32BufferAttribute(cco, 3));
+  S.emConfMat = new THREE.ShaderMaterial({ uniforms: { uTime: U.uTime, uScale: U.uScale, uPR: U.uPR, uLens: U.uLens, uBlue: U.uBlue, uOn: { value: 0 } },
+    vertexShader: `attribute float aOff; attribute vec3 aCol; uniform float uTime, uScale, uPR, uOn; varying vec3 vC;
+      void main(){ vC = aCol; vec3 p = position; p.y = 14.0 - mod(aOff + uTime * 1.6, 14.0); p.x += sin(uTime * 1.3 + aOff * 3.0) * 0.5;
+        vec4 mv = modelViewMatrix * vec4(p, 1.0); gl_Position = projectionMatrix * mv; gl_PointSize = uOn * clamp(0.22 * uScale * uPR / -mv.z, 1.0, 22.0); }`,
+    fragmentShader: `uniform vec3 uBlue; uniform float uLens, uOn; varying vec3 vC; void main(){ vec2 q = abs(gl_PointCoord - 0.5); if (max(q.x, q.y * 1.8) > 0.5) discard; gl_FragColor = vec4(mix(vC, uBlue * 1.4, uLens) * uOn, 1.0); }`,
+    transparent: true, depthWrite: false });
+  const conf = new THREE.Points(cgg, S.emConfMat); conf.frustumCulled = false; emGroup.add(conf);
 }
 
 /* ---------------- labels ---------------- */
@@ -2352,7 +2458,7 @@ $('#card-enter').addEventListener('click', e => {
 
 /* ---------------- lens ---------------- */
 const lensBtn = $('#lensbtn'), notes = $('#notes');
-const isWorld = r => r === 'onga' || r === 'cowbell' || r === 'chivita' || r === 'spruce' || r === 'pzl' || r === 'zenith', isCase = r => /-case$/.test(r);
+const isWorld = r => r === 'onga' || r === 'cowbell' || r === 'chivita' || r === 'spruce' || r === 'pzl' || r === 'extramile' || r === 'zenith', isCase = r => /-case$/.test(r);
 function setLens(on) {
   const r = S.route;
   S.lens = on ? 1 : 0;
@@ -2504,6 +2610,15 @@ $('#zb-form').addEventListener('submit', e => {
   window.scrollTo({ top: beatY(5) + 2, behavior: RM ? 'auto' : 'smooth' });
 });
 
+// The Extra Mile: draw your team, as every member of staff did
+const EMTEAM_N = ['Team Red', 'Team Yellow', 'Team White', 'Team Grey'], EMTEAM_C = ['#E3262D', '#F5C21B', '#F2F0EA', '#8C8C94'];
+$('#em-draw').addEventListener('click', () => {
+  let i = Math.floor(Math.random() * 4); if (i === S.emMine) i = (i + 1 + Math.floor(Math.random() * 3)) % 4;
+  S.emMine = i;
+  $('#em-msg').textContent = `You drew ${EMTEAM_N[i]}. Your captain comes from customer care. Watch your lane.`;
+  $('#em-draw').textContent = 'Draw again';
+});
+
 // Chivita: your answer joins the feed
 $('#ch-form').addEventListener('submit', e => {
   e.preventDefault();
@@ -2630,7 +2745,8 @@ function applyRoute(r) {
     pzGroup.visible = r === 'pzl';
     zbGroup.visible = r === 'zenith';
     chGroup.visible = r === 'chivita';
-    scene.background = r === 'onga' ? bgCol : r === 'cowbell' ? S.cbBg : r === 'spruce' ? S.spBg : r === 'pzl' ? S.pzBg : r === 'zenith' ? S.zbBg : r === 'chivita' ? S.chBg : bgTex;
+    emGroup.visible = r === 'extramile';
+    scene.background = r === 'onga' ? bgCol : r === 'cowbell' ? S.cbBg : r === 'spruce' ? S.spBg : r === 'pzl' ? S.pzBg : r === 'zenith' ? S.zbBg : r === 'chivita' ? S.chBg : r === 'extramile' ? S.emBg : bgTex;
     if (r === 'studio') {
       S.capT = t; S.vox.done = false;
       if (!S.booted) { rig.pos.set(0, 30, 64); rig.look.set(0, 8, -14); }
@@ -2646,6 +2762,7 @@ function applyRoute(r) {
     if (r === 'pzl') { rig.pos.set(0, 4, 52); rig.look.set(2, 4.5, -20); }
     if (r === 'zenith') { rig.pos.set(0, 8, 30); rig.look.set(1, 9, -18); }
     if (r === 'chivita') { chCam(0, rig.pos, rig.look); rig.pos.multiplyScalar(1.5); rig.pos.y -= 6; }
+    if (r === 'extramile') { rig.pos.set(0, 12, 40); rig.look.set(0, 2, -20); }
     if (r === 'gate' && !S.booted) { rig.pos.set(0, 7, 34); rig.look.set(0, 7, 0); }
   }
   if (!GL && r === 'work') setList(true);
@@ -2653,7 +2770,7 @@ function applyRoute(r) {
   if (r === 'contact' && S.turnText != null) { const m = $('#c-msg'); if (m && S.turnText) m.value = S.turnText; S.turnText = null; setTimeout(() => $('#c-first').focus({ preventScroll: true }), 80); }
   if (r === 'contact' && S.goCareers) { S.goCareers = false; setTimeout(() => { const c = $('#careers-sec'); if (c) c.scrollIntoView({ behavior: 'auto', block: 'center' }); }, 60); }
   S.booted = true;
-  const h = { gate: '#gate-h', work: '#work-h', onga: '#onga-h', 'onga-case': '#case-h', cowbell: '#cb-h', 'cowbell-case': '#cbcase-h', spruce: '#sp-h', 'spruce-case': '#spcase-h', pzl: '#pz-h', 'pzl-case': '#pzcase-h', zenith: '#zb-h', 'zenith-case': '#zbcase-h', chivita: '#ch-h', 'chivita-case': '#chcase-h', studio: '#studio-h', method: '#method-h', journal: '#journal-h', contact: '#contact-h' }[r] || (isFile(r) ? '#cf-h' : isSvc(r) ? '#' + r + '-h' : null);
+  const h = { gate: '#gate-h', work: '#work-h', onga: '#onga-h', 'onga-case': '#case-h', cowbell: '#cb-h', 'cowbell-case': '#cbcase-h', spruce: '#sp-h', 'spruce-case': '#spcase-h', pzl: '#pz-h', 'pzl-case': '#pzcase-h', zenith: '#zb-h', 'zenith-case': '#zbcase-h', chivita: '#ch-h', 'chivita-case': '#chcase-h', extramile: '#em-h', 'extramile-case': '#emcase-h', studio: '#studio-h', method: '#method-h', journal: '#journal-h', contact: '#contact-h' }[r] || (isFile(r) ? '#cf-h' : isSvc(r) ? '#' + r + '-h' : null);
   if (prev !== r && S.hadRoute && h) { const el = $(h); if (el) el.focus({ preventScroll: true }); }
   S.hadRoute = true;
 }
@@ -2819,6 +2936,15 @@ function chCam(q, outP, outL) {
 const CHSKY = [['#F9A825', '#C2410C'], ['#EE5A24', '#8E1E0A'], ['#F5B400', '#C96A00'], ['#7B2133', '#26090F'], ['#16804B', '#05301B'], ['#F28C00', '#B4470A'], ['#1B3270', '#070D22']].map(k => [GL ? new THREE.Color(k[0]) : null, GL ? new THREE.Color(k[1]) : null]);
 function chSkyAt(q, top, bot) { const i = clamp(Math.floor(q), 0, 6), j = Math.min(i + 1, 6), f = sstep(.25, .75, q - i); top.copy(CHSKY[i][0]).lerp(CHSKY[j][0], f); bot.copy(CHSKY[i][1]).lerp(CHSKY[j][1], f); }
 const CHHUD = [['A year · four chapters', 'What’s Your Chivita?'], ['Chapter 01', 'Creator stories'], ['Chapter 02', 'Always on'], ['Chapter 03', 'Style N’ Sips'], ['Chapter 04', 'The season'], ['Your turn', '#WhatsYourChivita'], ['The result', 'NMA 2024']];
+// The Extra Mile: each team's points after every game (Red, Yellow, White, Grey), from the published tables
+const EMPTS = [[0, 0, 0, 0], [0, 0, 0, 0], [5, 10, 3, 7], [15, 15, 10, 12], [20, 25, 13, 19], [25, 32, 18, 32], [25, 32, 18, 32]];
+const EMZ = p => -p * 120 / 32;
+const emMid = k => (EMZ(Math.min(...EMPTS[k])) + EMZ(Math.max(...EMPTS[k]))) / 2;
+const KEM = [
+  { p: [0, 15, 38], l: [-4, 1, -32] },
+  { p: [-2, 4.6, 15], l: [-5, 1.4, -12] }
+].concat([2, 3, 4, 5].map(k => ({ p: [-1.5, 7, emMid(k) + 24], l: [-5, 1.2, emMid(k) - 10] })), [{ p: [3, 8, -88], l: [-3, 5, -131] }]);
+function emPts(q) { const i = clamp(Math.floor(q), 0, 6), j = Math.min(i + 1, 6), f = ease(sstep(.2, .8, q - i)); return EMPTS[i].map((v, k) => lerp(v, EMPTS[j][k], f)); }
 const PZSKY = [[0, '#120D26', '#7A2E3C'], [.35, '#07081A', '#241A36'], [.62, '#05060F', '#171428'], [.84, '#16204A', '#B8543C'], [1, '#2C3F78', '#F0A25A']].map(k => [k[0], GL ? new THREE.Color(k[1]) : null, GL ? new THREE.Color(k[2]) : null]);
 const SKY = [[0, '#04071C', '#131B45'], [.16, '#10205A', '#D98A5B'], [.34, '#6F94C8', '#F2DDB8'], [.56, '#86A8D6', '#F5E6CC'], [.78, '#3A2B5C', '#EE8A45'], [1, '#0A0D2A', '#6E3440']].map(k => [k[0], GL ? new THREE.Color(k[1]) : null, GL ? new THREE.Color(k[2]) : null]);
 function skyAt(tt, top, hor) {
@@ -2863,6 +2989,7 @@ const gateBeats = $$('.beat', stageGate), ongaBeats = $$('.beat', stageOnga), cb
 const scrimSp = $('#scrim-sp'), spNameEl = $('#sp-name'), spIdxEl = $('#sp-idx');
 const zbBeats = $$('.beat', $('.stage.zb')), scrimZb = $('#scrim-zb');
 const chBeats = $$('.beat', $('.stage.ch')), scrimCh = $('#scrim-ch'), chHn = $('#ch-hn'), chHl = $('#ch-hl');
+const emBeats = $$('.beat', $('.stage.em')), scrimEm = $('#scrim-em'), emBoard = $('#em-board');
 const pzBeats = $$('.beat', $('.stage.pz')), scrimPz = $('#scrim-pz'), pzYear = $('#pz-year'), pzYl = $('#pz-yl');
 const scrimCb = $('#scrim-cb'), cbTime = $('#cb-time'), cbPhase = $('#cb-phase');
 const scrimGate = $('#scrim-gate'), scrimGateB = $('#scrim-gate-b'), scrimOnga = $('#scrim-onga');
@@ -2916,7 +3043,7 @@ $$('[data-logos]').forEach(box => {
 });
 $('#skip').addEventListener('click', e => { e.preventDefault(); const h = $(`[data-for="${S.route}"] h1`) || $(`[data-for="${isFile(S.route) ? 'file' : S.route}"] h1`) || $('main h1'); if (h) { h.setAttribute('tabindex', '-1'); h.focus(); } });
 /* ---------- getting around: crumbs, progress, chapters, menu, transitions, cursor ---------- */
-const FLAG = ['onga', 'cowbell', 'chivita', 'spruce', 'pzl', 'zenith'];
+const FLAG = ['onga', 'cowbell', 'chivita', 'spruce', 'pzl', 'extramile', 'zenith'];
 const routeOf = id => WORLDS[id] ? id : id + '-case';
 function setCrumbs(r) {
   const cr = $('#crumb'), nx = $('#nextw');
@@ -3020,7 +3147,7 @@ $('#essay-copy').addEventListener('click', async () => { try { await navigator.c
 if (!navigator.share) $('#essay-share').hidden = true;
 // what each case shows of what we do, from the case records
 const SVC = { onga: ['strategy', 'content', 'digital'], cowbell: ['strategy', 'content', 'digital'], spruce: ['strategy', 'content', 'digital'], pzl: ['strategy', 'content', 'integrated'],
-  zenith: ['strategy', 'brand', 'integrated'], twisco: ['strategy', 'brand', 'content', 'integrated', 'experiences'], chivita: ['strategy', 'content', 'experiences'], ramadan: ['brand'],
+  zenith: ['strategy', 'brand', 'integrated'], twisco: ['strategy', 'brand', 'content', 'integrated', 'experiences'], chivita: ['strategy', 'content', 'experiences'], extramile: ['strategy', 'experiences', 'content'], ramadan: ['brand'],
   youmatter: ['strategy', 'brand', 'integrated', 'digital'], sanlam: ['strategy', 'brand'], pzlsocial: ['content'], heirs: ['brand'], iinvest: ['brand'], zenith35: ['experiences', 'brand'], torrista: ['brand'] };
 CASES.forEach(c => { c.sv = SVC[c.id] || []; });
 S.svc = '';
@@ -3066,6 +3193,13 @@ const FILMS = { onga: { src: 'films/onga.mp4', poster: 'films/onga-poster.jpg', 
   'ch-xmas': { src: 'films/ch-xmas.mp4', poster: 'films/ch-xmas.jpg', t: '12 Days of Christmas · live on Instagram', tall: 1 },
   'ps-salary': { src: 'films/ps-salary.mp4', poster: 'films/ps-salary.jpg', t: 'Prudential Zenith Life · salary week', tall: 1 },
   'ps-first': { src: 'films/ps-first.mp4', poster: 'films/ps-first.jpg', t: 'Prudential Zenith Life · customers first', tall: 1 },
+  extramile: { src: 'films/extramile.mp4', poster: 'films/extramile-poster.jpg', t: 'Prudential Zenith Life · The Extra Mile Games · Case film' },
+  'em-captains': { src: 'films/em-captains.mp4', poster: 'films/em-captains.jpg', t: 'Meet your captains', tall: 1 },
+  'em-hosts': { src: 'films/em-hosts.mp4', poster: 'films/em-hosts.jpg', t: 'The crew takes over · the hosts', tall: 1 },
+  'em-g1': { src: 'films/em-g1.mp4', poster: 'films/em-g1.jpg', t: 'Game 1 · Pass the Message', tall: 1 },
+  'em-g2': { src: 'films/em-g2.mp4', poster: 'films/em-g2.jpg', t: 'Game 2 · The Extra Mile Hunt', tall: 1 },
+  'em-g3': { src: 'films/em-g3.mp4', poster: 'films/em-g3.jpg', t: 'Game 3 · Walk the Extra Mile', tall: 1 },
+  'em-g4': { src: 'films/em-g4.mp4', poster: 'films/em-g4.jpg', t: 'Game 4 · The final', tall: 1 },
   'ps-income': { src: 'films/ps-income.mp4', poster: 'films/ps-income.jpg', t: 'Prudential Zenith Life · what a plan covers', tall: 1 } };
 const filmx = $('#filmx'), filmV = $('#film-v');
 let filmBack = null;
@@ -3216,6 +3350,19 @@ function update(dt) {
     const k = clamp(Math.round(q), 0, 6);
     if (S.chHud !== k) { S.chHud = k; chHn.textContent = CHHUD[k][0]; chHl.textContent = CHHUD[k][1]; }
   } else { scrimCh.style.opacity = 0; S.chHud = null; }
+  if (r === 'extramile') {
+    const q = S.qE;
+    applyBeats(emBeats, q);
+    body.style.setProperty('--lensv', S.lensS.toFixed(3));
+    scrimEm.style.opacity = ((1 - S.lensS) * .95).toFixed(3);
+    const pts = emPts(q), key = pts.map(v => Math.round(v)).join(',') + '|' + S.emMine + '|' + (q > 1.5 ? 1 : 0);
+    if (S.emKey !== key) {
+      S.emKey = key;
+      const rows = EMTEAM_N.map((n, i) => [n, Math.round(pts[i]), i]).sort((a, b) => b[1] - a[1] || a[2] - b[2]);
+      emBoard.innerHTML = '<span class="ek">' + (q < 1.5 ? 'The Mile Board · before the games' : q < 5.5 ? 'The Mile Board · after game ' + Math.min(4, Math.round(q) - 1) : 'The Mile Board · final') + '</span>' +
+        rows.map(([n, v, i]) => `<span class="er${S.emMine === i ? ' me' : ''}"><i style="background:${EMTEAM_C[i]}"></i>${n}${S.emMine === i ? ' · you' : ''}<b>${v}</b></span>`).join('');
+    }
+  } else scrimEm.style.opacity = 0;
 
   if (!GL) return;
   U.uTime.value = t;
@@ -3233,6 +3380,10 @@ function update(dt) {
     if (!RM) { dPos.x += S.px * 1.2; dPos.y -= S.py * .6; }
   } else if (r === 'chivita') {
     chCam(S.qE, dPos, dLook);
+  } else if (r === 'extramile') {
+    keyAt(KEM, S.qE, dPos, dLook, PHONE);
+    if (PHONE) { dLook.x = 0; dPos.x *= .3; dPos.z += 10; dPos.y = Math.min(dPos.y, 7.5); dLook.y += .6; }
+    if (!RM) { dPos.x += S.px * 1.2; dPos.y -= S.py * .6; }
   } else if (r === 'pzl') {
     keyAt(KPZ, S.qE, dPos, dLook);
     if (PHONE) { dLook.y -= 2.6; dPos.y -= .6; dPos.x = dLook.x * .6; }
@@ -3468,6 +3619,24 @@ function update(dt) {
       const m = g.userData.m, a = RM ? 1 : sstep(-m.z / 16 - 1.1, -m.z / 16 - .7, q);
       g.userData.pic.material.uniforms.uOpacity.value = a; g.userData.pic.material.uniforms.uBright.value = .55 + .45 * a;
     });
+  }
+
+  /* the extra mile */
+  if (r === 'extramile') {
+    const q = S.qE, pts = emPts(q);
+    S.emU.uCam.value.copy(camera.position);
+    S.emU.uGlow.value = sstep(4.6, 6, q);
+    S.emBg.set('#0A0506').lerp(COL.lens, S.lensS);
+    S.emTokens.forEach((g, i) => {
+      g.position.z = EMZ(pts[i]);
+      const u = g.userData, mine = S.emMine === i;
+      u.halo.material.opacity = mine ? (RM ? .9 : .6 + .35 * Math.sin(t * 4)) : 0;
+      u.puck.material.color.copy(u.c).lerp(COL.blue, S.lensS); u.beam.material.color.copy(u.puck.material.color);
+      u.beam.scale.y = mine ? 1.5 : 1;
+    });
+    S.emBanners.forEach(m => m.material.color.copy(m.userData.col).multiplyScalar(.55 + .45 * sstep(4.6, 6, q)).lerp(COL.blue, S.lensS));
+    S.emScreens.forEach(g => { const k = g.userData.k, a = RM ? 1 : sstep(k + .9, k + 1.6, q); g.userData.pic.material.uniforms.uBright.value = .35 + .65 * a; });
+    S.emConfMat.uniforms.uOn.value = RM ? (q > 5.5 ? 1 : 0) : sstep(5.4, 5.9, q);
   }
 
   /* chivita */

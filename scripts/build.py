@@ -31,12 +31,14 @@ TITLES = {
     'pzl': 'Prudential Zenith Tomorrow: Interactive | The Republic',
     'zenith': 'Zenith Bank Homecoming: Interactive | The Republic',
     'chivita': 'What’s Your Chivita? Interactive World | The Republic',
+    'extramile': 'The Extra Mile Games: Interactive World | The Republic',
     'onga-case': 'Onga Taste of Home Campaign Case Study | The Republic',
     'cowbell-case': 'Cowbell Ramadan Social Media Campaign | The Republic',
     'spruce-case': 'Spruce by Dulux: Digital Launch Case Study | The Republic',
     'pzl-case': 'Prudential Zenith: Empowering Tomorrow | The Republic',
     'zenith-case': 'Zenith Bank Homecoming Strategy | The Republic',
     'chivita-case': 'Chivita Organic Social Media Campaign | The Republic',
+    'extramile-case': 'Customer Service Week Internal Comms Campaign | The Republic',
 }
 DESCRIPTIONS = {
     'gate': 'Independent creative and advertising agency in Lagos, Nigeria. Strategy-led campaigns, content, digital work and experiences for African and global brands.',
@@ -58,10 +60,12 @@ DESCRIPTIONS = {
     'pzl-case': "Empowering Tomorrow case study: The Republic's integrated campaign that helped Prudential Zenith Life make the next 40 years personal and planning practical.",
     'zenith-case': "See Homecoming Differently: The Republic's strategy and creative platform for Zenith Bank, built for Nigerians in the diaspora coming home every December.",
     'chivita': 'Step into What’s Your Chivita?, an interactive world from The Republic’s year of organic social for Chivita: creator stories, a series and Christmas live.',
+    'extramile': 'Run the track in The Extra Mile Games, an interactive world from The Republic’s Customer Service Week campaign for Prudential Zenith Life’s staff.',
+    'extramile-case': 'The Extra Mile Games: how The Republic turned Prudential Zenith Life’s Customer Service Week into an office-wide contest led by customer care.',
     'chivita-case': 'Chivita case study: The Republic’s year of organic social, from creator stories to Style N’ Sips and Christmas live. Winner, Best Use of Social Media, NMA 2024.',
 }
 CAPABILITIES = ['Communication Strategy', 'Brand & Creative', 'Organic Social & Content', 'Integrated Marketing', 'Digital & Performance', 'Experiences']
-WORLDS = ['onga', 'cowbell', 'chivita', 'spruce', 'pzl', 'zenith']
+WORLDS = ['onga', 'cowbell', 'chivita', 'spruce', 'pzl', 'extramile', 'zenith']
 ESSAY = {'headline': 'Write for the reply.', 'description': 'Good brand work gives people a reason to bring their own lives into the story.', 'date': '2026-10-03'}
 
 
@@ -411,7 +415,7 @@ def main(check=False):
         fn = '404.html' if r == 'lost' else ('index.html' if P[r] == '/' else P[r].lstrip('/') + '.html')
         outputs[fn] = page(r)
     outputs['assets/routes.js'] = routes_js
-    flag = [('onga', 'Promasidor Nigeria')] + [(k, c) for k, c in [('cowbell', 'Promasidor Nigeria'), ('chivita', 'CHI Limited'), ('spruce', 'CAP Plc'), ('pzl', 'Prudential Zenith Life Insurance'), ('zenith', 'Zenith Bank')]]
+    flag = [('onga', 'Promasidor Nigeria')] + [(k, c) for k, c in [('cowbell', 'Promasidor Nigeria'), ('chivita', 'CHI Limited'), ('spruce', 'CAP Plc'), ('pzl', 'Prudential Zenith Life Insurance'), ('extramile', 'Prudential Zenith Life Insurance'), ('zenith', 'Zenith Bank')]]
     work_lines = [f"- [{SV.FLAGSHIP[k][1]}]({DOMAIN}{P[k + '-case']}): {SV.FLAGSHIP[k][0]}. {SV.FLAGSHIP[k][2]}" for k, _ in flag]
     work_lines += [f"- [{f['title']}]({DOMAIN}{P[k + '-case']}): {f['facts'][0][1]}. {f['line']}" for k, f in CF.items()]
     outputs['llms.txt'] = '\n'.join([
