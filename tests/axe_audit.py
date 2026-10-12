@@ -1,12 +1,12 @@
 import asyncio, json, sys
-from harness import page
+from harness import page, BASE
 from playwright.async_api import async_playwright
 AXE=open('node_modules/axe-core/axe.min.js').read()
-ROUTES=['gate','work','onga-case','studio','method','journal','contact','privacy','twisco-case']
+ROUTES=['gate','work','onga-case','studio','services','svc-strategy','svc-experiences','method','journal','contact','privacy','twisco-case']
 async def run(w,h,tag,mobile=False):
     async with async_playwright() as p:
         b,pg,errs=await page(p,w,h,mobile)
-        await pg.goto('http://127.0.0.1:8765/public/index.html'); await pg.wait_for_timeout(3000)
+        await pg.goto(BASE); await pg.wait_for_timeout(3000)
         await pg.add_script_tag(content=AXE)
         agg={}
         for r in ROUTES:
