@@ -57,7 +57,7 @@ This branch (`immersive-site`) supersedes the earlier Next.js rebuild, which rem
 - Show client logos only for relationships the MD has confirmed.
 - Team portraits are AI-generated studio portraits. At launch (3 October 2026) the MD decided to show them without a label. New portraits: generate from the person's own photos in the same style (black backdrop, low-key light, all-black wardrobe, 3:4), and never use another team member's portrait as a pose reference, because the model borrows their face.
 - Add no awards, press or dates without a public proof link.
-- Ola Olowu, Daniel Emeka and Aderoju Adeniji lead the Studio page. Everyone else is listed alphabetically with no hierarchy.
+- Ola Olowu, Daniel Emeka and Aderoju Adeniji lead the Studio page. Everyone else is listed alphabetically by surname, with no hierarchy (the MD's call, 21 October 2026).
 
 ## Test
 

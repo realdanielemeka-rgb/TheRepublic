@@ -189,6 +189,7 @@ def main(check=False):
     cred_size = f"{os.path.getsize(cred_file) / 1048576:.1f} MB"
     assert '%%CRED_SIZE%%' in tpl, 'src/site.html is missing %%CRED_SIZE%%'
     tpl = tpl.replace('%%CRED_SIZE%%', cred_size)
+    LEAD_ORDER = ['Ola Olowu', 'Daniel Emeka', 'Aderoju Adeniji']
     CF, CASES, TEAM = js_value(js, 'CASEFILES'), js_value(js, 'CASES'), js_value(js, 'TEAM')
     byId = {c['id']: c for c in CASES}
     P = paths(js)
@@ -276,7 +277,7 @@ def main(check=False):
         if r == 'studio':
             g.append({'@type': 'ItemList', 'name': 'The Republic team', 'itemListElement': [
                 {'@type': 'ListItem', 'position': i + 1, 'item': {'@type': 'Person', 'name': p['n'], 'jobTitle': p['r'], 'worksFor': {'@id': DOMAIN + '/#org'}}}
-                for i, p in enumerate(sorted(TEAM, key=lambda p: (p['d'] != 'lead', p['n'])))]})
+                for i, p in enumerate(sorted(TEAM, key=lambda p: (p['d'] != 'lead', LEAD_ORDER.index(p['n']) if p['d'] == 'lead' else 0, p['n'].split()[-1], p['n'])))]})
         return json.dumps({'@context': 'https://schema.org', '@graph': g}, ensure_ascii=False, separators=(',', ':'))
 
     def head(r):

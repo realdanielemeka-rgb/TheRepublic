@@ -2243,7 +2243,8 @@ const V3b = GL ? new THREE.Vector3() : null;
 const slug = n => n.toLowerCase().replace(/\s+/g, '-');
 // leadership first (Chairman, MD, Head of Operations & Client Service); everyone else in alphabetical order
 const LEAD = ['Ola Olowu', 'Daniel Emeka', 'Aderoju Adeniji'];
-const PEOPLE = LEAD.map(n => TEAM.find(p => p.n === n)).concat(TEAM.filter(p => !LEAD.includes(p.n)).sort((a, b) => a.n.localeCompare(b.n)));
+const sur = n => n.split(' ').slice(-1)[0]; // the studio is listed by surname, no hierarchy
+const PEOPLE = LEAD.map(n => TEAM.find(p => p.n === n)).concat(TEAM.filter(p => !LEAD.includes(p.n)).sort((a, b) => sur(a.n).localeCompare(sur(b.n)) || a.n.localeCompare(b.n)));
 // one colour per person, each set against Republic blue
 const PAL = { 'Aderoju Adeniji': '#FFB000', 'Caleb Ogiri': '#B6FF3B', 'Daniel Emeka': '#9A4DFF', 'Fredrick Aniekwe': '#00D1B2', 'George Davids': '#4D7CFF', 'Jemima Adedeji': '#FF2E88',
   'Mmesoma Obikobe': '#FF7A00', 'Ola Olowu': '#E8C547', 'Oluwadoyinsola Iyiola': '#3FD0FF', 'Flora Obigwe': '#FF3B3B', 'Simi Lawal': '#FF8FC0', 'Nifemi Olotu': '#FF5A36', 'Wuraola Bamidele': '#2BD46A' };
