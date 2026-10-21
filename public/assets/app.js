@@ -204,7 +204,7 @@ const TEAM = [
   { d: 'lead', n: 'Daniel Emeka', r: 'Managing Director & Co-Founder' },
   { d: 'lead', n: 'Aderoju Adeniji', r: 'Head of Operations & Client Service' },
   { d: 'client', n: 'Mmesoma Obikobe', r: 'Brand Manager' },
-  { d: 'content', n: 'Wuraola Bamidele', r: 'Content Creator' },
+  { d: 'content', n: 'Wuraola Bamidele', r: 'Operations & Content Manager' },
   { d: 'content', n: 'Jemima Adedeji', r: 'Community Manager' },
   { d: 'client', n: 'Simi Lawal', r: 'Brand Management Executive' },
   { d: 'studio', n: 'Oluwadoyinsola Iyiola', r: 'Intern' },
