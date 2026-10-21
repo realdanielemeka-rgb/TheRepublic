@@ -1,0 +1,7 @@
+---
+# cPanel Git Version Control: "Deploy HEAD Commit" copies the built site into the web root.
+# Files already in public_html that the site does not use are left alone (nothing is deleted).
+deployment:
+  tasks:
+    - export DEPLOYPATH=$HOME/public_html/
+    - /bin/cp -R public/. $DEPLOYPATH
