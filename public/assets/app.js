@@ -2258,7 +2258,7 @@ PEOPLE.forEach((p, i) => {
   const b = document.createElement('button');
   b.type = 'button'; b.className = 'ln'; b.dataset.i = i;
   b.setAttribute('aria-label', `${p.n}, ${p.r}. Open their page.`);
-  b.innerHTML = `<img src="img/tm-${slug(p.n)}.webp" alt="" loading="lazy"><span class="lnl"><b>${p.n}</b><span>${p.r}</span></span>`;
+  b.innerHTML = `<img src="img/tm-${slug(p.n)}.webp?v=20261021" alt="" loading="lazy"><span class="lnl"><b>${p.n}</b><span>${p.r}</span></span>`;
   const on = () => { lineup.classList.add('hov'); $$('.ln', lineup).forEach(o => { const t = o === b; o.classList.toggle('on', t); o.parentNode.classList.toggle('on', t); }); grow(b); };
   const fineP = matchMedia('(hover:hover) and (pointer:fine)').matches;
   if (fineP) { b.addEventListener('mouseenter', on); b.addEventListener('focus', on); }
@@ -2334,7 +2334,7 @@ function dsFrame(now) {
 }
 function showPerson(i) {
   const n = PEOPLE.length; i = (i + n) % n; S.ds.i = i;
-  const p = PEOPLE[i], img = `url(img/tm-${slug(p.n)}.webp)`;
+  const p = PEOPLE[i], img = `url(img/tm-${slug(p.n)}.webp?v=20261021)`;
   $('.dsn', dossier).textContent = p.n;
   $('#ds-name').classList.toggle('long', Math.max(...p.n.split(' ').map(w => w.length)) >= 12); // e.g. Oluwadoyinsola
   $('#ds-role').textContent = p.r;
