@@ -1,12 +1,12 @@
 """Screenshot the home page at chosen scroll stops, e.g.  python3 gate_test.py gate 3,4,5,6 m
 (one stop = one screen of scroll; add a third argument to also shoot the phone layout)."""
 import asyncio, sys
-from harness import page
+from harness import page, BASE
 from playwright.async_api import async_playwright
 async def gate(w,h,tag,stops,mobile=False):
     async with async_playwright() as p:
         b,pg,errs=await page(p,w,h,mobile)
-        await pg.goto('http://127.0.0.1:8765/public/index.html'); await pg.wait_for_timeout(3500)
+        await pg.goto(BASE); await pg.wait_for_timeout(3500)
         if not mobile:
             await pg.mouse.move(w*.58,h*.4); await pg.wait_for_timeout(300); await pg.mouse.move(w*.6,h*.42); await pg.wait_for_timeout(1500)
         sh=await pg.evaluate('innerHeight*1.15')
@@ -24,7 +24,7 @@ async def gate(w,h,tag,stops,mobile=False):
 async def work(w,h,tag,mobile=False):
     async with async_playwright() as p:
         b,pg,errs=await page(p,w,h,mobile)
-        await pg.goto('http://127.0.0.1:8765/public/index.html#work'); await pg.wait_for_timeout(5000)
+        await pg.goto('http://127.0.0.1:8765/#work'); await pg.wait_for_timeout(5000)
         await pg.screenshot(path=f'shots/{tag}-w0.png')
         await pg.mouse.move(w*0.3,h*0.55); await pg.wait_for_timeout(800)
         await pg.screenshot(path=f'shots/{tag}-w1.png')
@@ -48,7 +48,7 @@ elif mode=='work':
 async def cowbell(w,h,tag,mobile=False):
     async with async_playwright() as p:
         b,pg,errs=await page(p,w,h,mobile)
-        await pg.goto('http://127.0.0.1:8765/public/index.html#cowbell'); await pg.wait_for_timeout(4000)
+        await pg.goto('http://127.0.0.1:8765/#cowbell'); await pg.wait_for_timeout(4000)
         sh=await pg.evaluate('innerHeight*1.15')
         for v in (0,1,2,3,4):
             await pg.evaluate(f'window.scrollTo(0,{v}*{sh})'); await pg.wait_for_timeout(2600)
