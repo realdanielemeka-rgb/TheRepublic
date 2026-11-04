@@ -6,7 +6,7 @@ DOMAIN = 'https://www.therepublic.agency'
 
 # fixed pages and the six case worlds (case pages keep the old Wix addresses, so existing rankings carry over)
 BASE = {
-    'gate': '/', 'work': '/work', 'studio': '/studio', 'method': '/method', 'journal': '/journal', 'contact': '/contact', 'privacy': '/privacy',
+    'gate': '/', 'work': '/work', 'studio': '/studio', 'method': '/method', 'journal': '/journal', 'contact': '/contact', 'privacy': '/privacy', 'lin': '/love-island-nigeria-agency',
     'onga': '/onga', 'cowbell': '/cowbell', 'spruce': '/spruce', 'pzl': '/prudential-zenith-life', 'zenith': '/zenith-bank', 'chivita': '/chivita', 'extramile': '/extra-mile-games',
     'onga-case': '/onga-taste-of-home', 'cowbell-case': '/cowbell-ramadan-your-first-taste', 'spruce-case': '/spruce-dulux-digital-launch',
     'pzl-case': '/prudential-zenith-empowering-tomorrow', 'zenith-case': '/zenith-bank-homecoming', 'chivita-case': '/chivita-2-campaign', 'extramile-case': '/prudential-zenith-customer-service-week',

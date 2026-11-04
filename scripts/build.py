@@ -24,6 +24,7 @@ TITLES = {
     'journal': 'Journal: Articles and Case Films | The Republic',
     'contact': 'Contact The Republic | Marketing Agency in Lagos',
     'privacy': 'Privacy Notice | The Republic',
+    'lin': 'Love Island Nigeria: The Republic Gets the Keys to the Villa',
     'lost': 'Page not found | The Republic',
     'onga': 'Onga Taste of Home: Interactive World | The Republic',
     'cowbell': 'Cowbell Your First Taste: Interactive | The Republic',
@@ -47,6 +48,7 @@ DESCRIPTIONS = {
     'method': 'How The Republic works: three commitments, six questions on every brief and five steps from problem to proof. Strategy first, and the work must prove it.',
     'journal': 'Articles and case films from The Republic, a creative and marketing agency in Lagos. Read Write for the reply, and watch the work behind our campaigns.',
     'contact': 'Start a conversation with The Republic, a creative and marketing agency in Ikoyi, Lagos. Email office@therepublic.agency and tell us what you want to change.',
+    'lin': 'Group8 has handed The Republic the keys to the Villa. We are the agency behind Love Island Nigeria: campaigns, TV and radio ads, outdoor and social.',
     'privacy': 'How The Republic Studios Ltd collects, uses and protects personal data from this website, and the rights you have under the Nigeria Data Protection Act 2023.',
     'lost': 'This page does not exist or has moved. Explore the work of The Republic, an independent creative and marketing agency in Lagos.',
     'onga': "Step into Onga Taste of Home: an interactive world built on the question behind The Republic's campaign for Promasidor Nigeria: what does home mean to you?",
@@ -66,6 +68,13 @@ DESCRIPTIONS = {
 }
 CAPABILITIES = ['Communication Strategy', 'Brand & Creative', 'Organic Social & Content', 'Integrated Marketing', 'Digital & Performance', 'Experiences']
 WORLDS = ['onga', 'cowbell', 'chivita', 'spruce', 'pzl', 'extramile', 'zenith']
+NEWS_LIN = {'headline': 'We just got the keys to the Villa: The Republic is the agency behind Love Island Nigeria', 'date': '2026-11-04',
+            'faq': [
+                ('Which agency is handling Love Island Nigeria?', 'The Republic, an independent creative and marketing agency in Lagos. Group8 appointed The Republic as the agency for the first edition of Love Island Nigeria, covering campaign strategy, creative, TV and radio advertising, outdoor and the show’s social media.'),
+                ('Who is behind Love Island Nigeria?', 'Love Island is a format owned by ITV Studios. Love Island Nigeria is brought to Nigeria by Group8, the media group behind ON TV, Spice and Soundcity, and airs on Soundcity, Spice, ON TV and digital platforms.'),
+                ('How do I apply for Love Island Nigeria?', 'Applications are made online at loveislandnigeria.com, and close on 14 November 2026.'),
+                ('Who is The Republic?', 'The Republic is a strategy-led creative and marketing agency at 10 Onisiwo Road, Ikoyi, Lagos. It works on brand strategy, advertising, organic social media, integrated campaigns, digital and brand experiences for clients including CHI, Promasidor and Prudential Zenith Life.'),
+            ]}
 ESSAY = {'headline': 'Write for the reply.', 'description': 'Good brand work gives people a reason to bring their own lives into the story.', 'date': '2026-10-03'}
 
 
@@ -241,6 +250,7 @@ def main(check=False):
         if r == 'gate': return None
         if r.endswith('-case') or r in WORLDS: items.append(('Work', '/work'))
         if r.startswith('svc-'): items.append(('Services', '/services'))
+        if r == 'lin': items.append(('Journal', '/journal'))
         name = meta[r]['t'].split(' | ')[0]
         items.append((name, meta[r]['p']))
         return {'@type': 'BreadcrumbList', 'itemListElement': [{'@type': 'ListItem', 'position': i + 1, 'name': n, 'item': DOMAIN + (u if u != '/' else '/')} for i, (n, u) in enumerate(items)]}
@@ -274,6 +284,14 @@ def main(check=False):
             g.append({'@type': 'BlogPosting', 'headline': ESSAY['headline'], 'description': ESSAY['description'], 'datePublished': ESSAY['date'],
                       'author': {'@type': 'Person', 'name': 'Daniel Emeka', 'jobTitle': 'Managing Director & Co-Founder', 'worksFor': {'@id': DOMAIN + '/#org'}},
                       'publisher': {'@id': DOMAIN + '/#org'}, 'mainEntityOfPage': url, 'image': DOMAIN + m['o'], 'inLanguage': 'en-GB'})
+        if r == 'lin':
+            g.append({'@type': 'NewsArticle', '@id': url + '#article', 'headline': NEWS_LIN['headline'], 'description': m['d'], 'datePublished': NEWS_LIN['date'], 'dateModified': NEWS_LIN['date'],
+                      'author': {'@type': 'Person', 'name': 'Daniel Emeka', 'jobTitle': 'Managing Director & Co-Founder', 'url': DOMAIN + '/studio/daniel-emeka', 'worksFor': {'@id': DOMAIN + '/#org'}},
+                      'publisher': {'@id': DOMAIN + '/#org'}, 'mainEntityOfPage': url, 'image': DOMAIN + m['o'], 'inLanguage': 'en-GB',
+                      'about': [{'@type': 'TVSeries', 'name': 'Love Island Nigeria', 'url': 'https://www.loveislandnigeria.com'}, {'@id': DOMAIN + '/#org'}],
+                      'mentions': [{'@type': 'Organization', 'name': 'Group8'}, {'@type': 'Organization', 'name': 'ITV Studios'}, {'@type': 'TelevisionChannel', 'name': 'ON TV'}, {'@type': 'TelevisionChannel', 'name': 'Spice'}, {'@type': 'TelevisionChannel', 'name': 'Soundcity'}]})
+            g.append({'@type': 'FAQPage', '@id': url + '#faq', 'mainEntity': [{'@type': 'Question', 'name': q, 'acceptedAnswer': {'@type': 'Answer', 'text': a}} for q, a in NEWS_LIN['faq']]})
+            page['mainEntity'] = {'@id': url + '#article'}
         if r == 'studio':
             g.append({'@type': 'ItemList', 'name': 'The Republic team', 'itemListElement': [
                 {'@type': 'ListItem', 'position': i + 1, 'item': {'@type': 'Person', 'name': p['n'], 'jobTitle': p['r'], 'worksFor': {'@id': DOMAIN + '/#org'}}}
@@ -289,7 +307,7 @@ def main(check=False):
         else:
             out.append(f'<link rel="canonical" href="{url}">')
         out += ['<meta property="og:site_name" content="The Republic">', '<meta property="og:locale" content="en_GB">',
-                f'<meta property="og:type" content="{"article" if r == "journal" else "website"}">',
+                f'<meta property="og:type" content="{"article" if r in ("journal", "lin") else "website"}">',
                 f'<meta property="og:title" content="{esc(m["t"])}">', f'<meta property="og:description" content="{esc(m["d"])}">',
                 f'<meta property="og:image" content="{DOMAIN}{m["o"]}">', '<meta property="og:image:width" content="1200">', '<meta property="og:image:height" content="630">']
         if r != 'lost': out.append(f'<meta property="og:url" content="{url}">')
@@ -421,19 +439,21 @@ def main(check=False):
     work_lines += [f"- [{f['title']}]({DOMAIN}{P[k + '-case']}): {f['facts'][0][1]}. {f['line']}" for k, f in CF.items()]
     outputs['llms.txt'] = '\n'.join([
         '# The Republic', '',
-        '> Independent creative and advertising agency in Lagos, Nigeria (The Republic Studios Ltd, RC 7371417). Strategy-led campaigns, content, digital work and brand experiences for African and global brands, including Promasidor, CHI, Prudential Zenith Life Insurance, Zenith Bank, Sanlam Allianz and CAP Plc (Spruce by Dulux).', '',
+        '> Independent creative and advertising agency in Lagos, Nigeria (The Republic Studios Ltd, RC 7371417). Strategy-led campaigns, content, digital work and brand experiences for African and global brands, including Promasidor, CHI, Prudential Zenith Life Insurance, Zenith Bank, Sanlam Allianz and CAP Plc (Spruce by Dulux). The agency for Love Island Nigeria (Group8).', '',
         'Address: 10 Onisiwo Road, Ikoyi, Lagos, Nigeria. Email: office@therepublic.agency.',
         'Leadership: Ola Olowu (Chairman & Co-Founder), Daniel Emeka (Managing Director & Co-Founder), Aderoju Adeniji (Head of Operations & Client Service).',
         'How we work: strategy first. Every brief starts with questions about people and moves through five steps: the problem, the human truth, the idea, the system and the evidence.', '',
         '## Services', ''] + [f"- [{sv['name']}]({DOMAIN}{sv['path']}): {sv['description']}" for sv in SV.SERVICES] + [
         '', '## Selected work', ''] + work_lines + [
+        '', '## News', '',
+        f'- [We just got the keys to the Villa: The Republic is the agency behind Love Island Nigeria]({DOMAIN}{P["lin"]}) (4 November 2026): Group8 appointed The Republic as the creative and marketing agency for the first edition of Love Island Nigeria, the local version of the ITV Studios format, airing on Soundcity, Spice and ON TV. The Republic runs the campaign strategy, creative, TV and radio advertising, outdoor and the show’s social media.',
         '', '## Recognition', '',
         f'- Nigerian Marketing Awards 2024: Best Use of Social Media, winner, for the Chivita 2.0 campaign, What’s Your Chivita? ({DOMAIN}{P["chivita-case"]}; official results: https://www.nma-ng.com/2024-winners/).',
         '- Nigerian Marketing Awards 2025: Financial Institution of the Year, second place, The Republic, for You Matter with Prudential Zenith Life (https://www.nma-ng.com/winners/).',
         '', '## About', '',
         f'- [Studio and team]({DOMAIN}/studio): who we are, our story and the clients we build for.',
         f'- [Method]({DOMAIN}/method): how a brief becomes work.',
-        f'- [Journal]({DOMAIN}/journal): articles and case films.',
+        f'- [Journal]({DOMAIN}/journal): articles, news and case films.',
         f'- [Frequently asked questions]({DOMAIN}/services): plain answers about the agency.',
         f'- [Credentials 2026 (PDF, {cred_size})]({DOMAIN}{CRED}): the agency in 25 pages, from how we think to selected work, clients and the founders.',
         f'- [Contact]({DOMAIN}/contact)', '']) 
