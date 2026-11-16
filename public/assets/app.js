@@ -206,6 +206,7 @@ const TEAM = [
   { d: 'client', n: 'Mmesoma Obikobe', r: 'Brand Manager' },
   { d: 'content', n: 'Wuraola Bamidele', r: 'Operations & Content Manager' },
   { d: 'content', n: 'Jemima Adedeji', r: 'Community Manager' },
+  { d: 'content', n: 'Bolu Animashaun', r: 'Content & Community Specialist' },
   { d: 'client', n: 'Simi Lawal', r: 'Brand Management Executive' },
   { d: 'studio', n: 'Oluwadoyinsola Iyiola', r: 'Intern' },
   { d: 'studio', n: 'Flora Obigwe', r: 'Intern' }
@@ -2246,7 +2247,7 @@ const LEAD = ['Ola Olowu', 'Daniel Emeka', 'Aderoju Adeniji'];
 const sur = n => n.split(' ').slice(-1)[0]; // the studio is listed by surname, no hierarchy
 const PEOPLE = LEAD.map(n => TEAM.find(p => p.n === n)).concat(TEAM.filter(p => !LEAD.includes(p.n)).sort((a, b) => sur(a.n).localeCompare(sur(b.n)) || a.n.localeCompare(b.n)));
 // one colour per person, each set against Republic blue
-const PAL = { 'Aderoju Adeniji': '#FFB000', 'Caleb Ogiri': '#B6FF3B', 'Daniel Emeka': '#9A4DFF', 'Fredrick Aniekwe': '#00D1B2', 'George Davids': '#4D7CFF', 'Jemima Adedeji': '#FF2E88',
+const PAL = { 'Aderoju Adeniji': '#FFB000', 'Bolu Animashaun': '#C6A0FF', 'Caleb Ogiri': '#B6FF3B', 'Daniel Emeka': '#9A4DFF', 'Fredrick Aniekwe': '#00D1B2', 'George Davids': '#4D7CFF', 'Jemima Adedeji': '#FF2E88',
   'Mmesoma Obikobe': '#FF7A00', 'Ola Olowu': '#E8C547', 'Oluwadoyinsola Iyiola': '#3FD0FF', 'Flora Obigwe': '#FF3B3B', 'Simi Lawal': '#FF8FC0', 'Nifemi Olotu': '#FF5A36', 'Wuraola Bamidele': '#2BD46A' };
 const lineup = $('#lineup');
 const LGRP = [['Leadership', 0, LEAD.length], ['The studio', LEAD.length, PEOPLE.length]].map(([k, a, z]) => {
