@@ -208,8 +208,8 @@ const TEAM = [
   { d: 'content', n: 'Jemima Adedeji', r: 'Community Manager' },
   { d: 'content', n: 'Bolu Animashaun', r: 'Content & Community Specialist' },
   { d: 'client', n: 'Simi Lawal', r: 'Brand Management Executive' },
-  { d: 'studio', n: 'Oluwadoyinsola Iyiola', r: 'Intern' },
-  { d: 'studio', n: 'Flora Obigwe', r: 'Intern' }
+  { d: 'studio', n: 'Oluwadoyinsola Iyiola', r: 'Copy & Concept Specialist' },
+  { d: 'studio', n: 'Flora Obigwe', r: 'Copy & Concept Specialist' }
 ];
 const DISC = {
   lead: { name: 'Leadership', x: 0, z: 0 },
