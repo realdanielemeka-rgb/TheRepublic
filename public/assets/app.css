@@ -1096,3 +1096,4 @@ body[data-route="gate"] .proto.hideable{opacity:var(--protoop,1)}
 .awsin{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:20px}
 .studio .awlist{margin:0 0 56px}
 @media (max-width:700px){.nmalogo{width:150px}.aw{min-height:0}}
+.nmag .a img{aspect-ratio:3/4;height:auto}.nmag{align-items:start}

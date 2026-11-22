@@ -326,13 +326,13 @@ tick(); setInterval(tick, 20000);
 // the service pages (keys and addresses come from scripts/services.py; the build checks this list matches)
 const SVC_PAGES = ['svc-strategy', 'svc-brand', 'svc-content', 'svc-integrated', 'svc-digital', 'svc-experiences'];
 const isSvc = r => r === 'services' || SVC_PAGES.includes(r);
-const ROUTES = ['gate', 'work', 'onga', 'onga-case', 'cowbell', 'cowbell-case', 'chivita', 'chivita-case', 'spruce', 'spruce-case', 'pzl', 'pzl-case', 'extramile', 'extramile-case', 'zenith', 'zenith-case', 'studio', 'services'].concat(SVC_PAGES, ['method', 'journal', 'lin', 'contact', 'privacy', 'lost'], Object.keys(CASEFILES).map(k => k + '-case'));
-const PLACE = { gate: 'The Gate · Home', work: 'The City of Work · /work', onga: 'Onga world · Taste of Home', 'onga-case': 'Case · /onga-taste-of-home', cowbell: 'Cowbell world · Your First Taste', 'cowbell-case': 'Case · /cowbell-ramadan-your-first-taste', chivita: 'Chivita world · What’s Your Chivita?', 'chivita-case': 'Case · /chivita-2-campaign', spruce: 'Spruce world · Show Your True Colours', 'spruce-case': 'Case · /spruce-dulux-digital-launch', pzl: 'Prudential Zenith world · Empowering Tomorrow', 'pzl-case': 'Case · /prudential-zenith-empowering-tomorrow', extramile: 'Prudential Zenith world · The Extra Mile Games', 'extramile-case': 'Case · /prudential-zenith-customer-service-week', zenith: 'Zenith world · See Homecoming Differently', 'zenith-case': 'Case · /zenith-bank-homecoming', studio: 'The Capitol · /studio', services: 'What we do · /services', 'svc-strategy': 'Services · Communication Strategy', 'svc-brand': 'Services · Brand & Creative', 'svc-content': 'Services · Organic Social & Content', 'svc-integrated': 'Services · Integrated Marketing', 'svc-digital': 'Services · Digital & Performance', 'svc-experiences': 'Services · Experiences', method: 'The Constitution · /method', journal: 'The Dispatch · /journal', lin: 'The Dispatch · News', contact: 'Your Turn · /contact', privacy: 'Your Rights · /privacy', lost: 'Unbuilt street · 404' };
+const ROUTES = ['gate', 'work', 'onga', 'onga-case', 'cowbell', 'cowbell-case', 'chivita', 'chivita-case', 'spruce', 'spruce-case', 'pzl', 'pzl-case', 'extramile', 'extramile-case', 'zenith', 'zenith-case', 'studio', 'services'].concat(SVC_PAGES, ['method', 'journal', 'nma', 'lin', 'contact', 'privacy', 'lost'], Object.keys(CASEFILES).map(k => k + '-case'));
+const PLACE = { gate: 'The Gate · Home', work: 'The City of Work · /work', onga: 'Onga world · Taste of Home', 'onga-case': 'Case · /onga-taste-of-home', cowbell: 'Cowbell world · Your First Taste', 'cowbell-case': 'Case · /cowbell-ramadan-your-first-taste', chivita: 'Chivita world · What’s Your Chivita?', 'chivita-case': 'Case · /chivita-2-campaign', spruce: 'Spruce world · Show Your True Colours', 'spruce-case': 'Case · /spruce-dulux-digital-launch', pzl: 'Prudential Zenith world · Empowering Tomorrow', 'pzl-case': 'Case · /prudential-zenith-empowering-tomorrow', extramile: 'Prudential Zenith world · The Extra Mile Games', 'extramile-case': 'Case · /prudential-zenith-customer-service-week', zenith: 'Zenith world · See Homecoming Differently', 'zenith-case': 'Case · /zenith-bank-homecoming', studio: 'The Capitol · /studio', services: 'What we do · /services', 'svc-strategy': 'Services · Communication Strategy', 'svc-brand': 'Services · Brand & Creative', 'svc-content': 'Services · Organic Social & Content', 'svc-integrated': 'Services · Integrated Marketing', 'svc-digital': 'Services · Digital & Performance', 'svc-experiences': 'Services · Experiences', method: 'The Constitution · /method', journal: 'The Dispatch · /journal', nma: 'The Dispatch · News', lin: 'The Dispatch · News', contact: 'Your Turn · /contact', privacy: 'Your Rights · /privacy', lost: 'Unbuilt street · 404' };
 Object.keys(CASEFILES).forEach(k => { PLACE[k + '-case'] = 'Case · /' + CASEFILES[k].slug; });
 const TITLES = {
   gate: 'Creative & Marketing Agency in Lagos | The Republic', work: 'Portfolio: Campaigns & Creative Work | The Republic',
   studio: 'About Our Lagos Creative Agency | The Republic', contact: 'Contact The Republic | Marketing Agency in Lagos',
-  method: 'How We Work: Strategy First | The Republic', journal: 'Journal: Articles, Case Films and News | The Republic', lin: 'Love Island Nigeria: The Republic Gets the Keys to the Villa', privacy: 'Privacy Notice | The Republic', lost: 'Page not found | The Republic',
+  method: 'How We Work: Strategy First | The Republic', journal: 'Journal: Articles, Case Films and News | The Republic', nma: 'And the Winner Is… Digital Agency of the Year | The Republic', lin: 'Love Island Nigeria: The Republic Gets the Keys to the Villa', privacy: 'Privacy Notice | The Republic', lost: 'Page not found | The Republic',
   onga: 'Onga Taste of Home: Digital Campaign Case Study | The Republic', cowbell: 'Cowbell Ramadan Social Media Campaign | The Republic',
   spruce: 'Spruce by Dulux: Digital Campaign Case Study | The Republic', pzl: 'Prudential Zenith: Empowering Tomorrow | The Republic',
   zenith: 'Zenith Bank Homecoming Campaign | The Republic', chivita: 'What’s Your Chivita? Interactive World | The Republic', extramile: 'The Extra Mile Games: Interactive World | The Republic'
@@ -2384,7 +2384,7 @@ subBtns.forEach(b => b.addEventListener('click', () => {
   if (el) el.scrollIntoView({ behavior: RM ? 'auto' : 'smooth', block: v === 'careers' ? 'center' : 'start' });
 }));
 let studioCenters = [];
-const PAGES = { method: 1, journal: 1, lin: 1, contact: 1, privacy: 1, lost: 1, services: 1 };
+const PAGES = { method: 1, journal: 1, nma: 1, lin: 1, contact: 1, privacy: 1, lost: 1, services: 1 };
 SVC_PAGES.forEach(k => { PAGES[k] = 1; });
 const isPage = r => r === 'studio' || !!PAGES[r];
 function measureStudio() {
@@ -2726,7 +2726,7 @@ function applyRoute(r) {
   if (r !== 'cowbell' && r !== 'spruce') body.classList.remove('daylight');
   if (r === 'studio') navStudio.setAttribute('aria-current', 'page'); else navStudio.removeAttribute('aria-current');
   if (navServices) { if (isSvc(r)) navServices.setAttribute('aria-current', 'page'); else navServices.removeAttribute('aria-current'); }
-  ['method', 'journal', 'contact'].forEach(k => { const a = $('#nav-' + k); if (r === k || (k === 'journal' && r === 'lin')) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });
+  ['method', 'journal', 'contact'].forEach(k => { const a = $('#nav-' + k); if (r === k || (k === 'journal' && (r === 'lin' || r === 'nma'))) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });
   $$('.mlinks a').forEach(a => { const h = a.dataset.mgo || (routeFromPath(a.getAttribute('href')) || {}).r; if (h === r) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });
   setCrumbs(r);
   if (r === 'studio' && S.personSlug) { const pi = PEOPLE.findIndex(q => slug(q.n) === S.personSlug); S.personSlug = null; if (pi >= 0) setTimeout(() => openPerson(pi), RM ? 0 : 450); }
@@ -3167,6 +3167,8 @@ function tabSpy() {
 // case films: the player is ready; each button appears once its film file is in the build
 const FILMS = { onga: { src: 'films/onga.mp4', poster: 'films/onga-poster.jpg', t: 'Onga · Taste of Home · Case film' }, cowbell: { src: 'films/cowbell.mp4', poster: 'films/cowbell-poster.jpg', t: 'Cowbell · Your First Taste · Case film' },
   spruce: { src: 'films/spruce.mp4', poster: 'films/spruce-poster.jpg', t: 'Spruce by Dulux · Show Your True Colours · Case film' }, pzl: { src: 'films/pzl.mp4', poster: 'films/pzl-poster.jpg', t: 'Prudential Zenith Life · Empowering Tomorrow · Case film' },
+  'nma-digital': { src: 'films/nma-digital-agency.mp4', poster: 'films/nma-digital-agency.jpg', t: 'Nigerian Marketing Awards 2026 · Digital Agency of the Year' },
+  'nma-leader': { src: 'films/nma-leader.mp4', poster: 'films/nma-leader.jpg', t: 'Nigerian Marketing Awards 2026 · Inspirational Marketing Leader of the Year' },
   zenith: { src: 'films/zenith.mp4', poster: 'films/zenith-poster.jpg', t: 'Zenith Bank · Homecoming film' },
   'pzl-hero': { src: 'films/pzl-hero.mp4', poster: 'films/pzl-hero.jpg', t: 'The hero film · My 40-Year Goals' },
   'pzl-oba': { src: 'films/pzl-oba.mp4', poster: 'films/pzl-oba.jpg', t: 'Oba and his dad · the family conversation' },
@@ -3403,7 +3405,7 @@ function update(dt) {
     keyAt(KS, S.qE, dPos, dLook);
     if (!RM) { dPos.x += S.px * 1.2; dPos.y -= S.py * .6; }
   } else if (PAGES[r]) {
-    keyAt(r === 'method' ? KM : (r === 'journal' || r === 'lin') ? KJ : KCT, S.qE, dPos, dLook);
+    keyAt(r === 'method' ? KM : (r === 'journal' || r === 'lin' || r === 'nma') ? KJ : KCT, S.qE, dPos, dLook);
     if (!RM) { dPos.x += S.px * 1.6 + Math.sin(t * .05) * 3; dPos.y -= S.py * .8; }
   } else if (r === 'work') {
     let R, phi, th;
@@ -3503,7 +3505,7 @@ function update(dt) {
       let target;
       if (r === 'gate') target = (c.f ? c.h : c.low) * g4;
       else if (r === 'studio') target = 0;
-      else if (PAGES[r]) target = (r === 'journal' || r === 'lin') ? c.low * 1.6 : c.h * (c.f ? 1 : .75);
+      else if (PAGES[r]) target = (r === 'journal' || r === 'lin' || r === 'nma') ? c.low * 1.6 : c.h * (c.f ? 1 : .75);
       else {
         const since = t - S.enterT - (RM ? 0 : (c.f ? 0 : .35) + ORDER.indexOf(c.id) * .035);
         const match = S.filter === 'all' || S.filter === c.d;

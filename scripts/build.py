@@ -25,6 +25,7 @@ TITLES = {
     'contact': 'Contact The Republic | Marketing Agency in Lagos',
     'privacy': 'Privacy Notice | The Republic',
     'lin': 'Love Island Nigeria: The Republic Gets the Keys to the Villa',
+    'nma': 'And the Winner Is… Digital Agency of the Year | The Republic',
     'lost': 'Page not found | The Republic',
     'onga': 'Onga Taste of Home: Interactive World | The Republic',
     'cowbell': 'Cowbell Your First Taste: Interactive | The Republic',
@@ -48,6 +49,7 @@ DESCRIPTIONS = {
     'method': 'How The Republic works: three commitments, six questions on every brief and five steps from problem to proof. Strategy first, and the work must prove it.',
     'journal': 'Articles and case films from The Republic, a creative and marketing agency in Lagos. Read Write for the reply, and watch the work behind our campaigns.',
     'contact': 'Start a conversation with The Republic, a creative and marketing agency in Ikoyi, Lagos. Email office@therepublic.agency and tell us what you want to change.',
+    'nma': 'The Republic is Digital Agency of the Year at the Nigerian Marketing Awards 2026, with four second-place honours for the agency, our MD and our clients.',
     'lin': 'Group8 has handed The Republic the keys to the Villa. We are the agency behind Love Island Nigeria: campaigns, TV and radio ads, outdoor and social.',
     'privacy': 'How The Republic Studios Ltd collects, uses and protects personal data from this website, and the rights you have under the Nigeria Data Protection Act 2023.',
     'lost': 'This page does not exist or has moved. Explore the work of The Republic, an independent creative and marketing agency in Lagos.',
@@ -68,6 +70,12 @@ DESCRIPTIONS = {
 }
 CAPABILITIES = ['Communication Strategy', 'Brand & Creative', 'Organic Social & Content', 'Integrated Marketing', 'Digital & Performance', 'Experiences']
 WORLDS = ['onga', 'cowbell', 'chivita', 'spruce', 'pzl', 'extramile', 'zenith']
+NEWS_NMA = {'headline': 'And the winner is… The Republic is Digital Agency of the Year at the Nigerian Marketing Awards 2026', 'date': '2026-11-22',
+            'faq': [
+                ('Who won Digital Agency of the Year at the Nigerian Marketing Awards 2026?', 'The Republic, an independent creative and marketing agency in Ikoyi, Lagos.'),
+                ('What else did The Republic win at the NMA 2026?', 'Second place for Advertising Agency of the Year, and second place for Inspirational Marketing Leader of the Year for Daniel Emeka, its Managing Director. Its clients Onga and Cowbell, both Promasidor Nigeria brands, took second place for Spice Brand of the Year and Dairy Brand of the Year.'),
+                ('Who is The Republic?', 'The Republic is a strategy-led creative and marketing agency at 10 Onisiwo Road, Ikoyi, Lagos. It works on brand strategy, advertising, organic social media, digital and integrated campaigns for clients including CHI, Promasidor and Prudential Zenith Life.'),
+            ]}
 NEWS_LIN = {'headline': 'We just got the keys to the Villa: The Republic is the agency behind Love Island Nigeria', 'date': '2026-11-04',
             'faq': [
                 ('Which agency is handling Love Island Nigeria?', 'The Republic, an independent creative and marketing agency in Lagos. Group8 appointed The Republic as the agency for the first edition of Love Island Nigeria, covering campaign strategy, creative, TV and radio advertising, outdoor and the show’s social media.'),
@@ -251,7 +259,7 @@ def main(check=False):
         if r == 'gate': return None
         if r.endswith('-case') or r in WORLDS: items.append(('Work', '/work'))
         if r.startswith('svc-'): items.append(('Services', '/services'))
-        if r == 'lin': items.append(('Journal', '/journal'))
+        if r in ('lin', 'nma'): items.append(('Journal', '/journal'))
         name = meta[r]['t'].split(' | ')[0]
         items.append((name, meta[r]['p']))
         return {'@type': 'BreadcrumbList', 'itemListElement': [{'@type': 'ListItem', 'position': i + 1, 'name': n, 'item': DOMAIN + (u if u != '/' else '/')} for i, (n, u) in enumerate(items)]}
@@ -285,6 +293,14 @@ def main(check=False):
             g.append({'@type': 'BlogPosting', 'headline': ESSAY['headline'], 'description': ESSAY['description'], 'datePublished': ESSAY['date'],
                       'author': {'@type': 'Person', 'name': 'Daniel Emeka', 'jobTitle': 'Managing Director & Co-Founder', 'worksFor': {'@id': DOMAIN + '/#org'}},
                       'publisher': {'@id': DOMAIN + '/#org'}, 'mainEntityOfPage': url, 'image': DOMAIN + m['o'], 'inLanguage': 'en-GB'})
+        if r == 'nma':
+            g.append({'@type': 'NewsArticle', '@id': url + '#article', 'headline': NEWS_NMA['headline'], 'description': m['d'], 'datePublished': NEWS_NMA['date'], 'dateModified': NEWS_NMA['date'],
+                      'author': {'@type': 'Person', 'name': 'Daniel Emeka', 'jobTitle': 'Managing Director & Co-Founder', 'url': DOMAIN + '/studio/daniel-emeka', 'worksFor': {'@id': DOMAIN + '/#org'}},
+                      'publisher': {'@id': DOMAIN + '/#org'}, 'mainEntityOfPage': url, 'image': DOMAIN + m['o'], 'inLanguage': 'en-GB',
+                      'about': [{'@type': 'Event', 'name': 'Nigerian Marketing Awards 2026', 'url': 'https://www.nma-ng.com/'}, {'@id': DOMAIN + '/#org'}],
+                      'mentions': [{'@type': 'Organization', 'name': 'Promasidor Nigeria'}, {'@type': 'Brand', 'name': 'Onga'}, {'@type': 'Brand', 'name': 'Cowbell'}]})
+            g.append({'@type': 'FAQPage', '@id': url + '#faq', 'mainEntity': [{'@type': 'Question', 'name': q, 'acceptedAnswer': {'@type': 'Answer', 'text': a}} for q, a in NEWS_NMA['faq']]})
+            page['mainEntity'] = {'@id': url + '#article'}
         if r == 'lin':
             g.append({'@type': 'NewsArticle', '@id': url + '#article', 'headline': NEWS_LIN['headline'], 'description': m['d'], 'datePublished': NEWS_LIN['date'], 'dateModified': NEWS_LIN['date'],
                       'author': {'@type': 'Person', 'name': 'Daniel Emeka', 'jobTitle': 'Managing Director & Co-Founder', 'url': DOMAIN + '/studio/daniel-emeka', 'worksFor': {'@id': DOMAIN + '/#org'}},
@@ -308,7 +324,7 @@ def main(check=False):
         else:
             out.append(f'<link rel="canonical" href="{url}">')
         out += ['<meta property="og:site_name" content="The Republic">', '<meta property="og:locale" content="en_GB">',
-                f'<meta property="og:type" content="{"article" if r in ("journal", "lin") else "website"}">',
+                f'<meta property="og:type" content="{"article" if r in ("journal", "lin", "nma") else "website"}">',
                 f'<meta property="og:title" content="{esc(m["t"])}">', f'<meta property="og:description" content="{esc(m["d"])}">',
                 f'<meta property="og:image" content="{DOMAIN}{m["o"]}">', '<meta property="og:image:width" content="1200">', '<meta property="og:image:height" content="630">']
         if r != 'lost': out.append(f'<meta property="og:url" content="{url}">')
@@ -447,6 +463,7 @@ def main(check=False):
         '## Services', ''] + [f"- [{sv['name']}]({DOMAIN}{sv['path']}): {sv['description']}" for sv in SV.SERVICES] + [
         '', '## Selected work', ''] + work_lines + [
         '', '## News', '',
+        f'- [And the winner is…: The Republic is Digital Agency of the Year at the Nigerian Marketing Awards 2026]({DOMAIN}{P["nma"]}) (22 November 2026): The Republic won Digital Agency of the Year, took second place for Advertising Agency of the Year, and Daniel Emeka took second place for Inspirational Marketing Leader of the Year. Clients Onga and Cowbell (Promasidor Nigeria) took second place for Spice Brand and Dairy Brand of the Year.',
         f'- [We just got the keys to the Villa: The Republic is the agency behind Love Island Nigeria]({DOMAIN}{P["lin"]}) (4 November 2026): Group8 appointed The Republic as the creative and marketing agency for the first edition of Love Island Nigeria, the local version of the ITV Studios format, airing on Soundcity, Spice and ON TV. The Republic runs the campaign strategy, creative, TV and radio advertising, outdoor and the show’s social media.',
         '', '## Recognition', '',
         '- Nigerian Marketing Awards 2026: Digital Agency of the Year, winner, The Republic.',
